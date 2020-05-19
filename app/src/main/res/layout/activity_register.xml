@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="register"
+            type="com.example.yeniappwkotlin.ui.auth.AuthViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/register_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        tools:context=".Activity.Activity.register.RegisterActivity">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo"
+            tools:ignore="Autofill" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInput1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView">
+
+            <EditText
+                android:text="@={register.name}"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_user"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/user_name"
+                android:inputType="text"
+                android:textColorHint="#000"
+                tools:ignore="Autofill" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInput2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtInput1">
+
+            <EditText
+                android:text="@={register.email}"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_email"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/e_mail"
+                android:inputType="textEmailAddress"
+                android:textColorHint="#000"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInput3"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtInput2"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:text="@={register.password}"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_password"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColorHint="#000"
+                tools:ignore="Autofill" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInput4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtInput3"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:text="@={register.passwordConfirm}"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_password"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/conf_password"
+                android:inputType="textPassword"
+                android:textColorHint="#000"
+                tools:ignore="Autofill" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:onClick="@{register::onRegisterButtonClick}"
+            android:layout_width="270dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/signin_button"
+            android:text="@string/sign_up"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtInput4"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/tvRegisterLog"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="@string/have_account"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="Autofill" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">YeniAppWKotlin</string>
+    <string name="have_account">Do you already have an account?</string>
+    <string name="conf_password">confrim password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password">password</string>
+    <string name="e_mail">e-mail</string>
+    <string name="user_name">user name</string>
 </resources>
