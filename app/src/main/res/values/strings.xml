@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">YeniAppWKotlin</string>
+    <string name="toggle_style"><b>Beğendin</b></string>
     <string name="have_account">Do you already have an account?</string>
     <string name="conf_password">confrim password</string>
     <string name="sign_up">Sign Up</string>

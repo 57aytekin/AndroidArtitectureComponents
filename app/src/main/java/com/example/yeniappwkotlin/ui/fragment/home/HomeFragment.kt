@@ -6,12 +6,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yeniappwkotlin.R
+import com.example.yeniappwkotlin.data.db.entities.Post
+import com.example.yeniappwkotlin.data.network.MyApi
+import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
+import com.example.yeniappwkotlin.data.network.repositories.PostRepository
 import com.example.yeniappwkotlin.ui.fragment.profile.ProfileViewModel
+import com.example.yeniappwkotlin.util.Coroutines
+import com.example.yeniappwkotlin.util.hide
+import com.example.yeniappwkotlin.util.show
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -19,8 +35,7 @@ class HomeFragment : Fragment() {
     var navController: NavController? = null
 
     companion object {
-        fun newInstance() =
-            HomeFragment()
+        fun newInstance() = HomeFragment()
     }
 
     private lateinit var viewModel: HomeViewModel
@@ -34,7 +49,22 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-    }
 
+        val networkConnectionInterceptor  = NetworkConnectionInterceptor(requireContext())
+        val api = MyApi(networkConnectionInterceptor)
+        val repository = PostRepository(api)
+        val factory = HomeViewModelFactory(repository)
+
+        viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
+        viewModel.getPosts()
+        progress_bar.show()
+        viewModel.posts.observe(viewLifecycleOwner, Observer {posts ->
+            progress_bar.hide()
+            recycler_home.also {
+                it.layoutManager = LinearLayoutManager(requireContext())
+                it.setHasFixedSize(true)
+                it.adapter = HomeFragmentAdapter(posts)
+            }
+        })
+    }
 }

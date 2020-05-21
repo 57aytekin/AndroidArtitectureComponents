@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                Toast.makeText(applicationContext, "RESELECT", Toast.LENGTH_LONG).show()
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
