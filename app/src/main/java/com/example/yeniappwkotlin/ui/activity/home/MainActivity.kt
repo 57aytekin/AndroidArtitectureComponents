@@ -1,19 +1,13 @@
-package com.example.yeniappwkotlin.ui.home
+package com.example.yeniappwkotlin.ui.activity.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Switch
-import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import com.example.yeniappwkotlin.R
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.luseen.spacenavigation.SpaceItem
-import com.luseen.spacenavigation.SpaceOnClickListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +43,24 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-
+                when (tab?.position) {
+                    0 -> {
+                        navController!!.navigate(R.id.homeFragment)
+                        tab.setIcon(R.drawable.ic_home_black_24dp)
+                    }
+                    1 -> {
+                        navController!!.navigate(R.id.likeFragment)
+                        tab.setIcon(R.drawable.ic_likes_black_24dp)
+                    }
+                    2 -> {
+                        navController!!.navigate(R.id.messageFragment)
+                        tab.setIcon(R.drawable.ic_message_24dp)
+                    }
+                    3 -> {
+                        navController!!.navigate(R.id.profileFragment)
+                        tab.setIcon(R.drawable.ic_profile_black_24dp)
+                    }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {

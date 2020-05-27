@@ -18,6 +18,7 @@
 
 
         <de.hdodenhof.circleimageview.CircleImageView
+            app:paths="@{post.paths}"
             android:id="@+id/post_profile_resim"
             android:layout_width="50dp"
             android:layout_height="50dp"

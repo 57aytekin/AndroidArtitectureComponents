@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.yeniappwkotlin.R
+import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.db.entities.User
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
@@ -23,7 +24,8 @@ class RegisterActivity : AppCompatActivity(), AuthListener {
 
         val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
         val api = MyApi(networkConnectionInterceptor)
-        val repository = UserRepository(api)
+        val db = AppDatabase(this)
+        val repository = UserRepository(api, db)
         val factory = AuthViewModelFactory(repository)
 
         val binding : ActivityRegisterBinding = DataBindingUtil.setContentView(this, R.layout.activity_register)

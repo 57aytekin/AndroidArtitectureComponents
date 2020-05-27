@@ -15,20 +15,16 @@ abstract class SafeApiRequest {
         if (response.isSuccessful){
             return response.body()!!
         }else{
-            try {
                 val error = response.errorBody()?.string()
-
                 error?.let {
                     try {
+                        message.append("Hata")
                         message.append(JSONObject(it).getString("message"))
                     }catch (e : JSONException){ }
                     message.append("\n")
                 }
                 message.append("Error Code: ${response.code()}")
-            }catch ( e : ApiException){
-                e.printStackTrace()
-            }
-            throw ApiException(message.toString())
+            throw ApiException(response.code().toString())
         }
     }
 }

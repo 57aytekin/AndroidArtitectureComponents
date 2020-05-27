@@ -29,5 +29,13 @@
         android:id="@+id/editFragment"
         android:name="com.example.yeniappwkotlin.ui.fragment.edit.EditFragment"
         android:label="edit_fragment"
-        tools:layout="@layout/edit_fragment" />
+        tools:layout="@layout/edit_fragment" >
+
+        <action
+            android:id="@+id/action_editFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/homeFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

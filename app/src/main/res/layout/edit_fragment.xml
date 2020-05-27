@@ -1,14 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.edit.EditFragment">
 
-    <TextView
-        android:gravity="center_vertical|center_horizontal"
+<layout>
+    <data>
+        <variable
+            name="edit"
+            type="com.example.yeniappwkotlin.ui.fragment.edit.EditViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/root_edit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="FRAGMENT EDİT" />
+        android:fitsSystemWindows="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/MainTheme"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tvShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="8dp"
+                        android:onClick="@{edit::onSavePostButtonClick}"
+                        android:text="PAYLAŞ"
+                        android:textColor="#FFF"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fragment_edit_photo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="70dp"
+            android:src="@drawable/profile_photo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:paths="@{edit.user.paths}" />
+
+        <TextView
+            android:id="@+id/fragment_edit_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@{edit.user.name}"
+            app:layout_constraintStart_toEndOf="@id/fragment_edit_photo"
+            app:layout_constraintTop_toTopOf="@id/fragment_edit_photo"
+            tools:text="Username" />
+
+        <EditText
+            android:text="@={edit.share_post}"
+            android:id="@+id/fragment_edit_etText"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/card_view_gorunum"
+            android:gravity="start"
+            android:hint="@string/edit_string"
+            android:inputType="textMultiLine"
+            android:padding="20dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/fragment_edit_photo"
+            app:layout_constraintTop_toBottomOf="@id/fragment_edit_photo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

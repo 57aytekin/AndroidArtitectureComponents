@@ -21,7 +21,7 @@ class HomeViewModel(
     fun getPosts(){
         job= Coroutines.ioThenMain(
             { repository.getPosts()},
-            { _posts.value = it?.posts }
+            { _posts.value = it }
         )
     }
 

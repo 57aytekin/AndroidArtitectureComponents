@@ -1,6 +1,7 @@
 package com.example.yeniappwkotlin
 
 import android.app.Application
+import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
@@ -18,7 +19,8 @@ class MVVMApplication: Application(), KodeinAware{
 
         bind() from singleton { NetworkConnectionInterceptor(instance()) }
         bind() from singleton { MyApi(instance()) }
-        bind() from singleton { UserRepository(instance()) }
+        bind() from singleton { AppDatabase(instance()) }
+        bind() from singleton { UserRepository(instance(), instance()) }
         bind() from singleton {
             AuthViewModelFactory(
                 instance()

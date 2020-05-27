@@ -2,6 +2,7 @@ package com.example.yeniappwkotlin.data.network
 
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.network.responses.AuthResponse
+import com.example.yeniappwkotlin.data.network.responses.EditResponse
 import com.example.yeniappwkotlin.data.network.responses.PostResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -30,7 +31,16 @@ interface MyApi {
     ): Response<AuthResponse>
 
     @GET("getpost.php")
-    suspend fun getPost() : Response<PostResponse>
+    suspend fun getPost() : Response<List<Post>>
+
+    @FormUrlEncoded
+    @POST("sharepost.php")
+    suspend fun savePost(
+        @Field("user_id") user_id : Int,
+        @Field("share_post") share_post : String,
+        @Field("like_count") like_count : Int,
+        @Field("comment_count") comment_count : Int
+    ) : Response<EditResponse>
 
     companion object{
         operator fun invoke(

@@ -7,4 +7,5 @@
     <string name="password">password</string>
     <string name="e_mail">e-mail</string>
     <string name="user_name">user name</string>
+    <string name="edit_string">Yarım cümleni paylaş ve gelen yorumları beğenerek sohbeti başlat..</string>
 </resources>

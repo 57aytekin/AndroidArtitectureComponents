@@ -4,14 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.yeniappwkotlin.R
+import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.db.entities.User
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 import com.example.yeniappwkotlin.databinding.ActivityLoginBinding
-import com.example.yeniappwkotlin.ui.home.MainActivity
+import com.example.yeniappwkotlin.ui.activity.home.MainActivity
 import com.example.yeniappwkotlin.util.hide
 import com.example.yeniappwkotlin.util.show
 import com.example.yeniappwkotlin.util.snackbar
@@ -25,7 +27,8 @@ class LoginActivity : AppCompatActivity(),
 
         val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
         val api = MyApi(networkConnectionInterceptor)
-        val repository = UserRepository(api)
+        val db = AppDatabase(this)
+        val repository = UserRepository(api, db)
         val factory =
             AuthViewModelFactory(repository)
 
@@ -34,6 +37,15 @@ class LoginActivity : AppCompatActivity(),
 
         binding.viewmodel = viewModel
         viewModel.authListener = this
+
+        viewModel.getLoggedInUser().observe(this, Observer { user ->
+            if (user != null){
+                Intent(this, MainActivity::class.java).also {
+                    it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(it)
+                }
+            }
+        })
     }
 
     override fun onStarted() {
@@ -43,10 +55,6 @@ class LoginActivity : AppCompatActivity(),
     override fun onSuccess(user : User) {
         progress_bar.hide()
         root_layout.snackbar("Hoş Geldin ${user.name} ")
-        Intent(this, MainActivity::class.java).also {
-            it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(it)
-        }
     }
 
     override fun onFailure(message: String) {
