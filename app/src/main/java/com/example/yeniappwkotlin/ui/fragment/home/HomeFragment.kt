@@ -1,5 +1,6 @@
 package com.example.yeniappwkotlin.ui.fragment.home
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,28 +10,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.PostRepository
-import com.example.yeniappwkotlin.ui.fragment.profile.ProfileViewModel
-import com.example.yeniappwkotlin.util.Coroutines
+import com.example.yeniappwkotlin.ui.activity.comment.CommentActivity
 import com.example.yeniappwkotlin.util.hide
 import com.example.yeniappwkotlin.util.show
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_fragment.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), RecyclerViewClickListener {
 
     var navController: NavController? = null
 
@@ -63,8 +55,19 @@ class HomeFragment : Fragment() {
             recycler_home.also {
                 it.layoutManager = LinearLayoutManager(requireContext())
                 it.setHasFixedSize(true)
-                it.adapter = HomeFragmentAdapter(posts)
+                it.adapter = HomeFragmentAdapter(posts, this)
             }
         })
+    }
+
+    override fun onRecyclerViewItemClick(view: View, post: Post) {
+        when(view.id){
+            R.id.post_btn_comment  -> {
+                Toast.makeText(requireContext(), "Cicked :"+post.id, Toast.LENGTH_LONG).show()
+                val intent = Intent(requireContext(), CommentActivity::class.java)
+                intent.putExtra("post_id",post.id)
+                startActivity(intent)
+            }
+        }
     }
 }

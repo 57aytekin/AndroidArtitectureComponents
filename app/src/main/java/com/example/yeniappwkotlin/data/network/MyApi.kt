@@ -1,5 +1,6 @@
 package com.example.yeniappwkotlin.data.network
 
+import com.example.yeniappwkotlin.data.db.entities.Comment
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.network.responses.AuthResponse
 import com.example.yeniappwkotlin.data.network.responses.EditResponse
@@ -8,10 +9,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface MyApi {
 
@@ -41,6 +39,9 @@ interface MyApi {
         @Field("like_count") like_count : Int,
         @Field("comment_count") comment_count : Int
     ) : Response<EditResponse>
+
+    @GET("get_comment.php")
+    suspend fun getComment(@Query("post_id") post_id : Int) : Response<List<Comment>>
 
     companion object{
         operator fun invoke(

@@ -17,7 +17,8 @@ import kotlin.math.abs
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HomeFragmentAdapter(
-    private val posts : List<Post>
+    private val posts : List<Post>,
+    private val listener: RecyclerViewClickListener
 ) : RecyclerView.Adapter<HomeFragmentAdapter.PostViewHolder>() {
 
     override fun getItemCount() = posts.size
@@ -45,6 +46,12 @@ class HomeFragmentAdapter(
             newDate
         )
         holder.homeRowItemBinding.post = newPost
+        holder.homeRowItemBinding.postBtnComment.setOnClickListener {
+            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postBtnComment, posts[position])
+        }
+        holder.homeRowItemBinding.postCommentCount.setOnClickListener {
+            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postCommentCount, posts[position])
+        }
     }
 
     inner class PostViewHolder(
