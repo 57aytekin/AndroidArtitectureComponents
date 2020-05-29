@@ -41,6 +41,7 @@
     </ScrollView>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/onRefresh"
         android:layout_width="match_parent"
         app:layout_constraintTop_toBottomOf="@id/scroll"
         android:layout_height="wrap_content">

@@ -19,6 +19,7 @@ import com.example.yeniappwkotlin.data.network.repositories.PostRepository
 import com.example.yeniappwkotlin.ui.activity.comment.CommentActivity
 import com.example.yeniappwkotlin.util.hide
 import com.example.yeniappwkotlin.util.show
+import kotlinx.android.synthetic.main.fragment_home_row_item.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
 
@@ -53,11 +54,14 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
         viewModel.posts.observe(viewLifecycleOwner, Observer {posts ->
             progress_bar.hide()
             recycler_home.also {
+                onRefresh.isRefreshing = false
                 it.layoutManager = LinearLayoutManager(requireContext())
                 it.setHasFixedSize(true)
                 it.adapter = HomeFragmentAdapter(posts, this)
             }
         })
+
+        onRefresh.setOnRefreshListener { viewModel.getPosts() }
     }
 
     override fun onRecyclerViewItemClick(view: View, post: Post) {

@@ -3,6 +3,7 @@ package com.example.yeniappwkotlin.data.network
 import com.example.yeniappwkotlin.data.db.entities.Comment
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.network.responses.AuthResponse
+import com.example.yeniappwkotlin.data.network.responses.CommentResponse
 import com.example.yeniappwkotlin.data.network.responses.EditResponse
 import com.example.yeniappwkotlin.data.network.responses.PostResponse
 import okhttp3.OkHttpClient
@@ -42,6 +43,15 @@ interface MyApi {
 
     @GET("get_comment.php")
     suspend fun getComment(@Query("post_id") post_id : Int) : Response<List<Comment>>
+
+    @FormUrlEncoded
+    @POST("save_comment.php")
+    suspend fun saveComment(
+        @Field("user_id") user_id: Int,
+        @Field("post_id") post_id: Int,
+        @Field("comment") comment : String,
+        @Field("begeniDurum") begeniDurum : Int
+    ) : Response<CommentResponse>
 
     companion object{
         operator fun invoke(

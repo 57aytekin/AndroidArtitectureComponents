@@ -1,6 +1,9 @@
 package com.example.yeniappwkotlin.ui.activity.comment
 
 import android.text.Html
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -30,8 +33,14 @@ class CommentActivityAdapter(
         val comments = comment[position]
         val commentUserName = comments.name
         val userComment = comments.comment
-        val boldType = "$commentUserName  $userComment"
-        holder.commentRowItemBinding.tvCommentAd.text = Html.escapeHtml(boldType)
+        val boldType = "$commentUserName $userComment"
+
+        val sb: SpannableStringBuilder? = SpannableStringBuilder(boldType)
+        val bss = StyleSpan(android.graphics.Typeface.BOLD)
+        sb!!.setSpan(bss,0,commentUserName!!.length, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
+
+
+        holder.commentRowItemBinding.tvCommentAd.text = sb
         holder.commentRowItemBinding.tvCommentTarih.text = comments.tarih
 
 
