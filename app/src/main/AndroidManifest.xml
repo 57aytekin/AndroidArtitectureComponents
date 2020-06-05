@@ -15,8 +15,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.comment.CommentActivity"
             android:theme="@style/MainTheme"/>
-        <activity android:name=".ui.auth.RegisterActivity" />
-        <activity android:name=".ui.auth.LoginActivity">
+        <activity android:name="com.example.yeniappwkotlin.ui.activity.auth.RegisterActivity" />
+        <activity android:name="com.example.yeniappwkotlin.ui.activity.auth.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

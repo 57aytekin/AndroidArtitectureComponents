@@ -14,4 +14,6 @@ class PostRepository(
     private val api : MyApi
 ) : SafeApiRequest() {
     suspend fun getPosts()  = apiRequest { api.getPost() }
+
+    suspend fun updateLikeCounts(like_count : Int, post_id : Int ) = apiRequest { api.updateLikeCount(like_count, post_id) }
 }

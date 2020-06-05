@@ -1,4 +1,4 @@
-package com.example.yeniappwkotlin.ui.auth
+package com.example.yeniappwkotlin.ui.activity.auth
 
 import com.example.yeniappwkotlin.data.db.entities.User
 

@@ -2,11 +2,6 @@
 
 <layout>
 
-    <data>
-        <variable
-            name="viewmodel"
-            type="com.example.yeniappwkotlin.ui.auth.AuthViewModel" />
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background"
-        tools:context=".ui.auth.LoginActivity">
+        tools:context=".ui.activity.auth.LoginActivity">
 
         <ImageView
             android:id="@+id/imageView"
@@ -37,13 +32,13 @@
             app:layout_constraintTop_toBottomOf="@id/imageView">
 
             <EditText
+                android:id="@+id/et_login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/icon_email"
                 android:drawablePadding="10dp"
                 android:ems="10"
                 android:gravity="start"
-                android:text="@={viewmodel.email}"
                 android:hint="e-mail"
                 android:inputType="textEmailAddress"
                 android:textColorHint="#000" />
@@ -59,7 +54,7 @@
             app:passwordToggleEnabled="true">
 
             <EditText
-                android:text="@={viewmodel.password}"
+                android:id="@+id/et_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -82,8 +77,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txt2" />
 
         <Button
-            android:id="@+id/btnRegisterSignUp"
-            android:onClick="@{viewmodel::onLoginButtonClick}"
+            android:id="@+id/btn_login"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginTop="15dp"
@@ -101,7 +95,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="@id/ivWithFace"
             app:layout_constraintStart_toStartOf="@id/ivWithFace"
-            app:layout_constraintTop_toBottomOf="@id/btnRegisterSignUp">
+            app:layout_constraintTop_toBottomOf="@id/btn_login">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -109,7 +103,7 @@
                 android:text="Have don't an account ?" />
 
             <TextView
-                android:onClick="@{viewmodel::onRegister}"
+                android:id="@+id/text_view_login_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Register Now"

@@ -52,6 +52,9 @@ class HomeFragmentAdapter(
         holder.homeRowItemBinding.postCommentCount.setOnClickListener {
             listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postCommentCount, posts[position])
         }
+        holder.homeRowItemBinding.postBtnLike.setOnClickListener {
+            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postBtnLike, posts[position])
+        }
     }
 
     inner class PostViewHolder(

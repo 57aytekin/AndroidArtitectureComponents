@@ -1,4 +1,4 @@
-package com.example.yeniappwkotlin.ui.auth
+package com.example.yeniappwkotlin.ui.activity.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

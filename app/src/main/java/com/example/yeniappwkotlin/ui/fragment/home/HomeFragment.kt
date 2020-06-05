@@ -1,14 +1,13 @@
 package com.example.yeniappwkotlin.ui.fragment.home
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.yeniappwkotlin.R
@@ -17,13 +16,15 @@ import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.PostRepository
 import com.example.yeniappwkotlin.ui.activity.comment.CommentActivity
+import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
 import com.example.yeniappwkotlin.util.hide
 import com.example.yeniappwkotlin.util.show
+import com.example.yeniappwkotlin.util.snackbar
 import kotlinx.android.synthetic.main.fragment_home_row_item.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
 
-class HomeFragment : Fragment(), RecyclerViewClickListener {
+class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
 
     var navController: NavController? = null
 
@@ -67,11 +68,34 @@ class HomeFragment : Fragment(), RecyclerViewClickListener {
     override fun onRecyclerViewItemClick(view: View, post: Post) {
         when(view.id){
             R.id.post_btn_comment  -> {
-                Toast.makeText(requireContext(), "Cicked :"+post.id, Toast.LENGTH_LONG).show()
                 val intent = Intent(requireContext(), CommentActivity::class.java)
                 intent.putExtra("post_id",post.id)
                 startActivity(intent)
             }
+            R.id.post_comment_count -> {
+                val intent = Intent(requireContext(), CommentActivity::class.java)
+                intent.putExtra("post_id",post.id)
+                startActivity(intent)
+            }
+            R.id.post_btn_like -> {
+                viewModel.btnPostLike(post.like_count!!, post.id!!)
+                var builder : StringBuilder = StringBuilder()
+                builder.append(post.like_count)
+                builder.append(" Beğeni")
+                post_like_count.text = builder.toString()
+            }
         }
+    }
+
+    override fun onStarted() {
+
+    }
+
+    override fun onSuccess(message: String) {
+        home_layout.snackbar(message)
+    }
+
+    override fun onFailure(message: String) {
+        home_layout.snackbar(message)
     }
 }
