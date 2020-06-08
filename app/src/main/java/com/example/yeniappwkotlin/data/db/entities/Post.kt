@@ -8,5 +8,6 @@ data class Post (
     val share_post : String? = null,
     val like_count : Int? = null,
     val comment_count : Int? = null,
-    val tarih : String? = null
+    val tarih : String? = null,
+    val user_post_likes : PostLikes? = null
 )

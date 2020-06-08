@@ -6,9 +6,10 @@ import com.example.yeniappwkotlin.data.network.repositories.PostRepository
 
 @Suppress("UNCHECKED_CAST")
 class HomeViewModelFactory(
-    private val repository: PostRepository
+    private val repository: PostRepository,
+    private val user_id : Int
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return HomeViewModel(repository) as T
+        return HomeViewModel(repository, user_id) as T
     }
 }

@@ -2,9 +2,11 @@ package com.example.yeniappwkotlin.ui.fragment.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,11 +17,10 @@ import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.PostRepository
+import com.example.yeniappwkotlin.databinding.FragmentHomeRowItemBinding
 import com.example.yeniappwkotlin.ui.activity.comment.CommentActivity
 import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
-import com.example.yeniappwkotlin.util.hide
-import com.example.yeniappwkotlin.util.show
-import com.example.yeniappwkotlin.util.snackbar
+import com.example.yeniappwkotlin.util.*
 import kotlinx.android.synthetic.main.fragment_home_row_item.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
@@ -44,15 +45,16 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val networkConnectionInterceptor  = NetworkConnectionInterceptor(requireContext())
+        val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
+        val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val repository = PostRepository(api)
-        val factory = HomeViewModelFactory(repository)
+        val factory = HomeViewModelFactory(repository, userId)
 
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
         viewModel.getPosts()
         progress_bar.show()
-        viewModel.posts.observe(viewLifecycleOwner, Observer {posts ->
+        viewModel.posts.observe(viewLifecycleOwner, Observer { posts ->
             progress_bar.hide()
             recycler_home.also {
                 onRefresh.isRefreshing = false
@@ -66,23 +68,39 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     }
 
     override fun onRecyclerViewItemClick(view: View, post: Post) {
-        when(view.id){
-            R.id.post_btn_comment  -> {
+        when (view.id) {
+            R.id.post_btn_comment -> {
                 val intent = Intent(requireContext(), CommentActivity::class.java)
-                intent.putExtra("post_id",post.id)
+                intent.putExtra("post_id", post.id)
                 startActivity(intent)
             }
             R.id.post_comment_count -> {
                 val intent = Intent(requireContext(), CommentActivity::class.java)
-                intent.putExtra("post_id",post.id)
+                intent.putExtra("post_id", post.id)
                 startActivity(intent)
             }
+        }
+    }
+
+
+    override fun onRecyclerViewCheckUnckeck(view: View, post: Post, isChecked: Boolean,homeRowItemBinding: FragmentHomeRowItemBinding) {
+        when (view.id) {
             R.id.post_btn_like -> {
-                viewModel.btnPostLike(post.like_count!!, post.id!!)
-                var builder : StringBuilder = StringBuilder()
-                builder.append(post.like_count)
-                builder.append(" Beğeni")
-                post_like_count.text = builder.toString()
+                val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
+                var likeCount = post.like_count
+                if (isChecked) {
+                    likeCount = post.like_count!!+1
+                    if ((post.user_post_likes?.begeni_durum == 0) || (post.user_post_likes?.begeni_durum == 1)) {
+                        viewModel.btnPostLike(post.id!!, userId, post.like_count, 1)
+                    } else {
+                        viewModel.saveUserPostLikes(userId, post.id!!, 1)
+                    }
+                    //post_like_count.text = "$likeCount Beğeni"
+                } else {
+                    likeCount = post.like_count!!
+                    viewModel.btnPostLike(post.id!!, userId, post.like_count-1, 0)
+                }
+                homeRowItemBinding.postLikeCount.text = "$likeCount Beğeni"
             }
         }
     }

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout>
-    <data>
-        <variable
-            name="post"
-            type="com.example.yeniappwkotlin.data.db.entities.Post" />
-    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,7 +14,6 @@
 
 
         <de.hdodenhof.circleimageview.CircleImageView
-            app:paths="@{post.paths}"
             android:id="@+id/post_profile_resim"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -36,7 +30,6 @@
             android:textColor="#181515"
             android:textSize="18sp"
             tools:text="Username5757"
-            android:text="@{post.name}"
             app:layout_constraintStart_toEndOf="@id/post_profile_resim"
             app:layout_constraintTop_toTopOf="@id/post_profile_resim" />
 
@@ -46,7 +39,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             tools:text="10 dk önce"
-            android:text="@{post.tarih}"
             app:layout_constraintStart_toStartOf="@id/post_username"
             app:layout_constraintTop_toBottomOf="@id/post_username"/>
 
@@ -55,7 +47,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="@{post.share_post}"
             tools:text="Evden henüzasdasdasd yeni çıkmıştım otobüs beklerken arkadan .."
             android:textColor="#000"
             android:textSize="16sp"
@@ -71,7 +62,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             tools:text="15 Beğeni"
-            android:text="@{post.like_count + ` Beğeni`}"
             app:layout_constraintLeft_toLeftOf="@id/post_profile_resim"
             app:layout_constraintTop_toBottomOf="@id/post_text" />
 
@@ -80,7 +70,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="@{post.comment_count +` Yorum`}"
             tools:text="10 Yorum"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/post_like_count" />

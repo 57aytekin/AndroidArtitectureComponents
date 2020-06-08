@@ -3,10 +3,8 @@ package com.example.yeniappwkotlin.data.network
 import android.content.Context
 import com.example.yeniappwkotlin.data.db.entities.Comment
 import com.example.yeniappwkotlin.data.db.entities.Post
-import com.example.yeniappwkotlin.data.network.responses.AuthResponse
-import com.example.yeniappwkotlin.data.network.responses.CommentResponse
-import com.example.yeniappwkotlin.data.network.responses.EditResponse
-import com.example.yeniappwkotlin.data.network.responses.PostResponse
+import com.example.yeniappwkotlin.data.db.entities.PostLikes
+import com.example.yeniappwkotlin.data.network.responses.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -35,7 +33,7 @@ interface MyApi {
     ): Response<AuthResponse>
 
     @GET("getpost.php")
-    suspend fun getPost() : Response<List<Post>>
+    suspend fun getPost(@Query("user_id") user_id: Int) : Response<List<Post>>
 
     @FormUrlEncoded
     @POST("sharepost.php")
@@ -59,11 +57,24 @@ interface MyApi {
     ) : Response<CommentResponse>
 
     @FormUrlEncoded
-    @POST("update_like_count.php")
+    @POST("update_post_like.php")
     suspend fun updateLikeCount(
+        @Field("post_id") post_id: Int,
+        @Field("user_id") user_id: Int,
         @Field("like_count") like_count: Int,
-        @Field("post_id") post_id: Int
+        @Field("begeni_durum") begeni_durum: Int
     ) : Response<CommentResponse>
+
+    @FormUrlEncoded
+    @POST("save_user_post_likes.php")
+    suspend fun saveUserPostLikes(
+        @Field("user_id") user_id: Int,
+        @Field("post_id") post_id: Int,
+        @Field("begeni_durum") begeni_durum : Int
+    ) : Response<PostLikesResponse>
+
+    @GET("get_user_post_likes.php")
+    suspend fun getUserPostLikes(@Query("user_id") user_id: Int) : Response<PostLikesResponse>
 
     companion object{
         operator fun invoke(

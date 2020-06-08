@@ -16,6 +16,7 @@ import com.example.yeniappwkotlin.databinding.ActivityRegisterBinding
 import com.example.yeniappwkotlin.ui.activity.home.MainActivity
 import com.example.yeniappwkotlin.util.ApiException
 import com.example.yeniappwkotlin.util.NoInternetException
+import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.snackbar
 import kotlinx.coroutines.launch
 
@@ -39,6 +40,7 @@ class RegisterActivity : AppCompatActivity() {
 
         viewModel.getLoggedInUser().observe(this, Observer { user ->
             if(user != null){
+                PrefUtils.with(this).save("user_id",user.user_id!!)
                 Intent(this, MainActivity::class.java).also {
                     it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(it)
