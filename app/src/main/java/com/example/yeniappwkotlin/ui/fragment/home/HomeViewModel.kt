@@ -1,5 +1,7 @@
 package com.example.yeniappwkotlin.ui.fragment.home
 
+import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +14,8 @@ import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
 import com.example.yeniappwkotlin.util.ApiException
 import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.NoInternetException
-import kotlinx.coroutines.Job
+import com.example.yeniappwkotlin.util.lazyDeffered
+import kotlinx.coroutines.*
 
 class HomeViewModel(
     private val repository: PostRepository,
@@ -22,29 +25,17 @@ class HomeViewModel(
     private lateinit var job : Job
     var commentListener : CommentListener? = null
 
-    private val _posts = MutableLiveData<List<Post>>()
+    /*private val _posts = MutableLiveData<List<Post>>()
     val posts : LiveData<List<Post>>
-    get() = _posts
+    get() = _posts*/
 
-    private val _userLikes = MutableLiveData<PostLikesResponse>()
-    val likes : LiveData<PostLikesResponse>
-    get() = _userLikes
 
-    fun getLikes(){
-        job = Coroutines.ioThenMain(
-            {repository.getUserPostLikes(user_id)},
-            {_userLikes.value = it}
-        )
+    val getPost by lazyDeffered {
+        repository.getPosts(user_id)
     }
 
-    fun getPosts(){
-        job= Coroutines.ioThenMain(
-            { repository.getPosts(user_id)},
-            { _posts.value = it }
-        )
-    }
 
-    fun saveUserPostLikes( user_id: Int, post_id: Int, begeniDurum : Int){
+    fun saveUserPostLikes(user_id: Int, post_id: Int, begeniDurum: Int) {
         Coroutines.main {
             try {
                 val userPostLikes = repository.saveUserPostLikes(user_id, post_id, begeniDurum)
@@ -52,27 +43,28 @@ class HomeViewModel(
                     commentListener?.onSuccess(it)
                     return@main
                 }
-            }catch (e : ApiException){
+            } catch (e: ApiException) {
                 commentListener?.onFailure(e.message!!)
-            }catch (e : NoInternetException){
+            } catch (e: NoInternetException) {
                 commentListener?.onFailure(e.message!!)
             }
         }
     }
 
-    fun btnPostLike(post_id: Int, user_id: Int, like_count : Int, begeniDurum: Int){
-        val likeCount = like_count+1
+    fun btnPostLike(post_id: Int, user_id: Int, like_count: Int, begeniDurum: Int) {
+        val likeCount = like_count + 1
         commentListener?.onStarted()
         Coroutines.main {
             try {
-                val likeResponse = repository.updateLikeCounts(post_id, user_id, likeCount, begeniDurum)
+                val likeResponse =
+                    repository.updateLikeCounts(post_id, user_id, likeCount, begeniDurum)
                 likeResponse.message.let {
                     commentListener?.onSuccess(it!!)
                     return@main
                 }
-            }catch (e : ApiException){
+            } catch (e: ApiException) {
                 commentListener?.onFailure(e.message!!)
-            }catch (e : NoInternetException){
+            } catch (e: NoInternetException) {
                 commentListener?.onFailure(e.message!!)
             }
         }

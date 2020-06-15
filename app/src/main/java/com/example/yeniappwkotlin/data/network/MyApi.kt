@@ -2,6 +2,7 @@ package com.example.yeniappwkotlin.data.network
 
 import android.content.Context
 import com.example.yeniappwkotlin.data.db.entities.Comment
+import com.example.yeniappwkotlin.data.db.entities.Likes
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.db.entities.PostLikes
 import com.example.yeniappwkotlin.data.network.responses.*
@@ -75,6 +76,24 @@ interface MyApi {
 
     @GET("get_user_post_likes.php")
     suspend fun getUserPostLikes(@Query("user_id") user_id: Int) : Response<PostLikesResponse>
+
+    @GET("get_likes.php")
+    suspend fun getLikes(@Query("comment_sahibi_id") comment_sahibi_id: Int) : Response<List<Likes>>
+
+    @FormUrlEncoded
+    @POST("save_likes.php")
+    suspend fun saveLikes(
+        @Field("post_sahibi_id") post_sahibi_id: Int,
+        @Field("comment_sahibi_id") comment_sahibi_id: Int,
+        @Field("comment_id") comment_id : Int
+    ) : Response<CommentResponse>
+
+    @FormUrlEncoded
+    @POST("update_comment_like.php")
+    suspend fun updateCommentLike(
+        @Field("comment_id") comment_id : Int,
+        @Field("begeniDurum") begeniDurum : Int
+    ): Response<CommentResponse>
 
     companion object{
         operator fun invoke(

@@ -3,6 +3,8 @@ package com.example.yeniappwkotlin.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import com.example.yeniappwkotlin.util.Coroutines
+import com.example.yeniappwkotlin.util.toast
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
@@ -11,11 +13,11 @@ import java.net.Socket
 
 class NoConnectionInterceptor(private val context: Context) : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response {
+    override fun intercept(chain: Interceptor.Chain) :Response {
         return if (!isConnectionOn()) {
-            throw NoConnectivityException()
+            throw Exception()
         } else if(!isInternetAvailable()) {
-            throw NoInternetException()
+            throw Exception()
         } else {
             chain.proceed(chain.request())
         }

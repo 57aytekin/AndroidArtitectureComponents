@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_graph"
+    app:startDestination="@id/profilePaylasimlarFragment">
+
+    <fragment
+        android:id="@+id/profilePaylasimlarFragment"
+        android:name="com.example.yeniappwkotlin.ui.fragment.profile_paylasimlar.ProfilePaylasimlarFragment"
+        android:label="profile_paylasimlar_fragment"
+        tools:layout="@layout/profile_paylasimlar_fragment" >
+        <action
+            android:id="@+id/action_profilePaylasimlarFragment_to_yakindaFragment"
+            app:destination="@id/yakindaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/yakindaFragment"
+        android:name="com.example.yeniappwkotlin.ui.fragment.profile_yakinda.YakindaFragment"
+        android:label="yakinda_fragment"
+        tools:layout="@layout/yakinda_fragment" />
+</navigation>

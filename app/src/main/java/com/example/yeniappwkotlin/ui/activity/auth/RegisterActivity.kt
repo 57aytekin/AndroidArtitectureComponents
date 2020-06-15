@@ -11,6 +11,7 @@ import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
+import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 import com.example.yeniappwkotlin.databinding.ActivityRegisterBinding
 import com.example.yeniappwkotlin.ui.activity.home.MainActivity

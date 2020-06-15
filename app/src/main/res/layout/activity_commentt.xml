@@ -2,12 +2,6 @@
 
 <layout>
 
-    <data>
-        <variable
-            name="comments"
-            type="com.example.yeniappwkotlin.ui.activity.comment.CommentViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constrainLayout"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,7 +42,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:text="@={comments.comment}"
             android:hint="Yorum ekle..."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +51,6 @@
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{comments::onSaveCommentClick}"
             android:text="Paylaş"
             android:textAllCaps="false"
             android:textColor="#FFF"

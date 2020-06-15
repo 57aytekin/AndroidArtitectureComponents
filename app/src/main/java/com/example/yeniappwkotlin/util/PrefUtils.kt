@@ -12,6 +12,7 @@ class PrefUtils {
         private var singleton: PrefUtils? = null
         private lateinit var preferences: SharedPreferences
         private lateinit var editor: SharedPreferences.Editor
+        private const val KEY_SAVED_AT = "key_saved_at"
 
         fun with(context: Context) : PrefUtils {
             if (null == singleton)
@@ -63,6 +64,16 @@ class PrefUtils {
 
     fun save(key: String, value: Set<String>) {
         editor.putStringSet(key, value).apply()
+    }
+
+    fun saveLastSavedAt(keySavedAt: String, savedAt : String){
+        editor.putString(
+            keySavedAt,
+            savedAt
+        ).apply()
+    }
+    fun getLastSavedAt(keySavedAt: String) : String? {
+        return preferences.getString(keySavedAt,null)
     }
 
     fun getBoolean(key: String, defValue: Boolean) : Boolean {

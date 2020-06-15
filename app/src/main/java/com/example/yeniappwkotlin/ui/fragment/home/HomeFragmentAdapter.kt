@@ -41,7 +41,7 @@ class HomeFragmentAdapter(
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val newDate = posts[position].tarih?.let { calculateDate(it) }
         val newPost = Post(
-            posts[position].id,
+            posts[position].post_id,
             posts[position].user_id,
             posts[position].name,
             posts[position].paths,

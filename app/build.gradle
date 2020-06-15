@@ -39,6 +39,8 @@ dependencies {
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.5"
     def nav_version = "2.3.0-alpha06"
+    def threetenabpVersion = '1.2.0'
+    def threetenbpVersion = '1.3.8'
     //Retrofit and GSON
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
@@ -100,6 +102,14 @@ dependencies {
 
     //İnterceptor
     implementation("com.squareup.okhttp3:logging-interceptor:4.7.2")
+
+    //LocalDate alternative for 25 api lwl
+
+
+    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion"
+    testImplementation("org.threeten:threetenbp:$threetenbpVersion") {
+        exclude module: "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion"
+    }
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'

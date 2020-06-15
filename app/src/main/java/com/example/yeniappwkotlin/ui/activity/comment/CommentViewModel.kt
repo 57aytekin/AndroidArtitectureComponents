@@ -12,12 +12,9 @@ import com.example.yeniappwkotlin.util.NoInternetException
 import kotlinx.coroutines.Job
 
 class CommentViewModel(
-    private val repository: CommentRepository,
-    private val user_id : Int?,
-    private val post_id : Int?
+    private val repository: CommentRepository
 ) : ViewModel() {
     private lateinit var job : Job
-    var comment: String? = null
     var commentListener : CommentListener? = null
 
     private val _comment = MutableLiveData<List<Comment>>()
@@ -31,15 +28,30 @@ class CommentViewModel(
         )
     }
 
-    fun onSaveCommentClick(view : View){
-        commentListener?.onStarted()
-        if(comment.isNullOrEmpty()){
-            commentListener?.onFailure("Lütfen paylaşımınızı giriniz.")
-            return
-        }
+    fun saveLikes(post_sahibi_id : Int, comment_sahibi_id: Int, comment_id: Int){
         Coroutines.main {
             try {
-                val commentResponse = repository.saveComments(user_id!!, post_id!!, comment!!,0)
+                val saveLikes = repository.saveLikes(post_sahibi_id, comment_sahibi_id, comment_id)
+                saveLikes.message.let {
+                    commentListener?.onSuccess(it!!)
+                    return@main
+                }
+            }catch (e: ApiException){
+                commentListener?.onFailure(e.message!!)
+            }catch (e : NoInternetException){
+                commentListener?.onFailure(e.message!!)
+            }
+        }
+    }
+
+    suspend fun updateCommentLike(comment_id : Int, begeniDurum : Int) =
+        repository.updateCommentLike(comment_id, begeniDurum)
+
+    fun onSaveCommentClick(user_id : Int, post_id: Int,comment : String){
+        commentListener?.onStarted()
+        Coroutines.main {
+            try {
+                val commentResponse = repository.saveComments(user_id, post_id, comment,0)
                 commentResponse.message.let {
                     commentListener?.onSuccess(it!!)
                     return@main

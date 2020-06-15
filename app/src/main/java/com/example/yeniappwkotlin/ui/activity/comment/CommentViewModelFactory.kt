@@ -6,11 +6,9 @@ import com.example.yeniappwkotlin.data.network.repositories.CommentRepository
 
 @Suppress("UNCHECKED_CAST")
 class CommentViewModelFactory(
-    private val repository: CommentRepository,
-    private val user_id : Int?,
-    private val post_id : Int?
+    private val repository: CommentRepository
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return CommentViewModel(repository, user_id, post_id) as T
+        return CommentViewModel(repository) as T
     }
 }

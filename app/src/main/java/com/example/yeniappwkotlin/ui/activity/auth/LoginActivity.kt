@@ -42,6 +42,8 @@ class LoginActivity : AppCompatActivity() {
         viewModel.getLoggedInUser().observe(this, Observer { user ->
             if (user != null) {
                 PrefUtils.with(this).save("user_id",user.user_id!!)
+                PrefUtils.with(this).save("user_name",user.name!!)
+                PrefUtils.with(this).save("user_image",user.paths!!)
                 Intent(this, MainActivity::class.java).also {
                     it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(it)
