@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -52,35 +53,37 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
-        val repository = PostRepository(api,db, requireContext())
+        val repository = PostRepository(api, db, requireContext())
         val factory = HomeViewModelFactory(repository, userId)
 
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
 
         progress_bar.show()
         Coroutines.main {
-            val posts = viewModel.getPost.await()
-            posts.observe(viewLifecycleOwner, Observer {post ->
-                progress_bar.hide()
-                recycler_home.also {
-                    onRefresh.isRefreshing = false
-                    it.layoutManager = LinearLayoutManager(requireContext())
-                    it.setHasFixedSize(true)
-                    it.adapter = HomeFragmentAdapter(post, this)
-                }
-            })
-        }
-        /*viewModel.posts.observe(viewLifecycleOwner, Observer { posts ->
-            progress_bar.hide()
-            recycler_home.also {
-                onRefresh.isRefreshing = false
-                it.layoutManager = LinearLayoutManager(requireContext())
-                it.setHasFixedSize(true)
-                it.adapter = HomeFragmentAdapter(posts, this)
+            try {
+                val posts = viewModel.getPost.await()
+                posts.observe(viewLifecycleOwner, Observer { post ->
+                    progress_bar.hide()
+                    recycler_home.also {
+                        onRefresh.isRefreshing = false
+                        it.layoutManager = LinearLayoutManager(requireContext())
+                        it.setHasFixedSize(true)
+                        it.adapter = HomeFragmentAdapter(post, this)
+                    }
+                })
+            }catch (e : Exception){
+                val posts = viewModel.getLocalPost.await()
+                posts.observe(viewLifecycleOwner, Observer { post ->
+                    progress_bar.hide()
+                    recycler_home.also {
+                        onRefresh.isRefreshing = false
+                        it.layoutManager = LinearLayoutManager(requireContext())
+                        it.setHasFixedSize(true)
+                        it.adapter = HomeFragmentAdapter(post, this)
+                    }
+                })
             }
-        })*/
-
-        //onRefresh.setOnRefreshListener { viewModel.getPosts() }
+        }
     }
 
     override fun onRecyclerViewItemClick(view: View, post: Post) {
@@ -88,8 +91,8 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
             R.id.post_btn_comment -> {
                 val intent = Intent(requireContext(), CommentActivity::class.java)
                 intent.putExtra("post_id", post.post_id)
-                intent.putExtra("post_user_id",post.user_id)
-                intent.putExtra("path",post.paths)
+                intent.putExtra("post_user_id", post.user_id)
+                intent.putExtra("path", post.paths)
                 startActivity(intent)
             }
             R.id.post_comment_count -> {
@@ -101,13 +104,18 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     }
 
 
-    override fun onRecyclerViewCheckUnckeck(view: View, post: Post, isChecked: Boolean,homeRowItemBinding: FragmentHomeRowItemBinding) {
+    override fun onRecyclerViewCheckUnckeck(
+        view: View,
+        post: Post,
+        isChecked: Boolean,
+        homeRowItemBinding: FragmentHomeRowItemBinding
+    ) {
         when (view.id) {
             R.id.post_btn_like -> {
                 val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
                 var likeCount = post.like_count
                 if (isChecked) {
-                    likeCount = post.like_count!!+1
+                    likeCount = post.like_count!! + 1
                     if ((post.user_post_likes?.begeni_durum == 0) || (post.user_post_likes?.begeni_durum == 1)) {
                         viewModel.btnPostLike(post.post_id!!, userId, post.like_count, 1)
                     } else {
@@ -116,7 +124,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                     //post_like_count.text = "$likeCount Beğeni"
                 } else {
                     likeCount = post.like_count!!
-                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count-1, 0)
+                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count - 1, 0)
                 }
                 homeRowItemBinding.postLikeCount.text = "$likeCount Beğeni"
             }

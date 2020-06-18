@@ -25,15 +25,11 @@ class HomeViewModel(
     private lateinit var job : Job
     var commentListener : CommentListener? = null
 
-    /*private val _posts = MutableLiveData<List<Post>>()
-    val posts : LiveData<List<Post>>
-    get() = _posts*/
-
-
     val getPost by lazyDeffered {
         repository.getPosts(user_id)
     }
 
+    val getLocalPost by lazyDeffered { repository.getLocalPost(user_id) }
 
     fun saveUserPostLikes(user_id: Int, post_id: Int, begeniDurum: Int) {
         Coroutines.main {

@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Likes
 import com.example.yeniappwkotlin.databinding.LikeFragmentRowItemBinding
+import com.example.yeniappwkotlin.ui.fragment.message.MessageClickListener
 import com.example.yeniappwkotlin.util.loadImage
 
 class LikeFragmentAdapter(
-    private val likes : List<Likes>
+    private val likes : List<Likes>,
+    private val listener : ClickListener
 ) : RecyclerView.Adapter<LikeFragmentAdapter.LikesViewHolder>() {
     val likesText = " adlı kullanıcı yorumunu beğendi artık mesaj atıp konuşabilirsin."
 
@@ -43,5 +45,8 @@ class LikeFragmentAdapter(
         val bss = StyleSpan(Typeface.BOLD)
         sb!!.setSpan(bss,0,username.length, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
         holder.likeFragmentRowItemBinding.likeRowUserName.text = "$sb $likesText"
+        holder.likeFragmentRowItemBinding.root.setOnClickListener {
+            listener.onRecyclerViewItemClick(holder.itemView, currentItem)
+        }
     }
 }

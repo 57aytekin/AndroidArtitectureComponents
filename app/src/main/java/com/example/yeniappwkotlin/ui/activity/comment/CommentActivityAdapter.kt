@@ -14,7 +14,9 @@ import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Comment
 import com.example.yeniappwkotlin.databinding.CommentRowItem2Binding
 import com.example.yeniappwkotlin.ui.fragment.home.RecyclerViewClickListener
+import com.example.yeniappwkotlin.util.calculateDate
 import com.example.yeniappwkotlin.util.loadImage
+import java.io.FileNotFoundException
 
 class CommentActivityAdapter(
     private val comment: List<Comment>,
@@ -59,8 +61,12 @@ class CommentActivityAdapter(
         }
 
         holder.commentRowItemBinding.tvCommentAd.text = sb
-        holder.commentRowItemBinding.tvCommentTarih.text = comments.tarih
-        loadImage(holder.commentRowItemBinding.ivCommentPhoto, "image/"+comments.name+".jpg")
+        holder.commentRowItemBinding.tvCommentTarih.text = calculateDate(comments.tarih!!)
+        try {
+            loadImage(holder.commentRowItemBinding.ivCommentPhoto, "image/"+comments.name+".jpg")
+        }catch (e : FileNotFoundException){
+            loadImage(holder.commentRowItemBinding.ivCommentPhoto, "image/"+"default"+".jpg")
+        }
 
         holder.commentRowItemBinding.toggle.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked){

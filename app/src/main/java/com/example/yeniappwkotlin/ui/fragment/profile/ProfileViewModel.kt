@@ -8,5 +8,8 @@ import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 class ProfileViewModel(
     private val repository: UserRepository
 ) : ViewModel() {
-    suspend fun deleteUser() = repository.deleteUser()
+    fun deleteUser() = repository.deleteUser()
+    fun deletePost() = repository.deletePost()
+    fun deleteLikes() = repository.deleteLikes()
+    fun deleteMessageList() = repository.deleteMessageList()
 }

@@ -23,7 +23,7 @@ class PostRepository(
     private val context : Context
 ) : SafeApiRequest() {
     private val posts = MutableLiveData<List<Post>>()
-    private val MINUMUM_INTERVAL = 6
+    private val MINUMUM_INTERVAL = 1
     private val KEY_SAVED_AT = "post_key_saved_at"
     init {
         posts.observeForever {
@@ -50,6 +50,12 @@ class PostRepository(
     suspend fun getPosts(user_id: Int) : LiveData<List<Post>>{
         return withContext(Dispatchers.IO){
             fetchPosts(user_id)
+            db.getPostDao().getPosts()
+        }
+    }
+
+    suspend fun getLocalPost(user_id: Int): LiveData<List<Post>>{
+        return withContext(Dispatchers.IO){
             db.getPostDao().getPosts()
         }
     }

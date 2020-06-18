@@ -5,11 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.yeniappwkotlin.data.db.entities.Likes
+import com.example.yeniappwkotlin.data.db.entities.MessageList
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.db.entities.User
 
 @Database(
-    entities =[User::class, Post::class, Likes::class],
+    entities =[User::class, Post::class, Likes::class, MessageList::class],
     exportSchema = false,
     version = 1
 )
@@ -17,6 +18,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getUserDao() : UserDao
     abstract fun getPostDao(): PostDao
     abstract fun getLikesDao() : LikesDao
+    abstract fun getMessageListDao() : MessageListDao
 
     companion object{
         @Volatile

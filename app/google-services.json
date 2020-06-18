@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "114221545432",
+    "firebase_url": "https://kotlinyeniapp.firebaseio.com",
+    "project_id": "kotlinyeniapp",
+    "storage_bucket": "kotlinyeniapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114221545432:android:19f7cb8f5ce7bb5213e4ad",
+        "android_client_info": {
+          "package_name": "com.example.yeniappwkotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114221545432-58mapbd2s5a26amkk7m5brr28c3735aq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yeniappwkotlin",
+            "certificate_hash": "0b3a73bd687aa5bbc27be8ce13495c87669eb04a"
+          }
+        },
+        {
+          "client_id": "114221545432-hem8l8kab95mf7ae9797n6mbb4b4rsi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqt24pW7Q43mtoq6Wj1bkKlAhWs6Wg4s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114221545432-hem8l8kab95mf7ae9797n6mbb4b4rsi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

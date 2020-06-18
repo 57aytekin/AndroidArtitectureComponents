@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/messageItemUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UserName"
+            android:layout_marginStart="10dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/messageItemUserPhoto"
+            app:layout_constraintStart_toEndOf="@id/messageItemUserPhoto"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/messageItemUserPhoto"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/profile_photo"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/messageItemMesaj"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Son atılan mesaj"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toStartOf="@id/messageItemDate"
+            app:layout_constraintStart_toEndOf="@id/messageItemUserPhoto"
+            app:layout_constraintTop_toBottomOf="@id/messageItemUsername"/>
+
+        <TextView
+            android:id="@+id/messageItemDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="1 hour ago"
+            app:layout_constraintBottom_toBottomOf="@id/messageItemUserPhoto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/messageItemMesaj" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

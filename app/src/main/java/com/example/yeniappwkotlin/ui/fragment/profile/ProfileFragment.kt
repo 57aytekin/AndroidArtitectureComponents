@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_profile_app_bar.*
 import kotlinx.android.synthetic.main.fragment_profile_app_bar.view.*
 import kotlinx.android.synthetic.main.profile_fragment.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.security.auth.callback.Callback
 
@@ -95,10 +96,12 @@ class ProfileFragment : Fragment() {
     private fun logout() {
         PrefUtils.with(requireContext()).clear()
         Intent(requireContext(), LoginActivity::class.java).also {
-            Coroutines.ioThenMain(
-                {viewModel.deleteUser()},
-                {}
-            )
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.deleteUser()
+                viewModel.deletePost()
+                viewModel.deleteLikes()
+                viewModel.deleteMessageList()
+            }
             it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(it)
         }

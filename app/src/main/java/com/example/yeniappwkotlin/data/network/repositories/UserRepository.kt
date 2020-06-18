@@ -25,7 +25,10 @@ class UserRepository(
 
     fun getUser() = db.getUserDao().getUser()
 
-    fun deleteUser() = db.getUserDao().delete()
+    fun deleteUser() = db.getUserDao().deleteUser()
+    fun deletePost() = db.getUserDao().deletePost()
+    fun deleteLikes() = db.getUserDao().deleteLikes()
+    fun deleteMessageList() = db.getUserDao().deleteMessageList()
 
 
 }

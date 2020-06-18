@@ -30,7 +30,7 @@ class NetworkConnectionInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         if(!isInternetConnection()){
             Coroutines.main { context.toast("Lütfen internet bağlantınızı kontrol edin") }
-            throw NoInternetException("Internet bağlantınızı açınız")
+            //throw NoInternetException("Internet bağlantınızı açınız")
         }else if (!isInternetAvailable()){
             Coroutines.main { context.toast("Lütfen internet bağlantınızı kontrol edin") }
             throw NoInternetException("Internet bağlantınız bulunmamakta")

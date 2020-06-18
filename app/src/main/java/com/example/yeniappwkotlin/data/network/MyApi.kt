@@ -1,10 +1,7 @@
 package com.example.yeniappwkotlin.data.network
 
 import android.content.Context
-import com.example.yeniappwkotlin.data.db.entities.Comment
-import com.example.yeniappwkotlin.data.db.entities.Likes
-import com.example.yeniappwkotlin.data.db.entities.Post
-import com.example.yeniappwkotlin.data.db.entities.PostLikes
+import com.example.yeniappwkotlin.data.db.entities.*
 import com.example.yeniappwkotlin.data.network.responses.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -94,6 +91,32 @@ interface MyApi {
         @Field("comment_id") comment_id : Int,
         @Field("begeniDurum") begeniDurum : Int
     ): Response<CommentResponse>
+
+    @GET("get_messagelist.php")
+    suspend fun getMessageList(@Query("user_id") user_id: Int) : Response<List<MessageList>>
+
+    @FormUrlEncoded
+    @POST("save_message_list.php")
+    suspend fun saveMessageList(
+        @Field("gonderen_id") gonderen_id: Int,
+        @Field("alici_id") alici_id: Int,
+        @Field("alici_name") alici_name : String,
+        @Field("alici_photo") alici_photo : String,
+        @Field("message") message : String
+    ) : Response<CommentResponse>
+
+    @GET("get_message.php")
+    suspend fun getMessage(
+        @Query("gonderen_id") gonderen_id: Int,
+        @Query("alici_id") alici_id: Int
+    ) : Response<List<MessageList>>
+
+    @FormUrlEncoded
+    @POST("update_messagelist.php")
+    suspend fun updateMessageList(
+        @Field("id") id : Int,
+        @Field("message") message: String
+    ) : Response<CommentResponse>
 
     companion object{
         operator fun invoke(
