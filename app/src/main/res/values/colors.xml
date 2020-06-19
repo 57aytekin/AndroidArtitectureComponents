@@ -8,4 +8,6 @@
     <color name="btnSignUp">#575757</color>
     <color name="white">#FFF</color>
     <color name="gray">#F3EEEE</color>
+    <color name="black">#000000</color>
+    <color name="dark_gray">#CCCCCC</color>
 </resources>

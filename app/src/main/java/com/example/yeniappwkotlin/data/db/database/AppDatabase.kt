@@ -12,7 +12,7 @@ import com.example.yeniappwkotlin.data.db.entities.User
 @Database(
     entities =[User::class, Post::class, Likes::class, MessageList::class],
     exportSchema = false,
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getUserDao() : UserDao

@@ -113,7 +113,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         when (view.id) {
             R.id.post_btn_like -> {
                 val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
-                var likeCount = post.like_count
+                var likeCount: Int?
                 if (isChecked) {
                     likeCount = post.like_count!! + 1
                     if ((post.user_post_likes?.begeni_durum == 0) || (post.user_post_likes?.begeni_durum == 1)) {
