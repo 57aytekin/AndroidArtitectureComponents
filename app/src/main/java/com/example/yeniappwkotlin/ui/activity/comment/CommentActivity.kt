@@ -42,6 +42,7 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
         viewModel = ViewModelProviders.of(this, factory).get(CommentViewModel::class.java)
         viewModel.getComments()
         val userId = PrefUtils.with(this).getInt("user_id", 0)
+        val isSocial = PrefUtils.with(this).getInt("is_social_account", 0)
 
         binding.btnSend.setOnClickListener {
             val etMessage = binding.etCommentMessage.text.toString().trim()
@@ -59,7 +60,7 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
             recyclerviewComment.also {
                 it.layoutManager = LinearLayoutManager(this)
                 it.setHasFixedSize(true)
-                it.adapter = CommentActivityAdapter(comments, userId, postUserId!!, this)
+                it.adapter = CommentActivityAdapter(comments, userId, postUserId!!, isSocial,this)
             }
         })
         swipe.setOnRefreshListener { viewModel.getComments() }

@@ -11,7 +11,9 @@ data class User (
     val name : String? = null,
     val email : String? = null,
     val paths : String? = null,
-    val password : String? = null
+    val password : String? = null,
+    val is_social_account : Int? = null,
+    val register_date : String? = null
 ){
     @PrimaryKey(autoGenerate = false)
     var uid : Int = CURRENT_USER_ID

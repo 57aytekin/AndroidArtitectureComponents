@@ -27,7 +27,9 @@ interface MyApi {
     suspend fun userRegister(
         @Field("name") name : String,
         @Field("email") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+        @Field("paths") paths: String,
+        @Field("is_social_account") is_social_account: Int
     ): Response<AuthResponse>
 
     @GET("getpost.php")

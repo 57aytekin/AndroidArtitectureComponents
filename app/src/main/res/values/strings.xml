@@ -8,4 +8,10 @@
     <string name="e_mail">e-mail</string>
     <string name="user_name">user name</string>
     <string name="edit_string">Yarım cümleni paylaş ve gelen yorumları beğenerek sohbeti başlat..</string>
+    <string name="hint_password">sifre</string>
+    <string name="text_signIn">Giriş Yap</string>
+    <string name="is_have_account">Henüz bir hesabın yok mu?</string>
+    <string name="register_now">Şimdi Kayıt Ol</string>
+    <string name="signin_with_google">Google ile giriş yap</string>
+    <string name="voveyle">Voveyle</string>
 </resources>

@@ -24,6 +24,7 @@ import kotlin.math.abs
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HomeFragmentAdapter(
     private val posts : List<Post>,
+    private val is_social_account : Int,
     private val listener: RecyclerViewClickListener
 ) : RecyclerView.Adapter<HomeFragmentAdapter.PostViewHolder>() {
 
@@ -50,6 +51,7 @@ class HomeFragmentAdapter(
             posts[position].like_count,
             posts[position].comment_count,
             newDate,
+            posts[position].is_social_account,
             posts[position].user_post_likes
         )
         updateUI(holder.homeRowItemBinding, newPost)
@@ -69,7 +71,7 @@ class HomeFragmentAdapter(
     }
 
     private fun updateUI(homeRowItemBinding: FragmentHomeRowItemBinding, post: Post){
-        loadImage(homeRowItemBinding.postProfileResim, post.paths)
+        loadImage(homeRowItemBinding.postProfileResim, post.paths,post.is_social_account)
         homeRowItemBinding.postUsername.text = post.name
         homeRowItemBinding.postTarih.text = post.tarih
         homeRowItemBinding.postText.text = post.share_post

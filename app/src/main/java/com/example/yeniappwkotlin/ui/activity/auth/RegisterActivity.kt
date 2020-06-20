@@ -2,6 +2,7 @@ package com.example.yeniappwkotlin.ui.activity.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -19,11 +20,13 @@ import com.example.yeniappwkotlin.util.ApiException
 import com.example.yeniappwkotlin.util.NoInternetException
 import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.snackbar
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding : ActivityRegisterBinding
     private lateinit var viewModel: AuthViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +79,7 @@ class RegisterActivity : AppCompatActivity() {
         }
         lifecycleScope.launch {
             try {
-                val authResponse = viewModel.userRegister(name, email, password)
+                val authResponse = viewModel.userRegister(name, email, password,"image/default.jpg", 0)
                 if (authResponse.login != null){
                     viewModel.saveLoggedInUser(authResponse.login)
                 }else{

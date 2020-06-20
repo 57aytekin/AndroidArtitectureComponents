@@ -46,6 +46,7 @@ class MessageFragment : Fragment(), MessageClickListener {
         val db = AppDatabase(requireContext())
         val repository = MessageListRepository(api, db, requireContext())
         val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
+        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account", 0)
         val factory = MessageViewModelFactory(repository, userId)
         viewModel = ViewModelProviders.of(this, factory).get(MessageViewModel::class.java)
 
@@ -56,7 +57,7 @@ class MessageFragment : Fragment(), MessageClickListener {
                     messageRecycler.also {
                         it.layoutManager = LinearLayoutManager(requireContext())
                         it.setHasFixedSize(true)
-                        it.adapter = MessageFragmentAdapter(requireContext(), messages, this)
+                        it.adapter = MessageFragmentAdapter(requireContext(), messages, isSocial,this)
                     }
                 })
             }catch (e : Exception){

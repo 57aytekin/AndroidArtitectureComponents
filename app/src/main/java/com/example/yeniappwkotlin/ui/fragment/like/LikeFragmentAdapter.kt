@@ -16,6 +16,7 @@ import com.example.yeniappwkotlin.util.loadImage
 
 class LikeFragmentAdapter(
     private val likes : List<Likes>,
+    private val is_social_account : Int,
     private val listener : ClickListener
 ) : RecyclerView.Adapter<LikeFragmentAdapter.LikesViewHolder>() {
     val likesText = " adlı kullanıcı yorumunu beğendi artık mesaj atıp konuşabilirsin."
@@ -38,7 +39,7 @@ class LikeFragmentAdapter(
 
     override fun onBindViewHolder(holder: LikesViewHolder, position: Int) {
         val currentItem = likes[position]
-        loadImage(holder.likeFragmentRowItemBinding.likeRowPhoto, currentItem.paths)
+        loadImage(holder.likeFragmentRowItemBinding.likeRowPhoto, currentItem.paths, currentItem.is_social_account)
         val username = currentItem.name
 
         val sb: SpannableStringBuilder? = SpannableStringBuilder(username)

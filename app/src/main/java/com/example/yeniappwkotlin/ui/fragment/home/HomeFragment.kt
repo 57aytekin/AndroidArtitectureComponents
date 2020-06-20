@@ -50,6 +50,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         super.onActivityCreated(savedInstanceState)
 
         val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
+        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account", 0)
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
@@ -68,7 +69,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                         onRefresh.isRefreshing = false
                         it.layoutManager = LinearLayoutManager(requireContext())
                         it.setHasFixedSize(true)
-                        it.adapter = HomeFragmentAdapter(post, this)
+                        it.adapter = HomeFragmentAdapter(post, isSocial,this)
                     }
                 })
             }catch (e : Exception){
@@ -79,7 +80,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                         onRefresh.isRefreshing = false
                         it.layoutManager = LinearLayoutManager(requireContext())
                         it.setHasFixedSize(true)
-                        it.adapter = HomeFragmentAdapter(post, this)
+                        it.adapter = HomeFragmentAdapter(post, isSocial,this)
                     }
                 })
             }

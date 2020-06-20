@@ -56,7 +56,7 @@ class NetworkConnectionInterceptor(
 
     private fun isInternetAvailable(): Boolean {
         return try {
-            val timeoutMs = 5000
+            val timeoutMs = 10000
             val sock = Socket()
             val sockaddr = InetSocketAddress("8.8.8.8", 53)
 

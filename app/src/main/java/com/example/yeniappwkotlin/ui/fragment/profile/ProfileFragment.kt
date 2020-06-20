@@ -25,6 +25,7 @@ import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.lazyDeffered
 import com.example.yeniappwkotlin.util.loadImage
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile_app_bar.*
 import kotlinx.android.synthetic.main.fragment_profile_app_bar.view.*
 import kotlinx.android.synthetic.main.profile_fragment.*
@@ -35,6 +36,8 @@ import javax.security.auth.callback.Callback
 
 class ProfileFragment : Fragment() {
     var navController: NavController? = null
+    private lateinit var mAuth : FirebaseAuth
+
 
     companion object {
         fun newInstance() = ProfileFragment()
@@ -52,6 +55,7 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        mAuth = FirebaseAuth.getInstance()
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
@@ -62,8 +66,9 @@ class ProfileFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, factory).get(ProfileViewModel::class.java)
         val userName = PrefUtils.with(requireContext()).getString("user_name", "")
         val userImage = PrefUtils.with(requireContext()).getString("user_image", "")
+        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account",0)
         tvProfileUserName.text = userName
-        loadImage(ivProfilePhoto, userImage)
+        loadImage(ivProfilePhoto, userImage,isSocial)
 
         navController = Navigation.findNavController(requireActivity(), R.id.profile_fragment)
         profiletabLayout.addOnTabSelectedListener(object :
@@ -95,6 +100,7 @@ class ProfileFragment : Fragment() {
 
     private fun logout() {
         PrefUtils.with(requireContext()).clear()
+        mAuth.signOut()
         Intent(requireContext(), LoginActivity::class.java).also {
             CoroutineScope(Dispatchers.IO).launch {
                 viewModel.deleteUser()

@@ -17,6 +17,7 @@ import com.example.yeniappwkotlin.util.loadImage
 class MessageFragmentAdapter(
     private val context: Context,
     private val messageList : List<MessageList>,
+    private val is_social_account : Int,
     private val listener : MessageClickListener
 
 ) : RecyclerView.Adapter<MessageFragmentAdapter.ViewHolder>() {
@@ -42,10 +43,10 @@ class MessageFragmentAdapter(
 
         if (userId == currentMessage.alici_id){
             bindingView.messageItemUsername.text = currentMessage.name
-            loadImage(bindingView.messageItemUserPhoto, currentMessage.paths)
+            loadImage(bindingView.messageItemUserPhoto, currentMessage.paths,is_social_account)
         }else{
             bindingView.messageItemUsername.text = currentMessage.alici_name
-            loadImage(bindingView.messageItemUserPhoto, currentMessage.alici_photo)
+            loadImage(bindingView.messageItemUserPhoto, currentMessage.alici_photo,is_social_account)
         }
 
         //Glide.with(context).load(currentMessage.alici_photo).into(bindingView.messageItemUserPhoto)

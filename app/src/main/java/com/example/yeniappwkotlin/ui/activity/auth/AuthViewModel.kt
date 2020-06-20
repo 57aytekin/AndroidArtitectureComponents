@@ -15,8 +15,8 @@ class AuthViewModel(
     ) = repository.userLogin(email, password)
 
     suspend fun userRegister(
-        name: String, email : String, password : String
-    ) = repository.userRegister(name, email, password)
+        name: String, email : String, password : String, paths : String, is_social_account : Int
+    ) = repository.userRegister(name, email, password, paths, is_social_account)
 
     suspend fun saveLoggedInUser(user: User) = repository.saveUser(user)
 }

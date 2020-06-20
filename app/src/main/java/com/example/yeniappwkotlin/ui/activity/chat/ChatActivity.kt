@@ -53,12 +53,13 @@ class ChatActivity : AppCompatActivity() {
         post_sahibi_id = intent.getIntExtra("post_sahibi_id",-1)
         val prefUtil = PrefUtils.with(this)
         val userId = prefUtil.getInt("user_id",-1)
+        val isSocial = prefUtil.getInt("is_social_account", 0)
         val currentDate = SimpleDateFormat("MM-dd-yyyy HH:mm:ss", Locale.ENGLISH).format(Date())
 
         //initialize object
         binding.tvMesajlasmaUsername.text = alici_name
         //Glide.with(this).load(photo).into(binding.ivMesajlasmaPhoto)
-        loadImage(binding.ivMesajlasmaPhoto, photo)
+        loadImage(binding.ivMesajlasmaPhoto, photo, isSocial)
         Log.d("IMAGE", photo.toString())
 
         //Send message and save database operations

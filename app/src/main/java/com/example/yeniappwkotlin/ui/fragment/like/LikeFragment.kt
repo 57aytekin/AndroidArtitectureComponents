@@ -44,6 +44,7 @@ class LikeFragment : Fragment(), ClickListener {
         super.onActivityCreated(savedInstanceState)
 
         val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
+        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account", 0)
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
@@ -59,7 +60,7 @@ class LikeFragment : Fragment(), ClickListener {
                     likeFragmentRecycler.also {
                         it.layoutManager = LinearLayoutManager(requireContext())
                         it.setHasFixedSize(true)
-                        it.adapter = LikeFragmentAdapter(like, this)
+                        it.adapter = LikeFragmentAdapter(like, isSocial,this)
                     }
                 })
             }catch (e : Exception){

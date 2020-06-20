@@ -18,6 +18,7 @@ data class Post (
     val like_count : Int? = null,
     val comment_count : Int? = null,
     val tarih : String? = null,
+    val is_social_account : Int? = null,
     @Embedded
     @NonNull
     val user_post_likes : PostLikes? = null

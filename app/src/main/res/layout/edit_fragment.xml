@@ -61,8 +61,7 @@
             android:layout_marginTop="70dp"
             android:src="@drawable/profile_photo"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:paths="@{edit.user.paths}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/fragment_edit_username"

@@ -22,6 +22,7 @@ class CommentActivityAdapter(
     private val comment: List<Comment>,
     private val user_id: Int,
     private val post_user_id: Int,
+    private val is_socila_account : Int,
     private val listener: CommentRecyclerViewItemClick
 ) : RecyclerView.Adapter<CommentActivityAdapter.CommentViewHolder>() {
 
@@ -63,9 +64,9 @@ class CommentActivityAdapter(
         holder.commentRowItemBinding.tvCommentAd.text = sb
         holder.commentRowItemBinding.tvCommentTarih.text = calculateDate(comments.tarih!!)
         try {
-            loadImage(holder.commentRowItemBinding.ivCommentPhoto, "image/"+comments.name+".jpg")
+            loadImage(holder.commentRowItemBinding.ivCommentPhoto, "image/"+comments.name+".jpg",is_socila_account)
         }catch (e : FileNotFoundException){
-            loadImage(holder.commentRowItemBinding.ivCommentPhoto, "image/"+"default"+".jpg")
+            loadImage(holder.commentRowItemBinding.ivCommentPhoto, "image/"+"default"+".jpg",is_socila_account)
         }
 
         holder.commentRowItemBinding.toggle.setOnCheckedChangeListener { buttonView, isChecked ->
