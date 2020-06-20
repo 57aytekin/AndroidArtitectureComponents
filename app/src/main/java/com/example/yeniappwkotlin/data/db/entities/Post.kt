@@ -12,7 +12,7 @@ data class Post (
     @SerializedName("id")
     val post_id : Int? = null,
     val user_id : Int? = null,
-    val name : String? = null,
+    val user_name : String? = null,
     val paths : String? = null,
     val share_post : String? = null,
     val like_count : Int? = null,

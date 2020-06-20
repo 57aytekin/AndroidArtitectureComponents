@@ -25,8 +25,11 @@ interface MyApi {
     @FormUrlEncoded()
     @POST("register.php")
     suspend fun userRegister(
-        @Field("name") name : String,
+        @Field("user_name") userName : String,
+        @Field("first_name") firstName : String,
+        @Field("last_name") lastName : String,
         @Field("email") email: String,
+        @Field("phone") phone: String,
         @Field("password") password: String,
         @Field("paths") paths: String,
         @Field("is_social_account") is_social_account: Int

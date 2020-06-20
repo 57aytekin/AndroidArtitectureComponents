@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/register_root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:foregroundGravity="center"
         android:background="@drawable/background"
         tools:context=".Activity.Activity.register.RegisterActivity">
 
@@ -13,32 +15,75 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:contentDescription="@string/app_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="30dp"
             app:srcCompat="@drawable/logo"
             tools:ignore="Autofill" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txtInput1"
+            android:id="@+id/txtUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintEnd_toEndOf="@id/imageView"
             app:layout_constraintTop_toBottomOf="@id/imageView">
 
             <EditText
-                android:id="@+id/et_register_name"
+                android:id="@+id/et_register_user_name"
                 android:layout_width="270dp"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/icon_user"
                 android:drawablePadding="10dp"
                 android:ems="10"
                 android:gravity="start"
-                android:hint="@string/user_name"
+                android:hint="@string/hint_user_name"
+                android:inputType="text"
+                android:textColorHint="#000"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInput1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/txtUserName"
+            app:layout_constraintEnd_toEndOf="@id/txtUserName"
+            app:layout_constraintTop_toBottomOf="@id/txtUserName">
+
+            <EditText
+                android:id="@+id/et_register_first_name"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_user"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/first_name"
+                android:inputType="text"
+                android:textColorHint="#000"
+                tools:ignore="Autofill" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_last_name"
+            app:layout_constraintStart_toStartOf="@id/txtInput1"
+            app:layout_constraintTop_toBottomOf="@id/txtInput1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_register_last_name"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_user"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/last_name"
                 android:inputType="text"
                 android:textColorHint="#000"
                 tools:ignore="Autofill" />
@@ -47,12 +92,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtInput2"
+            android:layout_below="@id/txt_last_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtInput1">
+            app:layout_constraintStart_toStartOf="@id/txt_last_name"
+            app:layout_constraintTop_toBottomOf="@id/txt_last_name">
 
             <EditText
                 android:id="@+id/et_register_email"
@@ -70,13 +115,35 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@id/txtInput2"
+            app:layout_constraintTop_toBottomOf="@id/txtInput2">
+
+            <com.santalu.maskedittext.MaskEditText
+                android:id="@+id/et_register_phone"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/icon_email"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="@string/hint_phone_number"
+                android:inputType="phone"
+                app:met_mask="+90(###) ### ## ##"
+                android:gravity="start"
+                android:textColorHint="#000" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtInput3"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtInput2"
+            app:layout_constraintStart_toStartOf="@id/txtPhone"
+            app:layout_constraintTop_toBottomOf="@id/txtPhone"
             app:passwordToggleEnabled="true">
 
             <EditText
@@ -100,8 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/txtInput3"
             app:layout_constraintTop_toBottomOf="@id/txtInput3"
             app:passwordToggleEnabled="true">
 
@@ -125,29 +191,27 @@
             android:id="@+id/btn_register"
             android:layout_width="270dp"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="@id/txtInput4"
+            app:layout_constraintTop_toBottomOf="@id/txtInput4"
             android:background="@drawable/signin_button"
             android:text="@string/sign_up"
             android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtInput4"
             tools:ignore="Autofill" />
 
         <TextView
             android:id="@+id/tv_register_login"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:text="@string/have_account"
+            app:layout_constraintStart_toStartOf="@id/btn_register"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="Autofill" />
+            android:layout_marginBottom="30dp"
+            android:text="@string/have_account"
+            android:textAlignment="center"
+            tools:ignore="Anthill" />
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/register_progress_bar"
             android:visibility="invisible"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

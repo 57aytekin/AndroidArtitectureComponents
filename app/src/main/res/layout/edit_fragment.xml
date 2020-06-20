@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="@{edit.user.name}"
+            android:text="@{edit.user.user_name}"
             app:layout_constraintStart_toEndOf="@id/fragment_edit_photo"
             app:layout_constraintTop_toTopOf="@id/fragment_edit_photo"
             tools:text="Username" />

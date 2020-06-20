@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">YeniAppWKotlin</string>
     <string name="toggle_style"><b>Beğendin</b></string>
-    <string name="have_account">Do you already have an account?</string>
-    <string name="conf_password">confrim password</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="password">password</string>
-    <string name="e_mail">e-mail</string>
+    <string name="have_account">Zaten bir hesabın var mı?</string>
+    <string name="conf_password">Şifre Onay</string>
+    <string name="sign_up">Kayıt Ol</string>
+    <string name="password">Şifre</string>
+    <string name="e_mail">E-mail</string>
     <string name="user_name">user name</string>
     <string name="edit_string">Yarım cümleni paylaş ve gelen yorumları beğenerek sohbeti başlat..</string>
     <string name="hint_password">sifre</string>
@@ -14,4 +14,24 @@
     <string name="register_now">Şimdi Kayıt Ol</string>
     <string name="signin_with_google">Google ile giriş yap</string>
     <string name="voveyle">Voveyle</string>
+    <string name="first_name">Ad</string>
+    <string name="last_name">Soyad</string>
+    <string name="hint_phone_number">Telefon Numarası</string>
+    <string name="hint_user_name">Kullanıcı Adı</string>
+
+    <!--Register Control-->
+    <string name="valid_user_name">Kullanıcı adınız 5 karakterden küçük olamaz</string>
+    <string name="fill_fields">Lütfen tüm alanları doldurunuz</string>
+    <string name="password_dont_match">Şifreleriniz uyuşmamakta</string>
+    <string name="valid_first_name">Adınız 3 karakterden küçük olamaz</string>
+    <string name="valid_last_name">Soyadınız 2 karakterden küçük olamaz</string>
+    <string name="valid_mail">Mail adresinizi kontrol edin</string>
+    <string name="valid_phone">Telefon numaranızı kontrol edin</string>
+    <string name="match_password">Şifreleriniz uyuşmuyor</string>
+    <string name="valid_password">Şifreniz 9 karakterden küçük olamaz</string>
+    <!--Register Response-->
+    <string name="username_taken">Kullanıcı adı kullanılmakta.</string>
+    <string name="mail_taken">Mail adresi kullanılmakta</string>
+    <string name="check_information">Lütfen bilgilerinizi kontrol edin.</string>
+
 </resources>

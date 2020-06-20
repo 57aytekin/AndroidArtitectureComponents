@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -54,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.getLoggedInUser().observe(this, Observer { user ->
             if (user != null) {
                 PrefUtils.with(this).save("user_id", user.user_id!!)
-                PrefUtils.with(this).save("user_name", user.name!!)
+                PrefUtils.with(this).save("user_name", user.first_name!!)
                 PrefUtils.with(this).save("user_image", user.paths!!)
                 PrefUtils.with(this).save("is_social_account", user.is_social_account!!)
                 Intent(this, MainActivity::class.java).also {
@@ -81,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etLoginEmail.text.toString().trim()
             val password = binding.etLoginPassword.text.toString().trim()
             progress_bar.show()
-            loginUser("name", email, password, "default.jpg", 0, false)
+            loginUser("user_name","fist_name","last_name", email,"phone", password, "default.jpg", 0, false)
         }
         binding.textViewLoginRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
@@ -123,9 +124,17 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = mAuth.currentUser
+                    val userEmail = user?.email?.split("@")?.get(0)
+                    val userPhone = if (user?.phoneNumber != null) user.phoneNumber else "000"
+                    val userFistLast = user?.displayName?.split(" ")
+                    val firstName = userFistLast?.get(0)
+                    val lastName = userFistLast?.get(1)
                     loginUser(
-                        user?.displayName!!,
+                        userEmail!!,
+                        firstName!!,
+                        lastName!!,
                         user.email!!,
+                        userPhone!!,
                         user.uid,
                         user.photoUrl.toString(),
                         1,
@@ -138,8 +147,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginUser(
-        name: String,
+        userName: String,
+        fist_name: String,
+        last_name: String,
         email: String,
+        phone: String,
         password: String,
         paths: String,
         isSocialAccount: Int,
@@ -148,7 +160,7 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val authResponse: AuthResponse = if (isGoogleSignIn) {
-                    viewModel.userRegister(name, email, password, paths, isSocialAccount)
+                    viewModel.userRegister(userName, fist_name, last_name, email, phone, password, paths, isSocialAccount)
                 } else {
                     viewModel.userLogin(email, password)
                 }

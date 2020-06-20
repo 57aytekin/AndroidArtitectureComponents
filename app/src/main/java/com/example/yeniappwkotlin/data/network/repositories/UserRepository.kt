@@ -15,8 +15,8 @@ class UserRepository(
     suspend fun userLogin(email: String, password: String): AuthResponse{
         return apiRequest { api.userLogin(email, password) }
     }
-    suspend fun userRegister(name : String, email: String, password: String, paths: String, is_social_account : Int) : AuthResponse{
-        return apiRequest { api.userRegister(name, email, password, paths, is_social_account) }
+    suspend fun userRegister(userName : String, firsName : String,lastName : String, email: String, phone: String, password: String, paths: String, is_social_account : Int) : AuthResponse{
+        return apiRequest { api.userRegister(userName, firsName, lastName, email, phone, password, paths, is_social_account) }
     }
     suspend fun savePost(user_id : Int, share_post: String, like_count: Int, comment_count : Int) : EditResponse {
         return apiRequest { api.savePost(user_id, share_post, like_count, comment_count) }

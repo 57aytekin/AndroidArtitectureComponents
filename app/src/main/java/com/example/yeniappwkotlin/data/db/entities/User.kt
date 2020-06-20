@@ -8,9 +8,13 @@ const val CURRENT_USER_ID = 0
 @Entity
 data class User (
     val user_id : Int? = null,
-    val name : String? = null,
+    val user_name : String? = null,
+    val first_name : String? = null,
+    val last_name : String? = null,
+    val last_login : String? = null,
     val email : String? = null,
     val paths : String? = null,
+    val phone : String? = null,
     val password : String? = null,
     val is_social_account : Int? = null,
     val register_date : String? = null

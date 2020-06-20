@@ -45,7 +45,7 @@ class HomeFragmentAdapter(
         val newPost = Post(
             posts[position].post_id,
             posts[position].user_id,
-            posts[position].name,
+            posts[position].user_name,
             posts[position].paths,
             posts[position].share_post,
             posts[position].like_count,
@@ -72,7 +72,7 @@ class HomeFragmentAdapter(
 
     private fun updateUI(homeRowItemBinding: FragmentHomeRowItemBinding, post: Post){
         loadImage(homeRowItemBinding.postProfileResim, post.paths,post.is_social_account)
-        homeRowItemBinding.postUsername.text = post.name
+        homeRowItemBinding.postUsername.text = post.user_name
         homeRowItemBinding.postTarih.text = post.tarih
         homeRowItemBinding.postText.text = post.share_post
         val likeCount = post.like_count
