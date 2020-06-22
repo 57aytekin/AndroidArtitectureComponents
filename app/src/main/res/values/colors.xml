@@ -4,10 +4,13 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="background">#FF8C41</color>
+    <color name="screen_back">#F2B791</color>
     <color name="btnSignIn">#EA5B0C</color>
     <color name="btnSignUp">#575757</color>
     <color name="white">#FFF</color>
     <color name="gray">#F3EEEE</color>
     <color name="black">#000000</color>
     <color name="dark_gray">#CCCCCC</color>
+    <color name="transparent_gray">#60858585</color>
+    <color name="home_background">#F2F2F2</color>
 </resources>

@@ -82,7 +82,17 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etLoginEmail.text.toString().trim()
             val password = binding.etLoginPassword.text.toString().trim()
             progress_bar.show()
-            loginUser("user_name","fist_name","last_name", email,"phone", password, "default.jpg", 0, false)
+            loginUser(
+                "user_name",
+                "fist_name",
+                "last_name",
+                email,
+                "phone",
+                password,
+                "default.jpg",
+                0,
+                false
+            )
         }
         binding.textViewLoginRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
@@ -90,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
-        val signInIntent: Intent = googleSignInClient.getSignInIntent()
+        val signInIntent: Intent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
@@ -109,10 +119,13 @@ class LoginActivity : AppCompatActivity() {
                     firebaseAuthWithGoogle(account.idToken!!)
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately
+                    toast("Google sign in failed")
                     Log.w("SignInActivity", "Google sign in failed", e)
+                    progress_bar.hide()
                 }
             } else {
                 Log.w("SignInActivity", exception.toString())
+                toast(exception.toString())
                 progress_bar.hide()
             }
         }
@@ -141,6 +154,8 @@ class LoginActivity : AppCompatActivity() {
                         true
                     )
                 } else {
+                    progress_bar.handler
+                    toast("signInWithCredential:failure${task.exception}")
                     Log.w("SignInActivity", "signInWithCredential:failure", task.exception)
                 }
             }
@@ -160,7 +175,16 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val authResponse: AuthResponse = if (isGoogleSignIn) {
-                    viewModel.userRegister(userName, fist_name, last_name, email, phone, password, paths, isSocialAccount)
+                    viewModel.userRegister(
+                        userName,
+                        fist_name,
+                        last_name,
+                        email,
+                        phone,
+                        password,
+                        paths,
+                        isSocialAccount
+                    )
                 } else {
                     viewModel.userLogin(email, password)
                 }

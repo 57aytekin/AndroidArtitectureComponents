@@ -34,4 +34,11 @@
     <string name="mail_taken">Mail adresi kullanılmakta</string>
     <string name="check_information">Lütfen bilgilerinizi kontrol edin.</string>
 
+    <!--Phone Authentication Screen-->
+    <string name="verification_code">Doğrulama Kodu!</string>
+    <string name="send_code">+90 531 910 25 10 nolu telefona doğrulama kodu gönderiildi.</string>
+    <string name="confirm_contiue">Onayla Devam Et</string>
+    <string name="phone_send_code">\" nolu telefona doğrulama kodu gönderildi.\"</string>
+    <string name="six_character">Girdiğiniz kod 6 karakterden küçük olamaz!</string>
+
 </resources>

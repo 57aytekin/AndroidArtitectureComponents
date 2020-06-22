@@ -124,6 +124,9 @@ dependencies {
     //Phone Edittext
     implementation 'com.github.santalu:mask-edittext:1.1.1'
 
+    //Custom NavigationBar
+    implementation 'me.majiajie:pager-bottom-tab-strip:2.3.0X'
+
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
