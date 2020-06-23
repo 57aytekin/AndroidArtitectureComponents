@@ -46,6 +46,7 @@ class HomeFragmentAdapter(
             posts[position].post_id,
             posts[position].user_id,
             posts[position].user_name,
+            posts[position].first_name,
             posts[position].paths,
             posts[position].share_post,
             posts[position].like_count,
@@ -56,31 +57,35 @@ class HomeFragmentAdapter(
         )
         updateUI(holder.homeRowItemBinding, newPost)
         holder.homeRowItemBinding.postBtnComment.setOnClickListener {
-            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postBtnComment, posts[position])
+            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postBtnComment, posts[position], holder.homeRowItemBinding)
         }
         holder.homeRowItemBinding.postCommentCount.setOnClickListener {
-            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postCommentCount, posts[position])
+            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postCommentCount, posts[position],holder.homeRowItemBinding)
         }
-        holder.homeRowItemBinding.postBtnLike.setOnCheckedChangeListener { buttonView, isChecked ->
+        holder.homeRowItemBinding.homeLikes.setOnClickListener {
+            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.homeLikes, posts[position],holder.homeRowItemBinding)
+        }
+        /*holder.homeRowItemBinding.postBtnLike.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked){
                 listener.onRecyclerViewCheckUnckeck(holder.homeRowItemBinding.postBtnLike, posts[position], true, holder.homeRowItemBinding)
             }else{
                 listener.onRecyclerViewCheckUnckeck(holder.homeRowItemBinding.postBtnLike, posts[position], false, holder.homeRowItemBinding)
             }
-        }
+        }*/
     }
 
     private fun updateUI(homeRowItemBinding: FragmentHomeRowItemBinding, post: Post){
         loadImage(homeRowItemBinding.postProfileResim, post.paths,post.is_social_account)
-        homeRowItemBinding.postUsername.text = post.user_name
+        homeRowItemBinding.postUsername.text = "@${post.user_name}"
+        homeRowItemBinding.postFirstName.text = post.first_name
         homeRowItemBinding.postTarih.text = post.tarih
         homeRowItemBinding.postText.text = post.share_post
-        val likeCount = post.like_count
-        val commentCount = post.comment_count
-        homeRowItemBinding.postLikeCount.text = "$likeCount Beğeni"
-        homeRowItemBinding.postCommentCount.text = "$commentCount Yorum"
+        homeRowItemBinding.postLikeCount.text = post.like_count.toString()
+        homeRowItemBinding.postCommentCount.text = post.comment_count.toString()
         if (post.user_post_likes?.begeni_durum == 1){
-            homeRowItemBinding.postBtnLike.isChecked = true
+            homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)
+        }else{
+            homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart_gray)
         }
     }
 

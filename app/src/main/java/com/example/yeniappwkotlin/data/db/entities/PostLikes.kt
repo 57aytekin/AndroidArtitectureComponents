@@ -4,5 +4,5 @@ import androidx.room.Entity
 
 @Entity
 data class PostLikes(
-    val begeni_durum : Int? = null
+    var begeni_durum : Int? = null
 )

@@ -11,7 +11,9 @@ import com.example.yeniappwkotlin.data.network.responses.PostLikesResponse
 import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.isFetchNeeded
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,8 +64,14 @@ class PostRepository(
 
     suspend fun updateLikeCounts(post_id : Int, user_id: Int , like_count : Int, begeniDurum: Int) = apiRequest { api.updateLikeCount(post_id, user_id, like_count, begeniDurum) }
 
-    suspend fun saveUserPostLikes(user_id : Int, post_id : Int, begeniDurum : Int) : PostLikesResponse {
-        return apiRequest { api.saveUserPostLikes(user_id, post_id, begeniDurum) }
+    suspend fun saveUserPostLikes(user_id : Int, post_id : Int, begeniDurum : Int, likeCount: Int) : PostLikesResponse {
+        return apiRequest { api.saveUserPostLikes(user_id, post_id, begeniDurum, likeCount) }
+    }
+
+    fun updateLocalPostCount(likeCount : Int, begeniDurum: Int, id : Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            db.getPostDao().updateLocalPostCount(likeCount, begeniDurum, id)
+        }
     }
 
 }

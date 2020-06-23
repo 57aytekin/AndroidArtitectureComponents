@@ -16,6 +16,7 @@ import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.NoInternetException
 import com.example.yeniappwkotlin.util.lazyDeffered
 import kotlinx.coroutines.*
+import java.lang.Exception
 
 class HomeViewModel(
     private val repository: PostRepository,
@@ -31,11 +32,12 @@ class HomeViewModel(
 
     val getLocalPost by lazyDeffered { repository.getLocalPost(user_id) }
 
-    fun saveUserPostLikes(user_id: Int, post_id: Int, begeniDurum: Int) {
+    fun saveUserPostLikes(user_id: Int, post_id: Int, begeniDurum: Int, like_count: Int) {
         Coroutines.main {
             try {
-                val userPostLikes = repository.saveUserPostLikes(user_id, post_id, begeniDurum)
+                val userPostLikes = repository.saveUserPostLikes(user_id, post_id, begeniDurum, like_count)
                 userPostLikes.message.let {
+                    repository.updateLocalPostCount(like_count, begeniDurum, post_id)
                     commentListener?.onSuccess(it)
                     return@main
                 }
@@ -43,18 +45,26 @@ class HomeViewModel(
                 commentListener?.onFailure(e.message!!)
             } catch (e: NoInternetException) {
                 commentListener?.onFailure(e.message!!)
+            } catch (e : Exception){
+                commentListener?.onFailure(e.message!!)
             }
         }
     }
 
     fun btnPostLike(post_id: Int, user_id: Int, like_count: Int, begeniDurum: Int) {
-        val likeCount = like_count + 1
+        var deger = false
+        val newLikeCount: Int = if (begeniDurum == 1){
+            like_count+1
+        }else{
+            like_count -1
+        }
         commentListener?.onStarted()
         Coroutines.main {
             try {
                 val likeResponse =
-                    repository.updateLikeCounts(post_id, user_id, likeCount, begeniDurum)
+                    repository.updateLikeCounts(post_id, user_id, newLikeCount, begeniDurum)
                 likeResponse.message.let {
+                    repository.updateLocalPostCount(newLikeCount, begeniDurum, post_id)
                     commentListener?.onSuccess(it!!)
                     return@main
                 }
@@ -62,8 +72,11 @@ class HomeViewModel(
                 commentListener?.onFailure(e.message!!)
             } catch (e: NoInternetException) {
                 commentListener?.onFailure(e.message!!)
+            } catch (e : Exception){
+                commentListener?.onFailure(e.message!!)
             }
         }
+        //return deger
     }
 
     override fun onCleared() {

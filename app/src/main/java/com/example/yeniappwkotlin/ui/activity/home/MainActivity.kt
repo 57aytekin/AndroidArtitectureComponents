@@ -76,8 +76,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        fabEdit.setOnClickListener(View.OnClickListener {
+        /*fabEdit.setOnClickListener(View.OnClickListener {
             navController!!.navigate(R.id.editFragment)
-        })
+        })*/
     }
 }

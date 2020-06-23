@@ -73,7 +73,8 @@ interface MyApi {
     suspend fun saveUserPostLikes(
         @Field("user_id") user_id: Int,
         @Field("post_id") post_id: Int,
-        @Field("begeni_durum") begeni_durum : Int
+        @Field("begeni_durum") begeni_durum : Int,
+        @Field("like_count") like_count : Int
     ) : Response<PostLikesResponse>
 
     @GET("get_user_post_likes.php")

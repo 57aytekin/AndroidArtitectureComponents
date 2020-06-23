@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/linear_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/home_background"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.activity.home.MainActivity">
 
@@ -20,21 +19,21 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@id/tabLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tabLayout"
             app:navGraph="@navigation/nav_graph" />
 
 
         <com.google.android.material.tabs.TabLayout
-            app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:background="@color/btnSignIn">
+            android:background="@drawable/bottom_bar_border"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_home"
@@ -59,18 +58,6 @@
                 android:icon="@drawable/ic_profile_icon" />
         </com.google.android.material.tabs.TabLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit_icon"
-            app:fabSize="auto"
-            app:layout_anchor="@id/tabLayout"
-            app:layout_anchorGravity="center_horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/tabLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tabLayout"
-            app:layout_constraintTop_toTopOf="@+id/tabLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

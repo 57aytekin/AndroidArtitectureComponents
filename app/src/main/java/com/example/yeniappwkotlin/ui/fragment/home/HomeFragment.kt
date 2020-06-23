@@ -25,7 +25,12 @@ import com.example.yeniappwkotlin.ui.activity.comment.CommentActivity
 import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
 import com.example.yeniappwkotlin.util.*
 import kotlinx.android.synthetic.main.fragment_home_row_item.*
+import kotlinx.android.synthetic.main.fragment_home_row_item.view.*
 import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 import java.lang.Exception
 
 
@@ -87,9 +92,13 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         }
     }
 
-    override fun onRecyclerViewItemClick(view: View, post: Post) {
+    override fun onRecyclerViewItemClick(
+        view: View,
+        post: Post,
+        homeRowItemBinding: FragmentHomeRowItemBinding
+    ) {
         when (view.id) {
-            R.id.post_btn_comment -> {
+            R.id.postBtnComment -> {
                 val intent = Intent(requireContext(), CommentActivity::class.java)
                 intent.putExtra("post_id", post.post_id)
                 intent.putExtra("post_user_id", post.user_id)
@@ -100,6 +109,28 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                 val intent = Intent(requireContext(), CommentActivity::class.java)
                 intent.putExtra("post_id", post.post_id)
                 startActivity(intent)
+            }
+            R.id.home_likes -> {
+                val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
+                val likeCount : Int
+                if (post.user_post_likes?.begeni_durum != null && post.user_post_likes.begeni_durum == 1 ){
+                    likeCount = post.like_count!! -1
+                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count, 0)
+                    homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart_gray)
+                    homeRowItemBinding.postLikeCount.text = likeCount.toString()
+
+
+                }else if(post.user_post_likes?.begeni_durum != null && post.user_post_likes.begeni_durum == 0){
+                    likeCount = post.like_count!! +1
+                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count, 1)
+                    homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)
+                    homeRowItemBinding.postLikeCount.text = likeCount.toString()
+                }else {
+                    likeCount = post.like_count!! +1
+                    viewModel.saveUserPostLikes(userId, post.post_id!!, 1, likeCount)
+                    homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)
+                    homeRowItemBinding.postLikeCount.text = likeCount.toString()
+                }
             }
         }
     }
@@ -112,7 +143,10 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         homeRowItemBinding: FragmentHomeRowItemBinding
     ) {
         when (view.id) {
-            R.id.post_btn_like -> {
+            R.id.home_likes -> {
+
+            }
+            /*R.id.post_btn_like -> {
                 val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
                 var likeCount: Int?
                 if (isChecked) {
@@ -128,7 +162,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                     viewModel.btnPostLike(post.post_id!!, userId, post.like_count - 1, 0)
                 }
                 homeRowItemBinding.postLikeCount.text = "$likeCount Beğeni"
-            }
+            }*/
         }
     }
 
