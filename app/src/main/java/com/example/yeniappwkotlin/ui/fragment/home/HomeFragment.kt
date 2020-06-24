@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.db.entities.Post
@@ -35,6 +36,21 @@ import java.lang.Exception
 
 
 class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
+    private var pageNumber = 1
+    private val itemCount = 10
+
+    //veriables for pagiantion
+    private var isLoading = true
+    private var pastVisibleItems : Int? = null
+    private var visibleItemCount : Int? = null
+    private var totalItemCount : Int? = null
+    private var previouesTotal = 0
+    private var viewThreshold = 10
+
+    private var layoutManager : LinearLayoutManager? = null
+
+    var userId : Int? = null
+    var repository : PostRepository? = null
 
     var navController: NavController? = null
 
@@ -54,15 +70,15 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
-        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account", 0)
+        userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
-        val repository = PostRepository(api, db, requireContext())
-        val factory = HomeViewModelFactory(repository, userId)
+        repository = PostRepository(api, db, requireContext())
+        val factory = HomeViewModelFactory(repository!!, userId!!, pageNumber, itemCount)
 
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
+        layoutManager = LinearLayoutManager(requireContext())
 
         progress_bar.show()
         Coroutines.main {
@@ -72,9 +88,9 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                     progress_bar.hide()
                     recycler_home.also {
                         onRefresh.isRefreshing = false
-                        it.layoutManager = LinearLayoutManager(requireContext())
+                        it.layoutManager = layoutManager
                         it.setHasFixedSize(true)
-                        it.adapter = HomeFragmentAdapter(post, isSocial,this)
+                        it.adapter = HomeFragmentAdapter(post,this)
                     }
                 })
             }catch (e : Exception){
@@ -83,13 +99,34 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                     progress_bar.hide()
                     recycler_home.also {
                         onRefresh.isRefreshing = false
-                        it.layoutManager = LinearLayoutManager(requireContext())
+                        it.layoutManager = layoutManager
                         it.setHasFixedSize(true)
-                        it.adapter = HomeFragmentAdapter(post, isSocial,this)
+                        it.adapter = HomeFragmentAdapter(post,this)
                     }
                 })
             }
         }
+        recycler_home.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                visibleItemCount = layoutManager!!.childCount
+                totalItemCount = layoutManager!!.itemCount
+                pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition()
+
+                if (dy > 0){
+                    if(isLoading && totalItemCount!! > previouesTotal ){
+                        isLoading = false
+                        previouesTotal = totalItemCount as Int
+                    }
+                    if (!isLoading && (totalItemCount!! - visibleItemCount!!) <= pastVisibleItems!!+viewThreshold){
+                        pageNumber ++
+                        performPagination()
+                        isLoading = true
+                    }
+                }
+            }
+        })
     }
 
     override fun onRecyclerViewItemClick(
@@ -135,34 +172,16 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         }
     }
 
-
-    override fun onRecyclerViewCheckUnckeck(
-        view: View,
-        post: Post,
-        isChecked: Boolean,
-        homeRowItemBinding: FragmentHomeRowItemBinding
-    ) {
-        when (view.id) {
-            R.id.home_likes -> {
-
+    private fun performPagination() {
+        progress_bar.show()
+        Coroutines.main {
+            try {
+                progress_bar.hide()
+                val data = repository!!.getPostData(userId!!, pageNumber, itemCount)
+                repository!!.savePost(data)
+            }catch (e : Exception){
+                Toast.makeText(requireContext(), "Bir hata oluştu", Toast.LENGTH_SHORT).show()
             }
-            /*R.id.post_btn_like -> {
-                val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
-                var likeCount: Int?
-                if (isChecked) {
-                    likeCount = post.like_count!! + 1
-                    if ((post.user_post_likes?.begeni_durum == 0) || (post.user_post_likes?.begeni_durum == 1)) {
-                        viewModel.btnPostLike(post.post_id!!, userId, post.like_count, 1)
-                    } else {
-                        viewModel.saveUserPostLikes(userId, post.post_id!!, 1)
-                    }
-                    //post_like_count.text = "$likeCount Beğeni"
-                } else {
-                    likeCount = post.like_count!!
-                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count - 1, 0)
-                }
-                homeRowItemBinding.postLikeCount.text = "$likeCount Beğeni"
-            }*/
         }
     }
 

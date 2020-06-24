@@ -24,7 +24,6 @@ import kotlin.math.abs
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HomeFragmentAdapter(
     private val posts : List<Post>,
-    private val is_social_account : Int,
     private val listener: RecyclerViewClickListener
 ) : RecyclerView.Adapter<HomeFragmentAdapter.PostViewHolder>() {
 

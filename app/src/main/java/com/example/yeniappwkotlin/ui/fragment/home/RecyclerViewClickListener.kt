@@ -6,5 +6,4 @@ import com.example.yeniappwkotlin.databinding.FragmentHomeRowItemBinding
 
 interface RecyclerViewClickListener {
     fun onRecyclerViewItemClick(view : View, post : Post, homeRowItemBinding: FragmentHomeRowItemBinding)
-    fun onRecyclerViewCheckUnckeck(view: View, post: Post, isChecked : Boolean, homeRowItemBinding: FragmentHomeRowItemBinding)
 }

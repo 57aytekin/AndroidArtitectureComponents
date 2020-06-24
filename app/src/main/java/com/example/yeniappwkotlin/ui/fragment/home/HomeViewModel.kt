@@ -20,17 +20,23 @@ import java.lang.Exception
 
 class HomeViewModel(
     private val repository: PostRepository,
-    private val user_id: Int
+    private val user_id: Int,
+    private val page : Int,
+    private val row_per_page : Int
 ) : ViewModel() {
 
     private lateinit var job : Job
     var commentListener : CommentListener? = null
 
     val getPost by lazyDeffered {
-        repository.getPosts(user_id)
+        repository.getPosts(user_id, page, row_per_page)
     }
 
     val getLocalPost by lazyDeffered { repository.getLocalPost(user_id) }
+
+    fun savePost(post : List<Post>){
+        repository.savePost(post)
+    }
 
     fun saveUserPostLikes(user_id: Int, post_id: Int, begeniDurum: Int, like_count: Int) {
         Coroutines.main {

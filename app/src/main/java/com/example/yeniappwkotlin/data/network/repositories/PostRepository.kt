@@ -8,6 +8,7 @@ import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.SafeApiRequest
 import com.example.yeniappwkotlin.data.network.responses.PostLikesResponse
+import com.example.yeniappwkotlin.data.network.responses.PostResponse
 import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.isFetchNeeded
@@ -42,16 +43,20 @@ class PostRepository(
         }
     }
 
-    private suspend fun fetchPosts(user_id: Int){
+    suspend fun getPostData(user_id: Int, page : Int, row_per_page : Int) : List<Post>{
+        return apiRequest { api.getPost(user_id, page, row_per_page) }
+    }
+
+    private suspend fun fetchPosts(user_id: Int, page : Int, row_per_page : Int){
         val lastSavedAt = PrefUtils.with(context).getLastSavedAt(KEY_SAVED_AT)
         if(lastSavedAt == null || isFetchNeeded(context,KEY_SAVED_AT, MINUMUM_INTERVAL)){
-            val response = apiRequest { api.getPost(user_id) }
+            val response = apiRequest { api.getPost(user_id, page, row_per_page) }
             posts.postValue(response)
         }
     }
-    suspend fun getPosts(user_id: Int) : LiveData<List<Post>>{
+    suspend fun getPosts(user_id: Int, page : Int, row_per_page : Int) : LiveData<List<Post>>{
         return withContext(Dispatchers.IO){
-            fetchPosts(user_id)
+            fetchPosts(user_id, page, row_per_page)
             db.getPostDao().getPosts()
         }
     }
@@ -73,5 +78,12 @@ class PostRepository(
             db.getPostDao().updateLocalPostCount(likeCount, begeniDurum, id)
         }
     }
+
+    fun savePost(post : List<Post>){
+        CoroutineScope(Dispatchers.IO).launch {
+            db.getPostDao().savePosts(post)
+        }
+    }
+
 
 }
