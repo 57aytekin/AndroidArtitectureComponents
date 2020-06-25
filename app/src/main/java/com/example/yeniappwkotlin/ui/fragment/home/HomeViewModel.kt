@@ -32,8 +32,6 @@ class HomeViewModel(
         repository.getPosts(user_id, page, row_per_page)
     }
 
-    val getLocalPost by lazyDeffered { repository.getLocalPost(user_id) }
-
     fun savePost(post : List<Post>){
         repository.savePost(post)
     }
@@ -58,7 +56,6 @@ class HomeViewModel(
     }
 
     fun btnPostLike(post_id: Int, user_id: Int, like_count: Int, begeniDurum: Int) {
-        var deger = false
         val newLikeCount: Int = if (begeniDurum == 1){
             like_count+1
         }else{
@@ -82,7 +79,6 @@ class HomeViewModel(
                 commentListener?.onFailure(e.message!!)
             }
         }
-        //return deger
     }
 
     override fun onCleared() {

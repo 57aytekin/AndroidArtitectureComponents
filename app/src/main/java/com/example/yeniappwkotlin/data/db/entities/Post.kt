@@ -16,11 +16,11 @@ data class Post (
     val first_name : String? = null,
     val paths : String? = null,
     val share_post : String? = null,
-    val like_count : Int? = null,
+    var like_count : Int? = null,
     val comment_count : Int? = null,
     val tarih : String? = null,
     val is_social_account : Int? = null,
     @Embedded
     @NonNull
-    val user_post_likes : PostLikes? = null
+    var user_post_likes : PostLikes? = null
 )

@@ -8,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.db.entities.Post
+import com.example.yeniappwkotlin.data.db.entities.PostLikes
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
@@ -53,7 +52,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     var repository : PostRepository? = null
 
     var navController: NavController? = null
-
+    lateinit var adapter : HomeFragmentAdapter
     companion object {
         fun newInstance() = HomeFragment()
     }
@@ -80,30 +79,29 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
         layoutManager = LinearLayoutManager(requireContext())
 
+        adapter = HomeFragmentAdapter(listOf(), this)
         progress_bar.show()
+        var flag = false
         Coroutines.main {
             try {
                 val posts = viewModel.getPost.await()
                 posts.observe(viewLifecycleOwner, Observer { post ->
                     progress_bar.hide()
                     recycler_home.also {
-                        onRefresh.isRefreshing = false
+                        if (!flag){
+                            adapter = HomeFragmentAdapter(post,this)
+                            it.adapter = adapter
+                            flag = true
+                        }
+                        //adapter.addPost(post)
+                        adapter.notifyDataSetChanged()
                         it.layoutManager = layoutManager
                         it.setHasFixedSize(true)
-                        it.adapter = HomeFragmentAdapter(post,this)
+                        onRefresh.isRefreshing = false
                     }
                 })
             }catch (e : Exception){
-                val posts = viewModel.getLocalPost.await()
-                posts.observe(viewLifecycleOwner, Observer { post ->
-                    progress_bar.hide()
-                    recycler_home.also {
-                        onRefresh.isRefreshing = false
-                        it.layoutManager = layoutManager
-                        it.setHasFixedSize(true)
-                        it.adapter = HomeFragmentAdapter(post,this)
-                    }
-                })
+                Toast.makeText(requireContext(), "HATA: "+e.message!!, Toast.LENGTH_SHORT).show()
             }
         }
         recycler_home.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -129,6 +127,15 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         })
     }
 
+    fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+        observe(lifecycleOwner, object : Observer<T> {
+            override fun onChanged(t: T?) {
+                observer.onChanged(t)
+                removeObserver(this)
+            }
+        })
+    }
+
     override fun onRecyclerViewItemClick(
         view: View,
         post: Post,
@@ -150,21 +157,26 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
             R.id.home_likes -> {
                 val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
                 val likeCount : Int
-                if (post.user_post_likes?.begeni_durum != null && post.user_post_likes.begeni_durum == 1 ){
+                if (post.user_post_likes?.begeni_durum != null && post.user_post_likes!!.begeni_durum == 1 ){
                     likeCount = post.like_count!! -1
-                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count, 0)
+                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count!!, 0)
+                    post.user_post_likes!!.begeni_durum = 0
+                    post.like_count = likeCount
                     homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart_gray)
                     homeRowItemBinding.postLikeCount.text = likeCount.toString()
 
-
-                }else if(post.user_post_likes?.begeni_durum != null && post.user_post_likes.begeni_durum == 0){
+                }else if(post.user_post_likes?.begeni_durum != null && post.user_post_likes!!.begeni_durum == 0){
                     likeCount = post.like_count!! +1
-                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count, 1)
+                    viewModel.btnPostLike(post.post_id!!, userId, post.like_count!!, 1)
+                    post.user_post_likes!!.begeni_durum = 1
+                    post.like_count = likeCount
                     homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)
                     homeRowItemBinding.postLikeCount.text = likeCount.toString()
                 }else {
                     likeCount = post.like_count!! +1
                     viewModel.saveUserPostLikes(userId, post.post_id!!, 1, likeCount)
+                    post.user_post_likes = PostLikes(1)
+                    post.like_count = likeCount
                     homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)
                     homeRowItemBinding.postLikeCount.text = likeCount.toString()
                 }
@@ -178,8 +190,15 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
             try {
                 progress_bar.hide()
                 val data = repository!!.getPostData(userId!!, pageNumber, itemCount)
-                repository!!.savePost(data)
+                if (data.isNotEmpty()){
+                    repository!!.savePost(data)
+                    recycler_home.apply {
+                        (adapter as? HomeFragmentAdapter)?.addPost(data)
+                    }
+                    //recyclerView.post { adapter.notifyItemRangeChanged(10*pageNumber -1, 10*pageNumber) }
+                }
             }catch (e : Exception){
+                Log.d("HATAA", e.message!!)
                 Toast.makeText(requireContext(), "Bir hata oluştu", Toast.LENGTH_SHORT).show()
             }
         }

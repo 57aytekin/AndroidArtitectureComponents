@@ -9,6 +9,7 @@ import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.SafeApiRequest
 import com.example.yeniappwkotlin.data.network.responses.PostLikesResponse
 import com.example.yeniappwkotlin.data.network.responses.PostResponse
+import com.example.yeniappwkotlin.ui.fragment.home.HomeFragment
 import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.isFetchNeeded
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("CAST_NEVER_SUCCEEDS", "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class PostRepository(
@@ -61,11 +63,11 @@ class PostRepository(
         }
     }
 
-    suspend fun getLocalPost(user_id: Int): LiveData<List<Post>>{
+    /*suspend fun getLocalPost(user_id: Int): LiveData<List<Post>>{
         return withContext(Dispatchers.IO){
             db.getPostDao().getPosts()
         }
-    }
+    }*/
 
     suspend fun updateLikeCounts(post_id : Int, user_id: Int , like_count : Int, begeniDurum: Int) = apiRequest { api.updateLikeCount(post_id, user_id, like_count, begeniDurum) }
 

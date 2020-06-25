@@ -6,63 +6,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/scroll"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/bottom_bar_border">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/homeToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bottom_bar_border">
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/homeToolbar"
+            <RelativeLayout
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_weight="1">
+                android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:gravity="center"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivPhoto"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/profile_photo"/>
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/ivPhoto"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/profile_photo"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toEndOf="@id/ivPhoto"
-                        android:layout_alignTop="@id/ivPhoto"
-                        android:gravity="center_vertical"
-                        android:layout_marginStart="20dp"
-                        android:fontFamily="@font/jokerman_font"
-                        android:layout_alignBottom="@id/ivPhoto"
-                        android:text="@string/voveyle"
-                        android:textColor="#000"
-                        android:textSize="20sp" />
-                </RelativeLayout>
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
-    </ScrollView>
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/ivPhoto"
+                    android:layout_alignTop="@id/ivPhoto"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/jokerman_font"
+                    android:layout_alignBottom="@id/ivPhoto"
+                    android:text="@string/voveyle"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/onRefresh"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/scroll"
-        android:layout_height="wrap_content">
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        android:layout_height="0dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_home"
             tools:listitem="@layout/fragment_home_row_item"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="0dp"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

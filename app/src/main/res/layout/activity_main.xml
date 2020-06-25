@@ -33,6 +33,7 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:background="@drawable/bottom_bar_border"
+            app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.tabs.TabItem

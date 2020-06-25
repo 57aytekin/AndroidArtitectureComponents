@@ -1,29 +1,21 @@
 package com.example.yeniappwkotlin.ui.fragment.home
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Post
-import com.example.yeniappwkotlin.data.db.entities.PostLikes
 import com.example.yeniappwkotlin.databinding.FragmentHomeRowItemBinding
 import com.example.yeniappwkotlin.util.calculateDate
 import com.example.yeniappwkotlin.util.loadImage
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.util.*
-import kotlin.math.abs
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HomeFragmentAdapter(
-    private val posts : List<Post>,
+    private var posts : List<Post>,
     private val listener: RecyclerViewClickListener
 ) : RecyclerView.Adapter<HomeFragmentAdapter.PostViewHolder>() {
 
@@ -64,13 +56,6 @@ class HomeFragmentAdapter(
         holder.homeRowItemBinding.homeLikes.setOnClickListener {
             listener.onRecyclerViewItemClick(holder.homeRowItemBinding.homeLikes, posts[position],holder.homeRowItemBinding)
         }
-        /*holder.homeRowItemBinding.postBtnLike.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-                listener.onRecyclerViewCheckUnckeck(holder.homeRowItemBinding.postBtnLike, posts[position], true, holder.homeRowItemBinding)
-            }else{
-                listener.onRecyclerViewCheckUnckeck(holder.homeRowItemBinding.postBtnLike, posts[position], false, holder.homeRowItemBinding)
-            }
-        }*/
     }
 
     private fun updateUI(homeRowItemBinding: FragmentHomeRowItemBinding, post: Post){
@@ -85,6 +70,16 @@ class HomeFragmentAdapter(
             homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)
         }else{
             homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart_gray)
+        }
+    }
+    fun addPost( post : List<Post>){
+        CoroutineScope(Dispatchers.IO).launch {
+            for(deger in post){
+                if (!posts.contains(deger)){
+                    posts += deger
+                }
+
+            }
         }
     }
 
