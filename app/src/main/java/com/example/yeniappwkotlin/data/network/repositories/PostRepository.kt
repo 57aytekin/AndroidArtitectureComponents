@@ -51,7 +51,7 @@ class PostRepository(
 
     private suspend fun fetchPosts(user_id: Int, page : Int, row_per_page : Int){
         val lastSavedAt = PrefUtils.with(context).getLastSavedAt(KEY_SAVED_AT)
-        if(lastSavedAt == null || isFetchNeeded(context,KEY_SAVED_AT, MINUMUM_INTERVAL)){
+        if((lastSavedAt == null ||lastSavedAt.isEmpty()) || isFetchNeeded(context,KEY_SAVED_AT, MINUMUM_INTERVAL)){
             val response = apiRequest { api.getPost(user_id, page, row_per_page) }
             posts.postValue(response)
         }
@@ -71,8 +71,8 @@ class PostRepository(
 
     suspend fun updateLikeCounts(post_id : Int, user_id: Int , like_count : Int, begeniDurum: Int) = apiRequest { api.updateLikeCount(post_id, user_id, like_count, begeniDurum) }
 
-    suspend fun saveUserPostLikes(user_id : Int, post_id : Int, begeniDurum : Int, likeCount: Int) : PostLikesResponse {
-        return apiRequest { api.saveUserPostLikes(user_id, post_id, begeniDurum, likeCount) }
+    suspend fun saveUserPostLikes(user_id : Int, post_id : Int, begeniDurum : Int, likeCount: Int, post_sahibi_id: Int) : PostLikesResponse {
+        return apiRequest { api.saveUserPostLikes(user_id, post_id, begeniDurum, likeCount, post_sahibi_id) }
     }
 
     fun updateLocalPostCount(likeCount : Int, begeniDurum: Int, id : Int){

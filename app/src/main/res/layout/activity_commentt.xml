@@ -11,22 +11,65 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.comment.CommentActivity">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/bottom_bar_border">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/homeToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/ivBackButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_back_black_24dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/ivBackButton"
+                        android:layout_alignTop="@id/ivBackButton"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:layout_alignBottom="@id/ivBackButton"
+                        android:text="@string/comments"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
         <TextView
             android:id="@+id/tvBosComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:padding="20dp"
+            android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Hünz tamamlama yapılmamış." />
+            android:text="Henüz tamamlama yapılmamış." />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_comment"
             app:layout_constraintBottom_toTopOf="@id/etCommentMessage">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -36,26 +79,47 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_comment_photo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/profile_photo"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
 
         <EditText
             android:id="@+id/etCommentMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="5dp"
             android:hint="Yorum ekle..."
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/iv_comment_photo"
+            app:layout_constraintStart_toEndOf="@id/iv_comment_photo"
             app:layout_constraintEnd_toStartOf="@id/btnSend" />
 
         <Button
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="Paylaş"
             android:textAllCaps="false"
             android:textColor="#FFF"
+            android:layout_marginEnd="5dp"
             android:background="@color/btnSignIn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="@id/etCommentMessage"/>
+
+        <ProgressBar
+            android:id="@+id/comment_progress_bar"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

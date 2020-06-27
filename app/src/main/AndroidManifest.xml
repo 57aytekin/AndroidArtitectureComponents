@@ -26,9 +26,7 @@
         </activity>
         <activity android:name=".ui.activity.splashScreen.SplashScreenActivity" />
         <activity android:name=".ui.activity.chat.ChatActivity" />
-        <activity
-            android:name=".ui.activity.comment.CommentActivity"
-            android:theme="@style/MainTheme" />
+        <activity android:name=".ui.activity.comment.CommentActivity" />
         <activity android:name=".ui.activity.auth.RegisterActivity" />
         <activity android:name=".ui.activity.auth.LoginActivity" />
         <activity android:name=".ui.activity.home.MainActivity"/>

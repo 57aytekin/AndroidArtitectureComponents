@@ -3,6 +3,7 @@ package com.example.yeniappwkotlin.data.db.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.yeniappwkotlin.data.db.entities.CURRENT_USER_ID
+import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.db.entities.User
 
 @Dao
@@ -25,4 +26,7 @@ interface UserDao {
 
     @Query("DELETE FROM messagelist")
     fun deleteMessageList()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveUserPost(post: Post)
 }

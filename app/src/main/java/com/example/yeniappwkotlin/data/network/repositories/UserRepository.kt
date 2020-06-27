@@ -1,6 +1,7 @@
 package com.example.yeniappwkotlin.data.network.repositories
 
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
+import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.db.entities.User
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.SafeApiRequest
@@ -22,6 +23,7 @@ class UserRepository(
         return apiRequest { api.savePost(user_id, share_post, like_count, comment_count) }
     }
     suspend fun saveUser(user : User) = db.getUserDao().upsert(user)
+    suspend fun saveUserPost(post: Post) = db.getUserDao().saveUserPost(post)
 
     fun getUser() = db.getUserDao().getUser()
 

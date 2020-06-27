@@ -9,9 +9,10 @@ import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 @Suppress("UNCHECKED_CAST")
 class EditViewModelFactory(
     private val activity :Activity,
-    private val repository: UserRepository
+    private val repository: UserRepository,
+    private val userId : Int
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return EditViewModel(activity,repository) as T
+        return EditViewModel(activity,repository, userId) as T
     }
 }

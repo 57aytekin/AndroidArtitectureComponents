@@ -18,9 +18,7 @@ import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.MessageListRepository
 import com.example.yeniappwkotlin.ui.activity.chat.ChatActivity
-import com.example.yeniappwkotlin.util.Coroutines
-import com.example.yeniappwkotlin.util.PrefUtils
-import com.example.yeniappwkotlin.util.loadImage
+import com.example.yeniappwkotlin.util.*
 import kotlinx.android.synthetic.main.message_fragment.*
 
 class MessageFragment : Fragment(), MessageClickListener {
@@ -40,6 +38,7 @@ class MessageFragment : Fragment(), MessageClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        openCloseSoftKeyboard(requireContext(),requireView(), false)
 
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)

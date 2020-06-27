@@ -16,9 +16,7 @@ import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.CommentRepository
 import com.example.yeniappwkotlin.databinding.ActivityCommenttBinding
 import com.example.yeniappwkotlin.databinding.CommentRowItem2Binding
-import com.example.yeniappwkotlin.util.ApiException
-import com.example.yeniappwkotlin.util.PrefUtils
-import com.example.yeniappwkotlin.util.snackbar
+import com.example.yeniappwkotlin.util.*
 import kotlinx.android.synthetic.main.activity_commentt.*
 import kotlinx.coroutines.launch
 
@@ -29,25 +27,28 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_commentt)
 
         postId = intent.getIntExtra("post_id", 1)
         postUserId = intent.getIntExtra("post_user_id", 0)
+        val userPhoto = PrefUtils.with(this).getString("user_image","")
+        val isSocial = PrefUtils.with(this).getInt("is_social_account",0)
+
+        loadImage(iv_comment_photo, userPhoto, isSocial)
         val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
         val api = MyApi(networkConnectionInterceptor)
         val repository = CommentRepository(api, postId!!)
         val factory = CommentViewModelFactory(repository)
 
-        val binding: ActivityCommenttBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_commentt)
         viewModel = ViewModelProviders.of(this, factory).get(CommentViewModel::class.java)
+
         viewModel.getComments()
         val userId = PrefUtils.with(this).getInt("user_id", 0)
-        val isSocial = PrefUtils.with(this).getInt("is_social_account", 0)
 
-        binding.btnSend.setOnClickListener {
-            val etMessage = binding.etCommentMessage.text.toString().trim()
+        btnSend.setOnClickListener {
+            val etMessage = etCommentMessage.text.toString().trim()
             if (etMessage.isEmpty()) {
-                binding.constrainLayout.snackbar("Lütfen paylaşımınızı giriniz.")
+                constrainLayout.snackbar("Lütfen paylaşımınızı giriniz.")
             } else {
                 viewModel.onSaveCommentClick(userId, postId!!, etMessage)
             }
@@ -55,15 +56,23 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
 
         viewModel.commentListener = this
 
+        comment_progress_bar.show()
         viewModel.comments.observe(this, Observer { comments ->
+            if (comments.isEmpty()){
+                comment_progress_bar.hide()
+                tvBosComment.visibility = View.VISIBLE
+                tvBosComment.text = "Bu gönderiye henüz yorum yapılmadı. İlk yorumu yapan sen ol."
+            }
+            comment_progress_bar.hide()
             swipe.isRefreshing = false
             recyclerviewComment.also {
                 it.layoutManager = LinearLayoutManager(this)
                 it.setHasFixedSize(true)
-                it.adapter = CommentActivityAdapter(comments, userId, postUserId!!, isSocial,this)
+                it.adapter = CommentActivityAdapter(comments, userId, postUserId!!,this)
             }
         })
         swipe.setOnRefreshListener { viewModel.getComments() }
+        ivBackButton.setOnClickListener { finish() }
     }
 
     override fun onStarted() {
@@ -90,7 +99,7 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
                     try {
                         if (isChecked) {
                             commentRowItemBinding.toggle.setBackgroundResource(R.drawable.ic_favorite_orange)
-                            viewModel.saveLikes(postUserId!!, comment.user_id!!, comment.id!!)
+                            viewModel.saveLikes(postUserId!!, comment.user_id!!, comment.id!!, postId!!)
                             viewModel.updateCommentLike(comment.id, 1)
                         } else {
                             commentRowItemBinding.toggle.setBackgroundResource(R.drawable.ic_favorite_black_24dp)

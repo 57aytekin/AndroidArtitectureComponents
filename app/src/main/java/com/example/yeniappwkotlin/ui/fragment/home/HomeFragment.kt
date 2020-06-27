@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,20 +19,13 @@ import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.db.entities.PostLikes
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
-import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.PostRepository
 import com.example.yeniappwkotlin.databinding.FragmentHomeRowItemBinding
 import com.example.yeniappwkotlin.ui.activity.comment.CommentActivity
 import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
 import com.example.yeniappwkotlin.util.*
 import kotlinx.android.synthetic.main.fragment_home_row_item.*
-import kotlinx.android.synthetic.main.fragment_home_row_item.view.*
 import kotlinx.android.synthetic.main.home_fragment.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.internal.notify
-import java.lang.Exception
 
 
 class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
@@ -47,6 +41,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     private var viewThreshold = 10
 
     private var layoutManager : LinearLayoutManager? = null
+    var flag = false
 
     var userId : Int? = null
     var repository : PostRepository? = null
@@ -68,6 +63,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        openCloseSoftKeyboard(requireContext(),requireView(), false)
 
         userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
@@ -79,9 +75,48 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
         layoutManager = LinearLayoutManager(requireContext())
 
+        //Load User AppBar Image
+        val userImage = PrefUtils.with(requireContext()).getString("user_image", "")
+        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account", 0)
+        loadImage(ivHomePhoto,userImage, isSocial)
+        //
+
         adapter = HomeFragmentAdapter(listOf(), this)
         progress_bar.show()
-        var flag = false
+
+        getPostItems()
+        recycler_home.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                visibleItemCount = layoutManager!!.childCount
+                totalItemCount = layoutManager!!.itemCount
+                pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition()
+
+                if (dy > 0){
+                    if(isLoading && totalItemCount!! > previouesTotal ){
+                        isLoading = false
+                        previouesTotal = totalItemCount as Int
+                    }
+                    if (!isLoading && (totalItemCount!! - visibleItemCount!!) <= pastVisibleItems!!+viewThreshold){
+                        pageNumber ++
+                        performPagination()
+                        isLoading = true
+                    }
+                }
+            }
+        })
+
+        onRefresh.setOnRefreshListener {
+            refreshPosts()
+        }
+    }
+
+    private fun refreshPosts() {
+        getPostItems()
+    }
+
+    private fun getPostItems(){
         Coroutines.main {
             try {
                 val posts = viewModel.getPost.await()
@@ -104,36 +139,6 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                 Toast.makeText(requireContext(), "HATA: "+e.message!!, Toast.LENGTH_SHORT).show()
             }
         }
-        recycler_home.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                visibleItemCount = layoutManager!!.childCount
-                totalItemCount = layoutManager!!.itemCount
-                pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition()
-
-                if (dy > 0){
-                    if(isLoading && totalItemCount!! > previouesTotal ){
-                        isLoading = false
-                        previouesTotal = totalItemCount as Int
-                    }
-                    if (!isLoading && (totalItemCount!! - visibleItemCount!!) <= pastVisibleItems!!+viewThreshold){
-                        pageNumber ++
-                        performPagination()
-                        isLoading = true
-                    }
-                }
-            }
-        })
-    }
-
-    fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
-        observe(lifecycleOwner, object : Observer<T> {
-            override fun onChanged(t: T?) {
-                observer.onChanged(t)
-                removeObserver(this)
-            }
-        })
     }
 
     override fun onRecyclerViewItemClick(
@@ -174,7 +179,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                     homeRowItemBinding.postLikeCount.text = likeCount.toString()
                 }else {
                     likeCount = post.like_count!! +1
-                    viewModel.saveUserPostLikes(userId, post.post_id!!, 1, likeCount)
+                    viewModel.saveUserPostLikes(userId, post.post_id!!, 1, likeCount, post.user_id!!)
                     post.user_post_likes = PostLikes(1)
                     post.like_count = likeCount
                     homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)

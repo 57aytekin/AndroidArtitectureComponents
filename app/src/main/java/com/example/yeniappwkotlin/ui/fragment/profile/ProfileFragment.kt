@@ -20,10 +20,7 @@ import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 import com.example.yeniappwkotlin.ui.activity.auth.LoginActivity
-import com.example.yeniappwkotlin.util.Coroutines
-import com.example.yeniappwkotlin.util.PrefUtils
-import com.example.yeniappwkotlin.util.lazyDeffered
-import com.example.yeniappwkotlin.util.loadImage
+import com.example.yeniappwkotlin.util.*
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile_app_bar.*
@@ -54,6 +51,7 @@ class ProfileFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        openCloseSoftKeyboard(requireContext(),requireView(), false)
 
         mAuth = FirebaseAuth.getInstance()
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())

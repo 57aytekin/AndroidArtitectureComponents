@@ -7,12 +7,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 import com.example.yeniappwkotlin.databinding.EditFragmentBinding
+import com.example.yeniappwkotlin.util.PrefUtils
+import com.example.yeniappwkotlin.util.loadImage
+import com.example.yeniappwkotlin.util.openCloseSoftKeyboard
 import com.example.yeniappwkotlin.util.snackbar
 import kotlinx.android.synthetic.main.edit_fragment.*
 
@@ -35,14 +39,26 @@ class EditFragment : Fragment(), EditListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
         super.onActivityCreated(savedInstanceState)
+        //User information
+        val userId = PrefUtils.with(requireContext()).getInt("user_id",0)
+        val userPhotoUrl = PrefUtils.with(requireContext()).getString("user_image", "")
+        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account", 0)
+        loadImage(binding!!.fragmentEditPhoto, userPhotoUrl, isSocial)
+
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
         val repository = UserRepository(api, db)
-
-        val factory = EditViewModelFactory(this.requireActivity(),repository)
+        val factory = EditViewModelFactory(this.requireActivity(), repository, userId)
         viewModel = ViewModelProvider(this, factory).get(EditViewModel::class.java)
         binding?.edit = viewModel
+
+        openCloseSoftKeyboard(requireContext(), binding?.fragmentEditEtText!!, true)
+        val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+        binding!!.fragmentEditClose.setOnClickListener {
+            navController.navigate(
+                R.id.action_editFragment_to_homeFragment )
+        }
     }
 
     override fun onStarted() {
@@ -56,6 +72,4 @@ class EditFragment : Fragment(), EditListener {
     override fun onFailure(message: String) {
         root_edit.snackbar(message)
     }
-
-
 }

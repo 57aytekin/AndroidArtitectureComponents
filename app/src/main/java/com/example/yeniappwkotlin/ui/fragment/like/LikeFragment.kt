@@ -20,8 +20,9 @@ import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.LikesRepository
 import com.example.yeniappwkotlin.ui.activity.chat.ChatActivity
-import com.example.yeniappwkotlin.util.Coroutines
-import com.example.yeniappwkotlin.util.PrefUtils
+import com.example.yeniappwkotlin.util.*
+import kotlinx.android.synthetic.main.activity_commentt.*
+import kotlinx.android.synthetic.main.appbar_likes.*
 import kotlinx.android.synthetic.main.like_fragment.*
 import kotlinx.coroutines.launch
 
@@ -42,9 +43,9 @@ class LikeFragment : Fragment(), ClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        openCloseSoftKeyboard(requireContext(),requireView(), false)
 
         val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
-        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account", 0)
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
@@ -53,14 +54,24 @@ class LikeFragment : Fragment(), ClickListener {
 
         viewModel = ViewModelProviders.of(this, factory).get(LikeViewModel::class.java)
 
+        //Load Image
+        val userPhoto = PrefUtils.with(requireContext()).getString("user_image","")
+        val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account",0)
+        loadImage(ivLikePhoto, userPhoto, isSocial)
+
+        like_progress_bar.show()
         Coroutines.main {
             try {
                 val likes = viewModel.getLikes.await()
                 likes.observe(viewLifecycleOwner, Observer { like ->
+                    if (like.isEmpty()){
+                        tvEmptyLike.visibility = View.VISIBLE
+                    }
+                    like_progress_bar.hide()
                     likeFragmentRecycler.also {
                         it.layoutManager = LinearLayoutManager(requireContext())
                         it.setHasFixedSize(true)
-                        it.adapter = LikeFragmentAdapter(like, isSocial,this)
+                        it.adapter = LikeFragmentAdapter(like,this)
                     }
                 })
             }catch (e : Exception){
@@ -72,7 +83,7 @@ class LikeFragment : Fragment(), ClickListener {
     override fun onRecyclerViewItemClick(view: View, likes: Likes) {
         Intent(requireContext(), ChatActivity::class.java).also {
             it.putExtra("photo",likes.paths)
-            it.putExtra("alici_name", likes.name)
+            it.putExtra("alici_name", likes.user_name)
             it.putExtra("post_sahibi_id", likes.post_sahibi_id)
             startActivity(it)
         }

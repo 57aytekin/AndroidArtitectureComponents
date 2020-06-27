@@ -78,7 +78,8 @@ interface MyApi {
         @Field("user_id") user_id: Int,
         @Field("post_id") post_id: Int,
         @Field("begeni_durum") begeni_durum: Int,
-        @Field("like_count") like_count: Int
+        @Field("like_count") like_count: Int,
+        @Field("post_sahibi_id") post_sahibi_id: Int
     ): Response<PostLikesResponse>
 
     @GET("get_user_post_likes.php")
@@ -92,7 +93,8 @@ interface MyApi {
     suspend fun saveLikes(
         @Field("post_sahibi_id") post_sahibi_id: Int,
         @Field("comment_sahibi_id") comment_sahibi_id: Int,
-        @Field("comment_id") comment_id: Int
+        @Field("comment_id") comment_id: Int,
+        @Field("post_id") post_id: Int
     ): Response<CommentResponse>
 
     @FormUrlEncoded

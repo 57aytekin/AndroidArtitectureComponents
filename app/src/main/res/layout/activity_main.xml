@@ -40,23 +40,28 @@
                 android:id="@+id/tab_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/ic_home_black_24dp" />
+                android:icon="@drawable/icon_new_home_filled" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/ic_likes_icon" />
+                android:icon="@drawable/icon_new_like" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/ic_message_icon" />
+                android:icon="@drawable/icon_new_plus" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/icon_new_message" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/ic_profile_icon" />
+                android:icon="@drawable/icon_new_profile" />
         </com.google.android.material.tabs.TabLayout>
 
 

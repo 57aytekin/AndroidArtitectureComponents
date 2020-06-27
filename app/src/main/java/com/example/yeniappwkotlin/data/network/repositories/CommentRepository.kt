@@ -14,8 +14,8 @@ class CommentRepository(
         return apiRequest { api.saveComment(user_id, post_id, comment, begeniDurum) }
     }
 
-    suspend fun saveLikes(post_sahibi_id : Int, comment_sahibi_id: Int, comment_id: Int) : CommentResponse {
-        return apiRequest { api.saveLikes(post_sahibi_id, comment_sahibi_id, comment_id) }
+    suspend fun saveLikes(post_sahibi_id : Int, comment_sahibi_id: Int, comment_id: Int, post_id: Int) : CommentResponse {
+        return apiRequest { api.saveLikes(post_sahibi_id, comment_sahibi_id, comment_id, post_id) }
     }
     suspend fun updateCommentLike( commentId : Int, begeniDurum : Int  ) : CommentResponse{
         return apiRequest { api.updateCommentLike(commentId, begeniDurum) }

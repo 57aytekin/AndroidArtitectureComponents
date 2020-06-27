@@ -1,10 +1,13 @@
 package com.example.yeniappwkotlin.ui.fragment.like
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,14 +15,14 @@ import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Likes
 import com.example.yeniappwkotlin.databinding.LikeFragmentRowItemBinding
 import com.example.yeniappwkotlin.ui.fragment.message.MessageClickListener
+import com.example.yeniappwkotlin.util.calculateDate
 import com.example.yeniappwkotlin.util.loadImage
+import java.util.*
 
 class LikeFragmentAdapter(
     private val likes : List<Likes>,
-    private val is_social_account : Int,
     private val listener : ClickListener
 ) : RecyclerView.Adapter<LikeFragmentAdapter.LikesViewHolder>() {
-    val likesText = " adlı kullanıcı yorumunu beğendi artık mesaj atıp konuşabilirsin."
 
     inner class LikesViewHolder(
         val likeFragmentRowItemBinding: LikeFragmentRowItemBinding
@@ -37,17 +40,44 @@ class LikeFragmentAdapter(
 
     override fun getItemCount() = likes.size
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: LikesViewHolder, position: Int) {
+        var likesText = ""
         val currentItem = likes[position]
+        if (currentItem.comment_id == -1){
+            likesText = " adlı kullanıcı '${currentItem.comment}' paylaşımını beğendi."
+            holder.likeFragmentRowItemBinding.likeRowBtn.visibility = View.INVISIBLE
+        }else{
+
+            val count = frequency(likes, currentItem.post_sahibi_id)
+            if (count > 1){
+                holder.likeFragmentRowItemBinding.likeRowBtn.visibility = View.INVISIBLE
+                likesText = " adlı kullanıcı '${currentItem.comment}' yorumunu beğendi."
+            }else{
+                holder.likeFragmentRowItemBinding.likeRowBtn.visibility = View.VISIBLE
+                likesText = " adlı kullanıcı '${currentItem.comment}' yorumunu beğendi. Artık onunla iletişime geçebilirsin."
+            }
+        }
         loadImage(holder.likeFragmentRowItemBinding.likeRowPhoto, currentItem.paths, currentItem.is_social_account)
-        val username = currentItem.name
+        val username = currentItem.user_name
 
         val sb: SpannableStringBuilder? = SpannableStringBuilder(username)
         val bss = StyleSpan(Typeface.BOLD)
         sb!!.setSpan(bss,0,username.length, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
-        holder.likeFragmentRowItemBinding.likeRowUserName.text = "$sb $likesText"
-        holder.likeFragmentRowItemBinding.root.setOnClickListener {
+        holder.likeFragmentRowItemBinding.likeRowUserName.text = "'${sb}' $likesText"
+        holder.likeFragmentRowItemBinding.likeRowDate.text = calculateDate(currentItem.tarih)
+        holder.likeFragmentRowItemBinding.likeRowBtn.setOnClickListener {
             listener.onRecyclerViewItemClick(holder.itemView, currentItem)
         }
+    }
+
+    private fun frequency(liste : List<Likes>, post_sahibi : Int) : Int{
+        var result = 0
+        for(item in liste){
+            if (post_sahibi == item.post_sahibi_id){
+                result ++
+            }
+        }
+        return result
     }
 }

@@ -55,7 +55,8 @@ class LoginActivity : AppCompatActivity() {
         viewModel.getLoggedInUser().observe(this, Observer { user ->
             if (user != null) {
                 PrefUtils.with(this).save("user_id", user.user_id!!)
-                PrefUtils.with(this).save("user_name", user.first_name!!)
+                PrefUtils.with(this).save("user_name", user.user_name!!)
+                PrefUtils.with(this).save("user_first_name", user.first_name!!)
                 PrefUtils.with(this).save("user_image", user.paths!!)
                 PrefUtils.with(this).save("is_social_account", user.is_social_account!!)
                 Intent(this, MainActivity::class.java).also {
@@ -113,6 +114,7 @@ class LoginActivity : AppCompatActivity() {
             val exception = task.exception
             if (task.isSuccessful) {
                 try {
+                    PrefUtils.with(this).save("is_first", false)
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
                     Log.d("SignInActivity", "firebaseAuthWithGoogle:" + account.id)
@@ -172,6 +174,7 @@ class LoginActivity : AppCompatActivity() {
         isSocialAccount: Int,
         isGoogleSignIn: Boolean
     ) {
+        PrefUtils.with(this).save("is_first", false)
         lifecycleScope.launch {
             try {
                 val authResponse: AuthResponse = if (isGoogleSignIn) {

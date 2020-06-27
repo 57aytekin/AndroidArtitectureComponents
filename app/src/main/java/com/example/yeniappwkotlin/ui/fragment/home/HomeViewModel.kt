@@ -36,10 +36,10 @@ class HomeViewModel(
         repository.savePost(post)
     }
 
-    fun saveUserPostLikes(user_id: Int, post_id: Int, begeniDurum: Int, like_count: Int) {
+    fun saveUserPostLikes(user_id: Int, post_id: Int, begeniDurum: Int, like_count: Int, post_sahibi_id: Int) {
         Coroutines.main {
             try {
-                val userPostLikes = repository.saveUserPostLikes(user_id, post_id, begeniDurum, like_count)
+                val userPostLikes = repository.saveUserPostLikes(user_id, post_id, begeniDurum, like_count, post_sahibi_id)
                 userPostLikes.message.let {
                     repository.updateLocalPostCount(like_count, begeniDurum, post_id)
                     commentListener?.onSuccess(it)

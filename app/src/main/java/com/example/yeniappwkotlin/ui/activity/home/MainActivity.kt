@@ -1,9 +1,7 @@
 package com.example.yeniappwkotlin.ui.activity.home
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.yeniappwkotlin.R
@@ -28,19 +26,23 @@ class MainActivity : AppCompatActivity() {
                 when (tab?.position) {
                     0 -> {
                         navController!!.navigate(R.id.homeFragment)
-                        tab.setIcon(R.drawable.ic_home_black_24dp)
+                        tab.setIcon(R.drawable.icon_new_home_filled)
                     }
                     1 -> {
                         navController!!.navigate(R.id.likeFragment)
-                        tab.setIcon(R.drawable.ic_likes_black_24dp)
+                        tab.setIcon(R.drawable.icon_new_like_fill)
                     }
                     2 -> {
-                        navController!!.navigate(R.id.messageFragment)
-                        tab.setIcon(R.drawable.ic_message_24dp)
+                        navController!!.navigate(R.id.editFragment)
+                        tab.setIcon(R.drawable.icon_new_plus_fill)
                     }
                     3 -> {
+                        navController!!.navigate(R.id.messageFragment)
+                        tab.setIcon(R.drawable.icon_new_message_fill)
+                    }
+                    4 -> {
                         navController!!.navigate(R.id.profileFragment)
-                        tab.setIcon(R.drawable.ic_profile_black_24dp)
+                        tab.setIcon(R.drawable.icon_new_profile_fill)
                     }
                 }
             }
@@ -49,35 +51,36 @@ class MainActivity : AppCompatActivity() {
                 when (tab?.position) {
                     0 -> {
                         navController!!.navigate(R.id.homeFragment)
-                        tab.setIcon(R.drawable.ic_home_black_24dp)
+                        tab.setIcon(R.drawable.icon_new_home_filled)
                     }
                     1 -> {
                         navController!!.navigate(R.id.likeFragment)
-                        tab.setIcon(R.drawable.ic_likes_black_24dp)
+                        tab.setIcon(R.drawable.icon_new_like_fill)
                     }
                     2 -> {
-                        navController!!.navigate(R.id.messageFragment)
-                        tab.setIcon(R.drawable.ic_message_24dp)
+                        navController!!.navigate(R.id.editFragment)
+                        tab.setIcon(R.drawable.icon_new_plus_fill)
                     }
                     3 -> {
+                        navController!!.navigate(R.id.messageFragment)
+                        tab.setIcon(R.drawable.icon_new_message_fill)
+                    }
+                    4 -> {
                         navController!!.navigate(R.id.profileFragment)
-                        tab.setIcon(R.drawable.ic_profile_black_24dp)
+                        tab.setIcon(R.drawable.icon_new_profile_fill)
                     }
                 }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
-                    0 -> { tab.setIcon(R.drawable.ic_home_icon) }
-                    1 -> { tab.setIcon(R.drawable.ic_likes_icon) }
-                    2 -> { tab.setIcon(R.drawable.ic_message_icon) }
-                    3 -> { tab.setIcon(R.drawable.ic_profile_icon) }
+                    0 -> { tab.setIcon(R.drawable.icon_new_home) }
+                    1 -> { tab.setIcon(R.drawable.icon_new_like) }
+                    2 -> { tab.setIcon(R.drawable.icon_new_plus)}
+                    3 -> { tab.setIcon(R.drawable.icon_new_message) }
+                    4 -> { tab.setIcon(R.drawable.icon_new_profile) }
                 }
             }
         })
-
-        /*fabEdit.setOnClickListener(View.OnClickListener {
-            navController!!.navigate(R.id.editFragment)
-        })*/
     }
 }

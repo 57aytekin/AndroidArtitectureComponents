@@ -28,10 +28,10 @@ class CommentViewModel(
         )
     }
 
-    fun saveLikes(post_sahibi_id : Int, comment_sahibi_id: Int, comment_id: Int){
+    fun saveLikes(post_sahibi_id : Int, comment_sahibi_id: Int, comment_id: Int, post_id: Int){
         Coroutines.main {
             try {
-                val saveLikes = repository.saveLikes(post_sahibi_id, comment_sahibi_id, comment_id)
+                val saveLikes = repository.saveLikes(post_sahibi_id, comment_sahibi_id, comment_id, post_id)
                 saveLikes.message.let {
                     commentListener?.onSuccess(it!!)
                     return@main

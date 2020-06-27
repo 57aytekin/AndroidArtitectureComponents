@@ -118,6 +118,7 @@ class RegisterActivity : AppCompatActivity() {
         password: String,
         password2: String
     ) {
+        PrefUtils.with(this).save("is_first", false)
         lifecycleScope.launch {
             try {
                 val authResponse = viewModel.userRegister(

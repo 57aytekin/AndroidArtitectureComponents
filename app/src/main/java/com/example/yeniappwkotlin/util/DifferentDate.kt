@@ -1,7 +1,11 @@
 package com.example.yeniappwkotlin.util
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import java.lang.Math.abs
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -26,7 +30,7 @@ fun getHoursDiff(date1 : Date, date2 : Date) : Long{
 @SuppressLint("SimpleDateFormat")
 fun calculateDate (date : String) : String{
     val asd  = StringBuilder()
-    val dateFormat = SimpleDateFormat("dd.M.yyyy hh:mm:ss")
+    val dateFormat = SimpleDateFormat("dd.M.yyyy HH:mm:ss")
     try {
         val date1 : Date = dateFormat.parse(date)
         val bugun  = Calendar.getInstance().time

@@ -37,6 +37,7 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat)
 
         val networkConnectionInterceptor  = NetworkConnectionInterceptor(this)
         val api = MyApi(networkConnectionInterceptor)
@@ -44,7 +45,6 @@ class ChatActivity : AppCompatActivity() {
         val repository = ChatRepository(api, db, this)
         val factory = ChatViewModelFactory(repository)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_chat)
         viewModel = ViewModelProvider(this, factory).get(ChatViewModel::class.java)
 
         messageId = intent.getIntExtra("message_id",-1)
@@ -57,15 +57,15 @@ class ChatActivity : AppCompatActivity() {
         val currentDate = SimpleDateFormat("MM-dd-yyyy HH:mm:ss", Locale.ENGLISH).format(Date())
 
         //initialize object
-        binding.tvMesajlasmaUsername.text = alici_name
+        tvMesajlasmaUsername.text = alici_name
         //Glide.with(this).load(photo).into(binding.ivMesajlasmaPhoto)
-        loadImage(binding.ivMesajlasmaPhoto, photo, isSocial)
+        loadImage(ivMesajlasmaPhoto, photo, isSocial)
         Log.d("IMAGE", photo.toString())
 
         //Send message and save database operations
-        binding.btnMesajlasma.setOnClickListener {
+        btnMesajlasma.setOnClickListener {
             var flag = false
-            val userMessage = binding.etMesaj.text.toString()
+            val userMessage = etMesaj.text.toString()
             if (userMessage.isNotEmpty()){
                 viewModel.saveChats(userId.toString(), post_sahibi_id.toString(), alici_name!!, userMessage, photo!!, currentDate)
                 val message = db.getMessageListDao().getMessageList()
@@ -84,9 +84,9 @@ class ChatActivity : AppCompatActivity() {
                     }
                 })
             }
-            binding.etMesaj.setText("")
+            etMesaj.setText("")
         }
-        binding.mesajlasmaBack.setOnClickListener { finish() }
+        mesajlasmaBack.setOnClickListener { finish() }
 
         //listen firebase database
         references = FirebaseDatabase.getInstance().getReference("Chats")
