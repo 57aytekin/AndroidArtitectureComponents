@@ -62,14 +62,17 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
                 comment_progress_bar.hide()
                 tvBosComment.visibility = View.VISIBLE
                 tvBosComment.text = "Bu gönderiye henüz yorum yapılmadı. İlk yorumu yapan sen ol."
+            }else{
+                tvBosComment.visibility = View.INVISIBLE
+                comment_progress_bar.hide()
+                swipe.isRefreshing = false
+                recyclerviewComment.also {
+                    it.layoutManager = LinearLayoutManager(this)
+                    it.setHasFixedSize(true)
+                    it.adapter = CommentActivityAdapter(comments, userId, postUserId!!,this)
+                }
             }
-            comment_progress_bar.hide()
-            swipe.isRefreshing = false
-            recyclerviewComment.also {
-                it.layoutManager = LinearLayoutManager(this)
-                it.setHasFixedSize(true)
-                it.adapter = CommentActivityAdapter(comments, userId, postUserId!!,this)
-            }
+
         })
         swipe.setOnRefreshListener { viewModel.getComments() }
         ivBackButton.setOnClickListener { finish() }

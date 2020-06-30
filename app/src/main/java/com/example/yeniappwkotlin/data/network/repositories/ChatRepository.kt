@@ -23,10 +23,11 @@ class ChatRepository(
     val db : AppDatabase,
     val context : Context
 ): SafeApiRequest() {
+    val chatMap = HashMap<String, String>()
 
     fun saveChatMessage(gonderen : String, alici : String, aliciName :String, message: String, photo : String, tarih : String) {
         val reference : DatabaseReference = FirebaseDatabase.getInstance().reference
-        val chatMap = HashMap<String, String>()
+        chatMap.clear()
         chatMap["gonderen"] = gonderen
         chatMap["alici"] = alici
         chatMap["aliciName"] = aliciName
@@ -36,18 +37,38 @@ class ChatRepository(
         reference.child("Chats").push().setValue(chatMap)
     }
 
-    suspend fun saveMessageList(gonderen_id: Int, alici_id: Int, alici_name : String, alici_photo : String, message : String) : CommentResponse{
-        return apiRequest { api.saveMessageList(gonderen_id, alici_id, alici_name, alici_photo, message) }
+    suspend fun saveMessageList(gonderen_id: Int, alici_id: Int, message : String, aliciNewMessage : Int, gonderenNewMessage : Int) : CommentResponse{
+        return apiRequest { api.saveMessageList(gonderen_id, alici_id, message, aliciNewMessage, gonderenNewMessage) }
     }
 
-    suspend fun updateMessageList(id : Int, message : String) : CommentResponse{
-        return apiRequest { api.updateMessageList(id, message) }
+    suspend fun updateIsSeeMessage(user_id: Int, is_login: Int): CommentResponse{
+        return apiRequest { api.updateIsLogin(user_id, is_login) }
     }
 
-    fun updateLocalMessageList(tarih : String, message : String, id : Int){
+    suspend fun updateMessageList(id : Int, userId : Int, message : String, aliciNewCount : Int, gonderenNewCount : Int, is_alici : Int, is_gonderen : Int) : CommentResponse{
+        return apiRequest { api.updateMessageList(id, userId, message, aliciNewCount, gonderenNewCount, is_alici, is_gonderen) }
+    }
+
+    suspend fun getMessageList(userId : Int) : List<MessageList>{
+        return apiRequest { api.getMessageList(userId) }
+    }
+
+    fun updateLocalMessageList(tarih : String, message : String, id : Int, alici_new : Int, gonderen_new: Int){
         CoroutineScope(Dispatchers.IO).launch {
-            db.getMessageListDao().updateLocalMessageList(tarih, message, id)
+            db.getMessageListDao().updateLocalMessageList(tarih, message, id, alici_new, gonderen_new)
         }
     }
+    fun updateLocalMessageBadges(id : Int, alici_new : Int, gonderen_new: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            db.getMessageListDao().updateLocalBadges(id, alici_new, gonderen_new)
+        }
+    }
+    fun saveLocalMessageList( messageList: MessageList){
+        CoroutineScope(Dispatchers.IO).launch {
+            db.getMessageListDao().saveLocalMessageList(messageList)
+        }
+    }
+
+
 
 }

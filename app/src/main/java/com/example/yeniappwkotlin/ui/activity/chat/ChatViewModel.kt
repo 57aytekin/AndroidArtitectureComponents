@@ -1,5 +1,6 @@
 package com.example.yeniappwkotlin.ui.activity.chat
 
+import android.os.Message
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.yeniappwkotlin.data.db.entities.Chat
@@ -21,10 +22,14 @@ class ChatViewModel(
         repository.saveChatMessage(gonderen, alici, aliciName, message, photo, tarih)
     }
 
-    fun saveMessageList(gonderen_id: Int, alici_id: Int, alici_name : String, alici_photo : String, message : String){
+    suspend fun updateIsSeeMessage(
+        user_id : Int, is_login : Int
+    ) = repository.updateIsSeeMessage(user_id, is_login)
+
+    fun saveMessageList(gonderen_id: Int, alici_id: Int, message : String, aliciNewMessage : Int, gonderenNewMessage : Int){
         Coroutines.main {
             try {
-                val saveList = repository.saveMessageList(gonderen_id, alici_id, alici_name, alici_photo, message)
+                val saveList = repository.saveMessageList(gonderen_id, alici_id, message, aliciNewMessage, gonderenNewMessage)
                 saveList.message.let {
                     commentListener?.onSuccess(it!!)
                 }
@@ -37,10 +42,10 @@ class ChatViewModel(
             }
         }
     }
-    fun updateMessageList(id: Int, message : String){
+    fun updateMessageList(id: Int, userId : Int, message : String, aliciNewCount : Int, gonderenNewCount : Int, is_alici : Int, is_gonderen : Int){
         Coroutines.main {
             try {
-                val updateList = repository.updateMessageList(id, message)
+                val updateList = repository.updateMessageList(id, userId, message, aliciNewCount, gonderenNewCount, is_alici, is_gonderen)
                 updateList.message.let {
                     commentListener?.onSuccess(it!!)
                 }
@@ -54,7 +59,19 @@ class ChatViewModel(
         }
     }
 
-    fun updateLocalMessageList(tarih : String, message : String, id : Int){
-        repository.updateLocalMessageList(tarih, message, id)
+    suspend fun getMessageList(userId : Int) : List<MessageList>{
+        val response : List<MessageList>?
+        response = repository.getMessageList(userId)
+        return response
+    }
+
+    fun updateLocalMessageList(tarih : String, message : String, id : Int, alici_new : Int, gonderen_new: Int){
+        repository.updateLocalMessageList(tarih, message, id, alici_new, gonderen_new)
+    }
+    fun updateLocalMessageBadges(id : Int, alici_new : Int, gonderen_new: Int){
+        repository.updateLocalMessageBadges(id, alici_new, gonderen_new)
+    }
+    fun saveLocalMessageList(messageList: MessageList){
+        repository.saveLocalMessageList(messageList)
     }
 }

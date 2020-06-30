@@ -1,7 +1,9 @@
 package com.example.yeniappwkotlin.ui.fragment.message
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +19,6 @@ import com.example.yeniappwkotlin.util.loadImage
 class MessageFragmentAdapter(
     private val context: Context,
     private val messageList : List<MessageList>,
-    private val is_social_account : Int,
     private val listener : MessageClickListener
 
 ) : RecyclerView.Adapter<MessageFragmentAdapter.ViewHolder>() {
@@ -41,12 +42,28 @@ class MessageFragmentAdapter(
         val bindingView = holder.messageRowItemBinding
         val userId = PrefUtils.with(context).getInt("user_id",-1)
 
-        if (userId == currentMessage.alici_id){
-            bindingView.messageItemUsername.text = currentMessage.name
-            loadImage(bindingView.messageItemUserPhoto, currentMessage.paths,is_social_account)
+        if (userId == currentMessage.gonderen_user.user_id){
+            bindingView.messageItemUsername.text = currentMessage.alici_user.first_name
+            loadImage(bindingView.messageItemUserPhoto, currentMessage.alici_user.paths,currentMessage.alici_user.is_social_account)
+            if (currentMessage.gonderen_new_message_count > 0){
+                bindingView.messageItemNewCount.visibility = View.VISIBLE
+                bindingView.messageItemNewCount.text = currentMessage.gonderen_new_message_count.toString()
+                bindingView.messageItemMesaj.typeface = Typeface.DEFAULT_BOLD
+            }else{
+                bindingView.messageItemNewCount.visibility = View.INVISIBLE
+                bindingView.messageItemMesaj.typeface = Typeface.DEFAULT
+            }
         }else{
-            bindingView.messageItemUsername.text = currentMessage.alici_name
-            loadImage(bindingView.messageItemUserPhoto, currentMessage.alici_photo,is_social_account)
+            bindingView.messageItemUsername.text = currentMessage.gonderen_user.first_name
+            loadImage(bindingView.messageItemUserPhoto, currentMessage.gonderen_user.paths,currentMessage.gonderen_user.is_social_account)
+            if (currentMessage.alici_new_message_count > 0){
+                bindingView.messageItemNewCount.visibility = View.VISIBLE
+                bindingView.messageItemNewCount.text = currentMessage.alici_new_message_count.toString()
+                bindingView.messageItemMesaj.typeface = Typeface.DEFAULT_BOLD
+            }else{
+                bindingView.messageItemNewCount.visibility = View.INVISIBLE
+                bindingView.messageItemMesaj.typeface = Typeface.DEFAULT
+            }
         }
 
         //Glide.with(context).load(currentMessage.alici_photo).into(bindingView.messageItemUserPhoto)

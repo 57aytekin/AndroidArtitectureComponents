@@ -44,5 +44,6 @@
     <string name="share">PAYLAŞ</string>
     <string name="send_message">Mesaj At</string>
     <string name="empty_like_fragment">Henüz bir etkileşiminiz yok. Diğer kişilerle iletişime geçmek için paylaşımları beğenin ve yorum yapın.</string>
+    <string name="empty_message">Henüz mesajınız yok</string>
 
 </resources>

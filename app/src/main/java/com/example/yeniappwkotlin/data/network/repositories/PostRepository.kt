@@ -28,7 +28,7 @@ class PostRepository(
     private val context : Context
 ) : SafeApiRequest() {
     private val posts = MutableLiveData<List<Post>>()
-    private val MINUMUM_INTERVAL = 1
+    private val MINUMUM_INTERVAL = -1
     private val KEY_SAVED_AT = "post_key_saved_at"
     init {
         posts.observeForever {

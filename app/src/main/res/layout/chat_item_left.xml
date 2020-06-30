@@ -4,20 +4,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        app:layout_constraintWidth_max="wrap"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <TextView
             android:id="@+id/show_message"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:paddingStart="20dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/shape_bg_incoming_bubble"
+            android:text="Deneme 1 2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:padding="10dp"
-            android:background="@drawable/begen_button_bg"
-            android:text="Deneme 1 2"/>
+            app:layout_constraintWidth_max="wrap"
+            app:layout_constraintWidth_percent="0.8"/>
+
+        <TextView
+            android:id="@+id/show_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:05"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/show_message"
+            app:layout_constraintStart_toEndOf="@id/show_message"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -66,12 +66,15 @@ class LikeFragment : Fragment(), ClickListener {
                 likes.observe(viewLifecycleOwner, Observer { like ->
                     if (like.isEmpty()){
                         tvEmptyLike.visibility = View.VISIBLE
-                    }
-                    like_progress_bar.hide()
-                    likeFragmentRecycler.also {
-                        it.layoutManager = LinearLayoutManager(requireContext())
-                        it.setHasFixedSize(true)
-                        it.adapter = LikeFragmentAdapter(like,this)
+                        like_progress_bar.hide()
+                    }else{
+                        tvEmptyLike.visibility = View.INVISIBLE
+                        like_progress_bar.hide()
+                        likeFragmentRecycler.also {
+                            it.layoutManager = LinearLayoutManager(requireContext())
+                            it.setHasFixedSize(true)
+                            it.adapter = LikeFragmentAdapter(like,this)
+                        }
                     }
                 })
             }catch (e : Exception){
@@ -83,8 +86,10 @@ class LikeFragment : Fragment(), ClickListener {
     override fun onRecyclerViewItemClick(view: View, likes: Likes) {
         Intent(requireContext(), ChatActivity::class.java).also {
             it.putExtra("photo",likes.paths)
-            it.putExtra("alici_name", likes.user_name)
+            it.putExtra("alici_name", likes.first_name)
+            it.putExtra("alici_username", likes.user_name)
             it.putExtra("post_sahibi_id", likes.post_sahibi_id)
+            it.putExtra("is_social", likes.is_social_account)
             startActivity(it)
         }
     }

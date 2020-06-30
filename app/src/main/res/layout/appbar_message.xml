@@ -5,34 +5,43 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            android:theme="@style/MainTheme">
+            android:background="@drawable/bottom_bar_border">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/homeToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_weight="1" >
-                <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/profile_logout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
-                        android:text="Mesajlar"
-                        android:textSize="20dp"
-                        android:textColor="#FFF"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivMessagePhoto"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/profile_photo"/>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/ivMessagePhoto"
+                        android:layout_alignTop="@id/ivMessagePhoto"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:layout_alignBottom="@id/ivMessagePhoto"
+                        android:text="Mesajlar"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+                </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 

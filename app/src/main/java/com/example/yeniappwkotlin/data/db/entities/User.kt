@@ -1,5 +1,6 @@
 package com.example.yeniappwkotlin.data.db.entities
 
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -17,8 +18,10 @@ data class User (
     val phone : String? = null,
     val password : String? = null,
     val is_social_account : Int? = null,
+    val is_login : Int? = null,
     val register_date : String? = null
 ){
     @PrimaryKey(autoGenerate = false)
+    @NonNull
     var uid : Int = CURRENT_USER_ID
 }

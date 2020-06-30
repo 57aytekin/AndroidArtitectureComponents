@@ -16,6 +16,8 @@ data class Likes (
     @NonNull
     val comment_id : Int,
     val user_name : String,
+    val first_name : String,
+    val last_name : String,
     val paths : String,
     val comment : String,
     val tarih : String,

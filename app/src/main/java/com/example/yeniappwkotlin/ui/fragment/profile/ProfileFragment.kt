@@ -34,7 +34,7 @@ import javax.security.auth.callback.Callback
 class ProfileFragment : Fragment() {
     var navController: NavController? = null
     private lateinit var mAuth : FirebaseAuth
-
+    private var userId : Int? = null
 
     companion object {
         fun newInstance() = ProfileFragment()
@@ -58,8 +58,8 @@ class ProfileFragment : Fragment() {
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
         val repository = UserRepository(api, db)
-        val factory =
-            ProfileViewModelFactory(repository)
+        val factory = ProfileViewModelFactory(repository)
+        userId = PrefUtils.with(requireContext()).getInt("user_id",-1)
 
         viewModel = ViewModelProviders.of(this, factory).get(ProfileViewModel::class.java)
         val userName = PrefUtils.with(requireContext()).getString("user_name", "")
@@ -105,6 +105,7 @@ class ProfileFragment : Fragment() {
                 viewModel.deletePost()
                 viewModel.deleteLikes()
                 viewModel.deleteMessageList()
+                viewModel.updateIsLogin(userId!!, 0)
             }
             it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(it)

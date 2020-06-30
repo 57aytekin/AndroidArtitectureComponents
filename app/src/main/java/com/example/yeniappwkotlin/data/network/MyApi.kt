@@ -112,9 +112,9 @@ interface MyApi {
     suspend fun saveMessageList(
         @Field("gonderen_id") gonderen_id: Int,
         @Field("alici_id") alici_id: Int,
-        @Field("alici_name") alici_name: String,
-        @Field("alici_photo") alici_photo: String,
-        @Field("message") message: String
+        @Field("message") message: String,
+        @Field("alici_new_message_count") alici_new_message_count: Int,
+        @Field("gonderen_new_message_count") gonderen_new_message_count: Int
     ): Response<CommentResponse>
 
     @GET("get_message.php")
@@ -127,7 +127,19 @@ interface MyApi {
     @POST("update_messagelist.php")
     suspend fun updateMessageList(
         @Field("id") id: Int,
-        @Field("message") message: String
+        @Field("user_id") user_id: Int,
+        @Field("message") message: String,
+        @Field("alici_new_message_count") alici_new_message_count: Int,
+        @Field("gonderen_new_message_count") gonderen_new_message_count: Int,
+        @Field("is_alici") is_alici: Int,
+        @Field("is_gonderen") is_gonderen: Int
+    ): Response<CommentResponse>
+
+    @FormUrlEncoded
+    @POST("update_is_login.php")
+    suspend fun updateIsLogin(
+        @Field("user_id") user_id: Int,
+        @Field("is_login") is_login: Int
     ): Response<CommentResponse>
 
     companion object {

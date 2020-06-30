@@ -21,7 +21,7 @@ class MessageListRepository(
     private val context : Context
 ) : SafeApiRequest(){
     private val messageList = MutableLiveData<List<MessageList>>()
-    private val MINUMUM_INTERVAL = 1
+    private val MINUMUM_INTERVAL = -1
     private val KEY_SAVED_AT = "message_list_key_saved_at"
     private var lastDate = SimpleDateFormat("MM-dd-yyyy HH:mm:ss", Locale.ENGLISH).format(Date())
 

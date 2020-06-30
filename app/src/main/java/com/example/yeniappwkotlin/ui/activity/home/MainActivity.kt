@@ -1,10 +1,15 @@
 package com.example.yeniappwkotlin.ui.activity.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.yeniappwkotlin.R
+import com.example.yeniappwkotlin.data.network.MyApi
+import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
+import com.example.yeniappwkotlin.util.Coroutines
+import com.example.yeniappwkotlin.util.PrefUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.FirebaseAuth
@@ -14,10 +19,16 @@ class MainActivity : AppCompatActivity() {
 
     var navController: NavController? = null
     private lateinit var mAuth : FirebaseAuth
+    private lateinit var api : MyApi
+    private var userId : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
+        api = MyApi(networkConnectionInterceptor)
+        userId = PrefUtils.with(this).getInt("user_id",-1)
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         tabLayout.addOnTabSelectedListener(object :
