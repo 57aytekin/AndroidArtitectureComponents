@@ -26,7 +26,7 @@ class ChatRepository(
     val chatMap = HashMap<String, String>()
 
     fun saveChatMessage(gonderen : String, alici : String, aliciName :String, message: String, photo : String, tarih : String) {
-        val reference : DatabaseReference = FirebaseDatabase.getInstance().reference
+        val reference : DatabaseReference = FirebaseDatabase.getInstance().reference.child("Chats")
         chatMap.clear()
         chatMap["gonderen"] = gonderen
         chatMap["alici"] = alici
@@ -34,19 +34,40 @@ class ChatRepository(
         chatMap["message"] = message
         chatMap["photo"] = photo
         chatMap["tarih"] = tarih
-        reference.child("Chats").push().setValue(chatMap)
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                when {
+                    p0.hasChild("$gonderen-$alici") -> {
+                        reference.child("$gonderen-$alici").push().setValue(chatMap)
+                    }
+                    p0.hasChild("$alici-$gonderen") -> {
+                        reference.child("$alici-$gonderen").push().setValue(chatMap)
+                    }
+                    else -> {
+                        reference.child("$gonderen-$alici").push().setValue(chatMap)
+                    }
+                }
+            }
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
     }
 
     suspend fun saveMessageList(gonderen_id: Int, alici_id: Int, message : String, aliciNewMessage : Int, gonderenNewMessage : Int) : CommentResponse{
         return apiRequest { api.saveMessageList(gonderen_id, alici_id, message, aliciNewMessage, gonderenNewMessage) }
     }
 
-    suspend fun updateIsSeeMessage(user_id: Int, is_login: Int): CommentResponse{
-        return apiRequest { api.updateIsLogin(user_id, is_login) }
+    suspend fun updateIsSeeMessage(user_id: Int, whoIsTalking: Int): CommentResponse{
+        return apiRequest { api.updateWhoIsTalking(user_id, whoIsTalking) }
     }
 
-    suspend fun updateMessageList(id : Int, userId : Int, message : String, aliciNewCount : Int, gonderenNewCount : Int, is_alici : Int, is_gonderen : Int) : CommentResponse{
-        return apiRequest { api.updateMessageList(id, userId, message, aliciNewCount, gonderenNewCount, is_alici, is_gonderen) }
+    suspend fun updateMessageList(id : Int, userId : Int, currentUserId : Int, message : String, aliciNewCount : Int, gonderenNewCount : Int, is_alici : Int, is_gonderen : Int) : CommentResponse{
+        return apiRequest { api.updateMessageList(id, userId, currentUserId, message, aliciNewCount, gonderenNewCount, is_alici, is_gonderen) }
     }
 
     suspend fun getMessageList(userId : Int) : List<MessageList>{

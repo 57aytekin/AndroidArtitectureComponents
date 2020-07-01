@@ -1,8 +1,12 @@
 package com.example.yeniappwkotlin.ui.activity.chat
 
-import android.content.ContentValues
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +19,6 @@ import com.example.yeniappwkotlin.data.db.entities.User
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.ChatRepository
-import com.example.yeniappwkotlin.data.network.responses.CommentResponse
 import com.example.yeniappwkotlin.databinding.ActivityChatBinding
 import com.example.yeniappwkotlin.util.*
 import com.google.firebase.database.*
@@ -60,15 +63,40 @@ class ChatActivity : AppCompatActivity() {
         userId = prefUtil.getInt("user_id",-1)
         val currentDate = SimpleDateFormat("dd.M.yyyy HH:mm:ss", Locale.ENGLISH).format(Date())
 
+        //Current user data
+        val currentUserPhoto = PrefUtils.with(this).getString("user_image","")
+        val currentUserIsSocial = PrefUtils.with(this).getInt("is_social_account",0)
         //Update Is see new message
-        Coroutines.main { viewModel.updateIsSeeMessage(userId!!,1) }
+        Coroutines.main { viewModel.updateIsSeeMessage(userId!!,post_sahibi_id!!) }
 
         //initialize object
         tvMesajlasmaUsername.text = alici_name
         tvMesajlasmaName.text = "@${aliciUserName}"
         loadImage(ivMesajlasmaPhoto, photo, isSocial)
+        //Load current user photo
+        loadImage(chat_user_photo,currentUserPhoto, currentUserIsSocial)
         //Update new message badges
         updateNewMessageBadges(db, userId!!)
+
+        //When edittext is empty set button color
+        btnMesajlasma.disable()
+        etMesaj.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                Log.d("CHAT","AfterTextChanged")
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                Log.d("CHAT","BeforeTextChanged")
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString().trim().isEmpty()){
+                    btnMesajlasma.disable()
+                }else{
+                    btnMesajlasma.enable()
+                }
+            }
+        })
 
         //Send message and save database operations
         btnMesajlasma.setOnClickListener {
@@ -84,12 +112,12 @@ class ChatActivity : AppCompatActivity() {
                             if ((mess.alici_user.user_id == userId && mess.gonderen_user.user_id == post_sahibi_id) ||
                                 mess.alici_user.user_id == post_sahibi_id && mess.gonderen_user.user_id == userId){
                                 if (userId == mess.gonderen_user.user_id){
-                                    viewModel.updateMessageList(mess.messageId!!, mess.alici_user.user_id!!, userMessage, mess.alici_new_message_count+1, mess.gonderen_new_message_count,0,0)
+                                    viewModel.updateMessageList(mess.messageId!!, mess.alici_user.user_id!!, mess.gonderen_user.user_id!!, userMessage, mess.alici_new_message_count+1, mess.gonderen_new_message_count,0,0)
                                     viewModel.updateLocalMessageList(currentDate, userMessage, mess.messageId, mess.alici_new_message_count+1, mess.gonderen_new_message_count)
                                     flag = true
                                 }
                                 else if (userId == mess.alici_user.user_id){
-                                    viewModel.updateMessageList(mess.messageId!!, mess.gonderen_user.user_id!!, userMessage, mess.alici_new_message_count, mess.gonderen_new_message_count+1,0,0)
+                                    viewModel.updateMessageList(mess.messageId!!, mess.gonderen_user.user_id!!, mess.alici_user.user_id!!, userMessage, mess.alici_new_message_count, mess.gonderen_new_message_count+1,0,0)
                                     viewModel.updateLocalMessageList(currentDate, userMessage, mess.messageId, mess.alici_new_message_count, mess.gonderen_new_message_count+1)
                                     flag = true
                                 }
@@ -121,10 +149,16 @@ class ChatActivity : AppCompatActivity() {
         recyclerView = recyclerMesajlasma
         try {
             references = FirebaseDatabase.getInstance().getReference("Chats")
-
             references!!.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(p0: DataSnapshot) {
-                    readChatList(userId.toString(), post_sahibi_id.toString(), p0)
+                    when {
+                        p0.hasChild("$userId-$post_sahibi_id") -> {
+                            readChatList(p0.child("$userId-$post_sahibi_id"))
+                        }
+                        p0.hasChild("$post_sahibi_id-$userId") -> {
+                            readChatList(p0.child("$post_sahibi_id-$userId"))
+                        }
+                    }
                 }
                 override fun onCancelled(p0: DatabaseError) {
                     Log.d("Log","Cancel")
@@ -136,11 +170,18 @@ class ChatActivity : AppCompatActivity() {
                 it.adapter = adapter
                 it.smoothScrollToPosition((it.adapter as ChatAdapter).itemCount)
             }
-
         }catch (e : Exception){
             e.printStackTrace()
         }
+    }
 
+    fun View.disable() {
+        background.setColorFilter (resources.getColor(R.color.orangeTransparent), PorterDuff.Mode.MULTIPLY)
+        isClickable = false
+    }
+    fun View.enable() {
+        background.colorFilter = null
+        isClickable = true
     }
 
     override fun onPause() {
@@ -159,11 +200,11 @@ class ChatActivity : AppCompatActivity() {
             if (!exitFlag){
                 for (mess in messages){
                     exitFlag = if (userId != mess.gonderen_user.user_id){
-                        viewModel.updateMessageList(messageId!!, mess.gonderen_user.user_id!!, "", 0, mess.gonderen_new_message_count,1,0)
+                        viewModel.updateMessageList(messageId!!, mess.gonderen_user.user_id!!, mess.alici_user.user_id!!, "", 0, mess.gonderen_new_message_count,1,0)
                         viewModel.updateLocalMessageBadges( messageId!!, 0, mess.gonderen_new_message_count)
                         true
                     }else{
-                        viewModel.updateMessageList(messageId!!, mess.alici_user.user_id!!, "", mess.alici_new_message_count, 0,0,1)
+                        viewModel.updateMessageList(messageId!!, mess.alici_user.user_id!!, mess.gonderen_user.user_id,"", mess.alici_new_message_count, 0,0,1)
                         viewModel.updateLocalMessageBadges( messageId!!, mess.alici_new_message_count, 0)
                         true
                     }
@@ -173,18 +214,16 @@ class ChatActivity : AppCompatActivity() {
     }
 
     //Burası repository taşınacak
-    fun readChatList(gonderen : String, alici : String, snapshot: DataSnapshot){
+    fun readChatList(snapshot: DataSnapshot){
         if (!chatList.isNullOrEmpty()){
             chatList.clear()
         }
         try {
             for (data in snapshot.children) {
                 val chat: Chat = data.getValue(Chat::class.java)!!
-                if ((alici == chat.alici && gonderen == chat.gonderen) || (alici == chat.gonderen && gonderen == chat.alici)){
-                    chatList.add(chat)
-                    adapter!!.notifyDataSetChanged()
-                    recyclerView!!.smoothScrollToPosition((recyclerView!!.adapter as ChatAdapter).itemCount)
-                }
+                chatList.add(chat)
+                adapter!!.notifyDataSetChanged()
+                recyclerView!!.smoothScrollToPosition((recyclerView!!.adapter as ChatAdapter).itemCount)
             }
         }catch (e : Exception){
             Log.d("ERRR: ",e.message!!)

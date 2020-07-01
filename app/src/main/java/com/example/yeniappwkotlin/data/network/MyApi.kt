@@ -127,7 +127,8 @@ interface MyApi {
     @POST("update_messagelist.php")
     suspend fun updateMessageList(
         @Field("id") id: Int,
-        @Field("user_id") user_id: Int,
+        @Field("alici_id") user_id: Int,
+        @Field("current_user_id") current_user_id: Int,
         @Field("message") message: String,
         @Field("alici_new_message_count") alici_new_message_count: Int,
         @Field("gonderen_new_message_count") gonderen_new_message_count: Int,
@@ -137,9 +138,9 @@ interface MyApi {
 
     @FormUrlEncoded
     @POST("update_is_login.php")
-    suspend fun updateIsLogin(
+    suspend fun updateWhoIsTalking(
         @Field("user_id") user_id: Int,
-        @Field("is_login") is_login: Int
+        @Field("who_is_talking") whoIsTalking: Int
     ): Response<CommentResponse>
 
     companion object {

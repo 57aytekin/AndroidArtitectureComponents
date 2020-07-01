@@ -6,6 +6,7 @@
     <color name="background">#FF8C41</color>
     <color name="screen_back">#F2B791</color>
     <color name="btnSignIn">#EA5B0C</color>
+    <color name="orangeTransparent">#9AEA5B0C</color>
     <color name="btnSignUp">#575757</color>
     <color name="white">#FFF</color>
     <color name="gray">#F3EEEE</color>

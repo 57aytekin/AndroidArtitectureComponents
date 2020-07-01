@@ -23,8 +23,8 @@ class ChatViewModel(
     }
 
     suspend fun updateIsSeeMessage(
-        user_id : Int, is_login : Int
-    ) = repository.updateIsSeeMessage(user_id, is_login)
+        user_id : Int, whoIsTalking : Int
+    ) = repository.updateIsSeeMessage(user_id, whoIsTalking)
 
     fun saveMessageList(gonderen_id: Int, alici_id: Int, message : String, aliciNewMessage : Int, gonderenNewMessage : Int){
         Coroutines.main {
@@ -42,10 +42,10 @@ class ChatViewModel(
             }
         }
     }
-    fun updateMessageList(id: Int, userId : Int, message : String, aliciNewCount : Int, gonderenNewCount : Int, is_alici : Int, is_gonderen : Int){
+    fun updateMessageList(id: Int, userId : Int, currentUserId : Int, message : String, aliciNewCount : Int, gonderenNewCount : Int, is_alici : Int, is_gonderen : Int){
         Coroutines.main {
             try {
-                val updateList = repository.updateMessageList(id, userId, message, aliciNewCount, gonderenNewCount, is_alici, is_gonderen)
+                val updateList = repository.updateMessageList(id, userId, currentUserId, message, aliciNewCount, gonderenNewCount, is_alici, is_gonderen)
                 updateList.message.let {
                     commentListener?.onSuccess(it!!)
                 }

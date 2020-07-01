@@ -25,7 +25,7 @@ class UserRepository(
     }
 
     suspend fun updateIsLogin(user_id: Int, is_login: Int): CommentResponse{
-        return apiRequest { api.updateIsLogin(user_id, is_login) }
+        return apiRequest { api.updateWhoIsTalking(user_id, is_login) }
     }
     suspend fun saveUser(user : User) = db.getUserDao().upsert(user)
     suspend fun saveUserPost(post: Post) = db.getUserDao().saveUserPost(post)
