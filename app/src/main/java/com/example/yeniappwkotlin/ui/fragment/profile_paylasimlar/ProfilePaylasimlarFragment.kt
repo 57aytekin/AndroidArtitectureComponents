@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,10 @@ import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.PostRepository
 import com.example.yeniappwkotlin.ui.fragment.home.HomeViewModelFactory
+import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.PrefUtils
+import com.example.yeniappwkotlin.util.hide
+import com.example.yeniappwkotlin.util.show
 import kotlinx.android.synthetic.main.profile_paylasimlar_fragment.*
 
 class ProfilePaylasimlarFragment : Fragment() {
@@ -49,14 +53,27 @@ class ProfilePaylasimlarFragment : Fragment() {
         viewModel =
             ViewModelProviders.of(this, factory).get(ProfilePaylasimlarViewModel::class.java)
 
-        //viewModel.getPosts()
-        viewModel.posts.observe(viewLifecycleOwner, Observer { posts ->
-            recycler_profile_paylasimlar.also {
-                it.layoutManager = LinearLayoutManager(requireContext())
-                it.setHasFixedSize(true)
-                it.adapter = ProfilePaylasimlarAdapter(posts)
+        Coroutines.main {
+            try {
+                paylasimlar_progress_bar.show()
+                val userPosts = viewModel.getPost.await()
+                if (userPosts.isNotEmpty()){
+                    paylasimlar_progress_bar.hide()
+                    tvEmptyUserPosts.visibility = View.INVISIBLE
+                    recycler_profile_paylasimlar.also {
+                        it.layoutManager = LinearLayoutManager(requireContext())
+                        it.setHasFixedSize(true)
+                        it.adapter = ProfilePaylasimlarAdapter(userPosts)
+                    }
+                }else{
+                    paylasimlar_progress_bar.hide()
+                    tvEmptyUserPosts.visibility = View.VISIBLE
+                    tvEmptyUserPosts.text = getString(R.string.empty_user_posts)
+                }
+            }catch (e : Exception){
+                Toast.makeText(requireContext(), "HATA: "+e.message!!, Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
 }

@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.PhoneAuthActivity"/>
+        <activity android:name=".ui.activity.edit_profile.EditProfileActivity"></activity>
+        <activity android:name=".ui.activity.PhoneAuthActivity" />
         <activity android:name=".ui.activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +30,7 @@
         <activity android:name=".ui.activity.comment.CommentActivity" />
         <activity android:name=".ui.activity.auth.RegisterActivity" />
         <activity android:name=".ui.activity.auth.LoginActivity" />
-        <activity android:name=".ui.activity.home.MainActivity"/>
+        <activity android:name=".ui.activity.home.MainActivity" />
     </application>
 
 </manifest>

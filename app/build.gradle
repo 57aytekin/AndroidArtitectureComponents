@@ -124,6 +124,8 @@ dependencies {
     //Phone Edittext
     implementation 'com.github.santalu:mask-edittext:1.1.1'
 
+    //CheckView
+    implementation 'com.github.cdflynn:checkview:v1.1'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'

@@ -42,6 +42,11 @@ interface MyApi {
         @Query("row_per_page") row_per_page : Int
     ): Response<List<Post>>
 
+    @GET("get_user_posts.php")
+    suspend fun getUserPosts(
+        @Query("user_id") user_id: Int
+    ): Response<List<Post>>
+
     @FormUrlEncoded
     @POST("sharepost.php")
     suspend fun savePost(
@@ -70,6 +75,16 @@ interface MyApi {
         @Field("user_id") user_id: Int,
         @Field("like_count") like_count: Int,
         @Field("begeni_durum") begeni_durum: Int
+    ): Response<CommentResponse>
+
+    @FormUrlEncoded
+    @POST("update_user_profile.php")
+    suspend fun updateUserProfile(
+        @Field("user_id") user_id: Int,
+        @Field("user_name") user_name: String,
+        @Field("user_first_name") user_first_name: String,
+        @Field("user_last_name") user_last_name: String,
+        @Field("image") image: String
     ): Response<CommentResponse>
 
     @FormUrlEncoded

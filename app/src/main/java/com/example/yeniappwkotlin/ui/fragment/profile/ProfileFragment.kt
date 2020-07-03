@@ -1,5 +1,6 @@
 package com.example.yeniappwkotlin.ui.fragment.profile
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 import com.example.yeniappwkotlin.ui.activity.auth.LoginActivity
+import com.example.yeniappwkotlin.ui.activity.edit_profile.EditProfileActivity
 import com.example.yeniappwkotlin.util.*
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -49,6 +51,7 @@ class ProfileFragment : Fragment() {
         return inflater.inflate(R.layout.profile_fragment, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         openCloseSoftKeyboard(requireContext(),requireView(), false)
@@ -63,10 +66,17 @@ class ProfileFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this, factory).get(ProfileViewModel::class.java)
         val userName = PrefUtils.with(requireContext()).getString("user_name", "")
+        val userFirstName = PrefUtils.with(requireContext()).getString("user_first_name", "")
+        val userLastName = PrefUtils.with(requireContext()).getString("user_last_name", "")
         val userImage = PrefUtils.with(requireContext()).getString("user_image", "")
         val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account",0)
-        tvProfileUserName.text = userName
+        profileUserName.text = userName
+        tvProfileUserName.text = "$userFirstName $userLastName"
         loadImage(ivProfilePhoto, userImage,isSocial)
+
+        btnProfileDuzenle.setOnClickListener {
+            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+        }
 
         navController = Navigation.findNavController(requireActivity(), R.id.profile_fragment)
         profiletabLayout.addOnTabSelectedListener(object :

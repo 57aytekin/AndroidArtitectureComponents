@@ -15,6 +15,12 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE uid = $CURRENT_USER_ID")
     fun getUser(): LiveData<User>
 
+    @Query("UPDATE user SET user_name= :userName, first_name= :firstName, last_name = :lastName Where uid = $CURRENT_USER_ID")
+    suspend fun updateUserNames(userName : String, firstName: String, lastName : String)
+
+    @Query("UPDATE user SET user_name= :userName, first_name= :firstName, last_name = :lastName, paths= :paths Where uid = $CURRENT_USER_ID")
+    suspend fun updateUserAllData(userName : String, firstName: String, lastName : String, paths : String)
+
     @Query("DELETE FROM user")
     fun deleteUser()
 

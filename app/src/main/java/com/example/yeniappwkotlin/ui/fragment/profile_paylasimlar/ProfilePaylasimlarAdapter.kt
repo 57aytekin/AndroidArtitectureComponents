@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.databinding.ProfilePaylasimlarRowItemBinding
+import com.example.yeniappwkotlin.util.calculateDate
 
 class ProfilePaylasimlarAdapter(
     private val posts: List<Post>
@@ -33,6 +34,6 @@ class ProfilePaylasimlarAdapter(
         holder.profilePaylasimlarRowItemBinding.profilePaylasimCommentCount.text = "${currentPost.comment_count.toString()} Yorum"
         holder.profilePaylasimlarRowItemBinding.profilePaylasimLikeCount.text = "${currentPost.like_count.toString()} Beğeni"
         holder.profilePaylasimlarRowItemBinding.profilePaylasimPostText.text = currentPost.share_post.toString()
-        holder.profilePaylasimlarRowItemBinding.profilePaylasimTarih.text = currentPost.tarih.toString()
+        holder.profilePaylasimlarRowItemBinding.profilePaylasimTarih.text = calculateDate(currentPost.tarih.toString())
     }
 }

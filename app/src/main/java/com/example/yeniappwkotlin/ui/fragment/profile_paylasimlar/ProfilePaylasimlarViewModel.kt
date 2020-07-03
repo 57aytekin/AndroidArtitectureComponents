@@ -8,6 +8,7 @@ import com.example.yeniappwkotlin.data.network.repositories.PostRepository
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
 import com.example.yeniappwkotlin.util.Coroutines
+import com.example.yeniappwkotlin.util.lazyDeffered
 import kotlinx.coroutines.Job
 
 class ProfilePaylasimlarViewModel(
@@ -17,14 +18,7 @@ class ProfilePaylasimlarViewModel(
     private lateinit var job : Job
     var commentListener : CommentListener? = null
 
-    private val _posts = MutableLiveData<List<Post>>()
-    val posts : LiveData<List<Post>>
-    get() = _posts
-
-    /*fun getPosts(){
-        job= Coroutines.ioThenMain(
-            { repository.getPosts(user_id)},
-            { _posts.value = it }
-        )
-    }*/
+    val getPost by lazyDeffered {
+        repository.getUserPosts(user_id)
+    }
 }

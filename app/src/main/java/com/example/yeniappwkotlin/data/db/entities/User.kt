@@ -8,6 +8,7 @@ const val CURRENT_USER_ID = 0
 
 @Entity
 data class User (
+    @NonNull
     val user_id : Int? = null,
     val user_name : String? = null,
     val first_name : String? = null,

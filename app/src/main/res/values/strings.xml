@@ -20,11 +20,11 @@
     <string name="hint_user_name">Kullanıcı Adı</string>
 
     <!--Register Control-->
-    <string name="valid_user_name">Kullanıcı adınız 5 karakterden küçük olamaz</string>
+    <string name="valid_user_name">Kullanıcı adınız 5 karakterden küçük, 20 karakterden büyük olamaz</string>
     <string name="fill_fields">Lütfen tüm alanları doldurunuz</string>
     <string name="password_dont_match">Şifreleriniz uyuşmamakta</string>
-    <string name="valid_first_name">Adınız 3 karakterden küçük olamaz</string>
-    <string name="valid_last_name">Soyadınız 2 karakterden küçük olamaz</string>
+    <string name="valid_first_name">Adınız 3 karakterden küçük, 15 karakterden büyük olamaz</string>
+    <string name="valid_last_name">Soyadınız 2 karakterden küçük, 15 karakterden büyük olamaz</string>
     <string name="valid_mail">Mail adresinizi kontrol edin</string>
     <string name="valid_phone">Telefon numaranızı kontrol edin</string>
     <string name="match_password">Şifreleriniz uyuşmuyor</string>
@@ -45,5 +45,7 @@
     <string name="send_message">Mesaj At</string>
     <string name="empty_like_fragment">Henüz bir etkileşiminiz yok. Diğer kişilerle iletişime geçmek için paylaşımları beğenin ve yorum yapın.</string>
     <string name="empty_message">Henüz mesajınız yok</string>
+    <string name="logout">Çıkış Yap</string>
+    <string name="empty_user_posts">Henüz bir paylaşımınız bulunmamakta.</string>
 
 </resources>

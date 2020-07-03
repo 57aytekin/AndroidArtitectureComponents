@@ -48,6 +48,9 @@ class PostRepository(
     suspend fun getPostData(user_id: Int, page : Int, row_per_page : Int) : List<Post>{
         return apiRequest { api.getPost(user_id, page, row_per_page) }
     }
+    suspend fun getUserPosts(user_id: Int) : List<Post>{
+        return apiRequest { api.getUserPosts(user_id) }
+    }
 
     private suspend fun fetchPosts(user_id: Int, page : Int, row_per_page : Int){
         val lastSavedAt = PrefUtils.with(context).getLastSavedAt(KEY_SAVED_AT)

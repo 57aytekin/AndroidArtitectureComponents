@@ -17,7 +17,9 @@ data class MessageList(
     val alici_new_message_count : Int,
     val gonderen_new_message_count : Int,
     @Embedded(prefix = "send_")
+    @NonNull
     val gonderen_user : User,
     @Embedded(prefix = "receiver_")
+    @NonNull
     val alici_user : User
 )

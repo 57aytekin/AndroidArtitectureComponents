@@ -57,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
                 PrefUtils.with(this).save("user_id", user.user_id!!)
                 PrefUtils.with(this).save("user_name", user.user_name!!)
                 PrefUtils.with(this).save("user_first_name", user.first_name!!)
+                PrefUtils.with(this).save("user_last_name", user.last_name!!)
                 PrefUtils.with(this).save("user_image", user.paths!!)
                 PrefUtils.with(this).save("is_social_account", user.is_social_account!!)
                 Intent(this, MainActivity::class.java).also {

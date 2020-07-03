@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/editContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.edit_profile.EditProfileActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/bottom_bar_border">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/homeToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/ivEditBackButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_close"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toEndOf="@id/ivEditBackButton"
+                        android:layout_alignTop="@id/ivEditBackButton"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:layout_alignBottom="@id/ivEditBackButton"
+                        android:text="Profil Düzenle"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/ivEditAccept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="30dp"
+                        android:src="@drawable/ic_accept" />
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivEditPhoto"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/profile_photo"
+            app:layout_constraintTop_toBottomOf="@id/appbar_edit_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Profil Fotogragını Degistir"
+            android:textColor="#51C1FB"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/ivEditPhoto"
+            app:layout_constraintStart_toStartOf="@id/ivEditPhoto"
+            app:layout_constraintEnd_toEndOf="@id/ivEditPhoto"/>
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="30dp"
+            android:background="#B4ADAD"
+            app:layout_constraintTop_toBottomOf="@id/tvEditText"/>
+
+        <ProgressBar
+            android:id="@+id/edit_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <cdflynn.android.library.checkview.CheckView
+            android:id="@+id/check"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:checkView_strokeColor="@color/green"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:checkView_strokeWidth="20dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/view_line">
+
+            <TextView
+                android:id="@+id/tvKullanıcı"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="Kullanıcı Adı"
+                android:textColor="#000"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/etEditUserName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/etEditUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvKullanıcı"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvAd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Ad"
+                android:textColor="#000"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/etEditName"
+                app:layout_constraintStart_toStartOf="@id/tvKullanıcı" />
+
+            <EditText
+                android:id="@+id/etEditName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/etEditUserName"
+                app:layout_constraintStart_toStartOf="@id/etEditUserName"
+                app:layout_constraintTop_toBottomOf="@id/etEditUserName" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Soyad"
+                android:textColor="#000"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/etEditLastName"
+                app:layout_constraintStart_toStartOf="@id/tvAd" />
+
+            <EditText
+                android:id="@+id/etEditLastName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/etEditName"
+                app:layout_constraintStart_toStartOf="@id/etEditName"
+                app:layout_constraintTop_toBottomOf="@id/etEditName" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
