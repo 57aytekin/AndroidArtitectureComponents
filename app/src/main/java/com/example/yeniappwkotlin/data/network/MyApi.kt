@@ -1,17 +1,21 @@
 package com.example.yeniappwkotlin.data.network
 
-import android.content.Context
-import com.example.yeniappwkotlin.data.db.entities.*
-import com.example.yeniappwkotlin.data.network.responses.*
-import okhttp3.Interceptor
+import com.example.yeniappwkotlin.data.db.entities.Comment
+import com.example.yeniappwkotlin.data.db.entities.Likes
+import com.example.yeniappwkotlin.data.db.entities.MessageList
+import com.example.yeniappwkotlin.data.db.entities.Post
+import com.example.yeniappwkotlin.data.network.responses.AuthResponse
+import com.example.yeniappwkotlin.data.network.responses.CommentResponse
+import com.example.yeniappwkotlin.data.network.responses.EditResponse
+import com.example.yeniappwkotlin.data.network.responses.PostLikesResponse
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import java.util.*
-import java.util.concurrent.TimeUnit
+import java.text.DateFormat
+
 
 interface MyApi {
 
@@ -162,6 +166,7 @@ interface MyApi {
         operator fun invoke(
             networkConnectionInterceptor: NetworkConnectionInterceptor
         ): MyApi {
+            //val gson = GsonBuilder().setDateFormat(DateFormat.FULL, DateFormat.FULL).create()
             val okkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(networkConnectionInterceptor)
                 .build()

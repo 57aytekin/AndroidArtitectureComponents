@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.yeniappwkotlin.data.db.entities.Likes
 import com.example.yeniappwkotlin.data.db.entities.MessageList
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.db.entities.User
+import com.example.yeniappwkotlin.util.TimestampConverter
 
 @Database(
     entities =[User::class, Post::class, Likes::class, MessageList::class],

@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Likes
 import com.example.yeniappwkotlin.databinding.LikeFragmentRowItemBinding
-import com.example.yeniappwkotlin.ui.fragment.message.MessageClickListener
-import com.example.yeniappwkotlin.util.calculateDate
+import com.example.yeniappwkotlin.util.convertTimestamp
 import com.example.yeniappwkotlin.util.loadImage
-import java.util.*
 
 class LikeFragmentAdapter(
     private val likes : List<Likes>,
@@ -44,10 +41,13 @@ class LikeFragmentAdapter(
     override fun onBindViewHolder(holder: LikesViewHolder, position: Int) {
         var likesText = ""
         val currentItem = likes[position]
-        if (currentItem.comment_id == -1){
-            likesText = " adlı kullanıcı '${currentItem.comment}' paylaşımını beğendi."
+        if (currentItem.comment_id == -1 && currentItem.post_sahibi_id != -1){
+            likesText = " adlı kullanıcı '${currentItem.share_post}' paylaşımını beğendi."
             holder.likeFragmentRowItemBinding.likeRowBtn.visibility = View.INVISIBLE
-        }else{
+        }else if (currentItem.comment_id == -1 && currentItem.post_sahibi_id == -1){
+            likesText = " adlı kullanıcı '${currentItem.share_post}' paylaşımına '${currentItem.comment}' tamamlamasını yaptı."
+            holder.likeFragmentRowItemBinding.likeRowBtn.visibility = View.INVISIBLE
+        } else{
 
             val count = frequency(likes, currentItem.post_sahibi_id)
             if (count > 1){
@@ -65,7 +65,7 @@ class LikeFragmentAdapter(
         val bss = StyleSpan(Typeface.BOLD)
         sb!!.setSpan(bss,0,username.length, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
         holder.likeFragmentRowItemBinding.likeRowUserName.text = "'${sb}' $likesText"
-        holder.likeFragmentRowItemBinding.likeRowDate.text = calculateDate(currentItem.tarih)
+        holder.likeFragmentRowItemBinding.likeRowDate.text = convertTimestamp(currentItem.tarih.toString())
         holder.likeFragmentRowItemBinding.likeRowBtn.setOnClickListener {
             listener.onRecyclerViewItemClick(holder.itemView, currentItem)
         }

@@ -15,6 +15,7 @@ import com.example.yeniappwkotlin.data.db.entities.Comment
 import com.example.yeniappwkotlin.databinding.CommentRowItem2Binding
 import com.example.yeniappwkotlin.ui.fragment.home.RecyclerViewClickListener
 import com.example.yeniappwkotlin.util.calculateDate
+import com.example.yeniappwkotlin.util.convertTimestamp
 import com.example.yeniappwkotlin.util.loadImage
 import java.io.FileNotFoundException
 
@@ -61,7 +62,7 @@ class CommentActivityAdapter(
         }
 
         holder.commentRowItemBinding.tvCommentAd.text = sb
-        holder.commentRowItemBinding.tvCommentTarih.text = calculateDate(comments.tarih!!)
+        holder.commentRowItemBinding.tvCommentTarih.text = convertTimestamp(comments.tarih!!)
         loadImage(holder.commentRowItemBinding.ivCommentPhoto, comments.paths,comments.is_social_account)
 
         holder.commentRowItemBinding.toggle.setOnCheckedChangeListener { buttonView, isChecked ->

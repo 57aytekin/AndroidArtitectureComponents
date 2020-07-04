@@ -13,7 +13,7 @@ interface LikesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveAllLikes(likes: List<Likes>)
 
-    @Query("SELECT * FROM Likes ORDER BY likes_id DESC")
+    @Query("SELECT * FROM Likes ORDER BY tarih DESC")
     fun getLikes(): LiveData<List<Likes>>
 
 }

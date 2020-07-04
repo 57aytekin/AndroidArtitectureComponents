@@ -32,8 +32,12 @@ class LikesRepository(
     private var likesLastDate = SimpleDateFormat("MM-dd-yyyy HH:mm:ss", Locale.ENGLISH).format(Date())
     private fun saveLikes(likes : List<Likes>){
         Coroutines.io {
-            PrefUtils.with(context).saveLastSavedAt(KEY_SAVED_AT,likesLastDate.toString())
-            db.getLikesDao().saveAllLikes(likes)
+            try{
+                PrefUtils.with(context).saveLastSavedAt(KEY_SAVED_AT,likesLastDate.toString())
+                db.getLikesDao().saveAllLikes(likes)
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
         }
     }
 
