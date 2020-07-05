@@ -94,4 +94,18 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun onPause() {
+        super.onPause()
+        Coroutines.main {
+            api.updateUserLoginStatu(userId!!,0)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Coroutines.main {
+            api.updateUserLoginStatu(userId!!,1)
+        }
+    }
 }

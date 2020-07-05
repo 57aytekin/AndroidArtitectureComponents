@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -48,12 +49,23 @@ class LoginActivity : AppCompatActivity() {
         val repository = UserRepository(api, db)
         val factory =
             AuthViewModelFactory(repository)
+        var token : String? = null
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(this) { instanceIdResult ->
+            token = instanceIdResult.token
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         viewModel = ViewModelProvider(this, factory).get(AuthViewModel::class.java)
 
         viewModel.getLoggedInUser().observe(this, Observer { user ->
             if (user != null) {
+                Coroutines.main {
+                    try {
+                        viewModel.updateTokenIsLoginLastLogin(user.user_id!!,token!!,1)
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
+                }
                 PrefUtils.with(this).save("user_id", user.user_id!!)
                 PrefUtils.with(this).save("user_name", user.user_name!!)
                 PrefUtils.with(this).save("user_first_name", user.first_name!!)

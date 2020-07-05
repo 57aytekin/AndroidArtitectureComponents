@@ -14,9 +14,13 @@ class AuthViewModel(
         email : String, password : String
     ) = repository.userLogin(email, password)
 
-    suspend fun updateIsLogin(
+    suspend fun updateUserLoginStatu(
         user_id : Int, is_login : Int
-    ) = repository.updateIsLogin(user_id, is_login)
+    ) = repository.updateUserLoginStatu(user_id, is_login)
+
+    suspend fun updateTokenIsLoginLastLogin(
+        user_id: Int, token: String, is_login: Int
+    ) = repository.updateTokenIsLoginLastLogin(user_id, token, is_login)
 
     suspend fun userRegister(
         userName : String, firsName : String,lastName : String, email: String, phone: String, password: String, paths: String, is_social_account : Int

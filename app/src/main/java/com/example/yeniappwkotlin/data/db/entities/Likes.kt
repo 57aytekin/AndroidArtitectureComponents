@@ -3,10 +3,7 @@ package com.example.yeniappwkotlin.data.db.entities
 import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.example.yeniappwkotlin.util.TimestampConverter
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 @Entity
 data class Likes (

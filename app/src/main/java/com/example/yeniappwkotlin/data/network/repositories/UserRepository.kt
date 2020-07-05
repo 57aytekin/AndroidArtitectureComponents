@@ -28,6 +28,15 @@ class UserRepository(
     suspend fun updateIsLogin(user_id: Int, is_login: Int): CommentResponse{
         return apiRequest { api.updateWhoIsTalking(user_id, is_login) }
     }
+
+    suspend fun updateUserLoginStatu(user_id: Int, is_login: Int): CommentResponse{
+        return apiRequest { api.updateUserLoginStatu(user_id, is_login) }
+    }
+
+    suspend fun updateTokenIsLoginLastLogin(user_id: Int, token: String, is_login: Int): CommentResponse{
+        return apiRequest { api.updateTokenIsLoginLastLogin(user_id, token, is_login) }
+    }
+
     suspend fun updateUserProfile(user_id: Int, user_name: String, user_first_name: String, user_last_name: String, image: String): CommentResponse{
         return apiRequest { api.updateUserProfile(user_id, user_name, user_first_name, user_last_name, image) }
     }

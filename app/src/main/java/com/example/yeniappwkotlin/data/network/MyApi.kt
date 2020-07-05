@@ -162,6 +162,21 @@ interface MyApi {
         @Field("who_is_talking") whoIsTalking: Int
     ): Response<CommentResponse>
 
+    @FormUrlEncoded
+    @POST("update_user_login_statu.php")
+    suspend fun updateUserLoginStatu(
+        @Field("user_id") user_id: Int,
+        @Field("is_login") is_login: Int
+    ): Response<CommentResponse>
+
+    @FormUrlEncoded
+    @POST("update_token_is_last_login.php")
+    suspend fun updateTokenIsLoginLastLogin(
+        @Field("user_id") user_id: Int,
+        @Field("token") token: String,
+        @Field("is_login") isLogin: Int
+    ): Response<CommentResponse>
+
     companion object {
         operator fun invoke(
             networkConnectionInterceptor: NetworkConnectionInterceptor

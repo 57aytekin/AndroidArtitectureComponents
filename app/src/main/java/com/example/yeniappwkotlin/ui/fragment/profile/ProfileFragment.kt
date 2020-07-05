@@ -116,6 +116,7 @@ class ProfileFragment : Fragment() {
                 viewModel.deleteLikes()
                 viewModel.deleteMessageList()
                 viewModel.updateIsLogin(userId!!, 0)
+                viewModel.updateUserLoginStatu(userId!!, 0)
             }
             it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(it)

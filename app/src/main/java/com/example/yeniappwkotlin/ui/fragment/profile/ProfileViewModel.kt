@@ -12,6 +12,10 @@ class ProfileViewModel(
         user_id : Int, is_login : Int
     ) = repository.updateIsLogin(user_id, is_login)
 
+    suspend fun updateUserLoginStatu(
+        user_id : Int, is_login : Int
+    ) = repository.updateUserLoginStatu(user_id, is_login)
+
     fun deleteUser() = repository.deleteUser()
     fun deletePost() = repository.deletePost()
     fun deleteLikes() = repository.deleteLikes()
