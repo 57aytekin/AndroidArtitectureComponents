@@ -30,7 +30,15 @@ class MainActivity : AppCompatActivity() {
         api = MyApi(networkConnectionInterceptor)
         userId = PrefUtils.with(this).getInt("user_id",-1)
 
+        val pushNotification = intent.getStringExtra("push_fragment")
+
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+
+        if (pushNotification != null && pushNotification == "like_fragment"){
+            navController!!.navigate(R.id.likeFragment)
+        }else if(pushNotification != null && pushNotification == "chat_fragment"){
+            navController!!.navigate(R.id.messageFragment)
+        }
         tabLayout.addOnTabSelectedListener(object :
             OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

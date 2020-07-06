@@ -20,7 +20,7 @@ class LikeFragmentAdapter(
     private val likes : List<Likes>,
     private val listener : ClickListener
 ) : RecyclerView.Adapter<LikeFragmentAdapter.LikesViewHolder>() {
-
+    var lastestId = 0
     inner class LikesViewHolder(
         val likeFragmentRowItemBinding: LikeFragmentRowItemBinding
     ) : RecyclerView.ViewHolder(likeFragmentRowItemBinding.root)
@@ -48,14 +48,13 @@ class LikeFragmentAdapter(
             likesText = " adlı kullanıcı '${currentItem.share_post}' paylaşımına '${currentItem.comment}' tamamlamasını yaptı."
             holder.likeFragmentRowItemBinding.likeRowBtn.visibility = View.INVISIBLE
         } else{
-
             val count = frequency(likes, currentItem.post_sahibi_id)
-            if (count > 1){
+            if (count > 1 && currentItem.likes_id != lastestId){
                 holder.likeFragmentRowItemBinding.likeRowBtn.visibility = View.INVISIBLE
-                likesText = " adlı kullanıcı '${currentItem.comment}' yorumunu beğendi."
+                likesText = " adlı kullanıcı '${currentItem.comment}' tamamlamanı beğendi."
             }else{
                 holder.likeFragmentRowItemBinding.likeRowBtn.visibility = View.VISIBLE
-                likesText = " adlı kullanıcı '${currentItem.comment}' yorumunu beğendi. Artık onunla iletişime geçebilirsin."
+                likesText = " adlı kullanıcı '${currentItem.comment}' tamamlamanı beğendi. Artık onunla iletişime geçebilirsin."
             }
         }
         loadImage(holder.likeFragmentRowItemBinding.likeRowPhoto, currentItem.paths, currentItem.is_social_account)
@@ -75,6 +74,7 @@ class LikeFragmentAdapter(
         var result = 0
         for(item in liste){
             if (post_sahibi == item.post_sahibi_id){
+                lastestId = item.likes_id
                 result ++
             }
         }

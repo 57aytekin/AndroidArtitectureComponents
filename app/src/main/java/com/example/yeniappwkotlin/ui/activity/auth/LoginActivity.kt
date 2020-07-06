@@ -62,8 +62,12 @@ class LoginActivity : AppCompatActivity() {
                 Coroutines.main {
                     try {
                         viewModel.updateTokenIsLoginLastLogin(user.user_id!!,token!!,1)
-                    }catch (e : Exception){
-                        e.printStackTrace()
+                    }catch (e: ApiException) {
+                        toast("Sunucudan yanıt alınamıyor")
+                    } catch (e: NoInternetException) {
+                        toast("İnternet bağlantınızı kontrol ediniz")
+                    } catch (e : java.lang.Exception){
+                        toast("Bir hata oluştu: "+ e.printStackTrace().toString())
                     }
                 }
                 PrefUtils.with(this).save("user_id", user.user_id!!)
@@ -95,6 +99,7 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             val email = binding.etLoginEmail.text.toString().trim()
             val password = binding.etLoginPassword.text.toString().trim()
+            openCloseSoftKeyboard(this, root_layout, false )
             progress_bar.show()
             loginUser(
                 "user_name",

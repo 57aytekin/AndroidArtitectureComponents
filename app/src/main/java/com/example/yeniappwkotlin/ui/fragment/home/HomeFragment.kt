@@ -44,6 +44,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     var flag = false
 
     var userId : Int? = null
+    var userName : String? = null
     var repository : PostRepository? = null
 
     var navController: NavController? = null
@@ -66,6 +67,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         openCloseSoftKeyboard(requireContext(),requireView(), false)
 
         userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
+        userName = PrefUtils.with(requireContext()).getString("user_name", "")
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
@@ -150,6 +152,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
             R.id.postBtnComment -> {
                 val intent = Intent(requireContext(), CommentActivity::class.java)
                 intent.putExtra("post_id", post.post_id)
+                intent.putExtra("post_name", post.user_name)
                 intent.putExtra("post_user_id", post.user_id)
                 intent.putExtra("path", post.paths)
                 startActivity(intent)
@@ -173,6 +176,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                 }else if(post.user_post_likes?.begeni_durum != null && post.user_post_likes!!.begeni_durum == 0){
                     likeCount = post.like_count!! +1
                     viewModel.btnPostLike(post.post_id!!, userId, post.like_count!!, 1)
+                    viewModel.pushNotification(userName!!, post.user_name!!, post.share_post!!, 3)
                     post.user_post_likes!!.begeni_durum = 1
                     post.like_count = likeCount
                     homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)
@@ -180,6 +184,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                 }else {
                     likeCount = post.like_count!! +1
                     viewModel.saveUserPostLikes(userId, post.post_id!!, 1, likeCount, post.user_id!!)
+                    viewModel.pushNotification(userName!!, post.user_name!!, post.share_post!!, 3)
                     post.user_post_likes = PostLikes(1)
                     post.like_count = likeCount
                     homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)

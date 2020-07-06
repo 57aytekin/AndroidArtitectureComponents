@@ -66,6 +66,10 @@ class PostRepository(
         }
     }
 
+    suspend fun pushNotification(user_name: String, other_user_name: String, commentName: String, durum: Int) : String{
+        return apiRequest { api.pushNotification(user_name, other_user_name, commentName, durum) }
+    }
+
     /*suspend fun getLocalPost(user_id: Int): LiveData<List<Post>>{
         return withContext(Dispatchers.IO){
             db.getPostDao().getPosts()

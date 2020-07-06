@@ -24,6 +24,8 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
     private lateinit var viewModel: CommentViewModel
     var postId: Int? = null
     var postUserId: Int? = null
+    var userName : String? = null
+    var postUserName : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +33,10 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
 
         postId = intent.getIntExtra("post_id", 1)
         postUserId = intent.getIntExtra("post_user_id", 0)
+        postUserName = intent.getStringExtra("post_name")
         val userPhoto = PrefUtils.with(this).getString("user_image","")
         val isSocial = PrefUtils.with(this).getInt("is_social_account",0)
+        userName = PrefUtils.with(this).getString("user_name","")
 
         loadImage(iv_comment_photo, userPhoto, isSocial)
         val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
@@ -51,6 +55,7 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
                 constrainLayout.snackbar("Lütfen paylaşımınızı giriniz.")
             } else {
                 viewModel.onSaveCommentClick(userId, postId!!, etMessage)
+                viewModel.pushNotification(postUserName!!, userName!!, etMessage,1)
             }
         }
 
@@ -104,6 +109,7 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
                             commentRowItemBinding.toggle.setBackgroundResource(R.drawable.ic_favorite_orange)
                             viewModel.saveLikes(postUserId!!, comment.user_id!!, comment.id!!, postId!!)
                             viewModel.updateCommentLike(comment.id, 1)
+                            viewModel.pushNotification(userName!!, comment.user_name!!,comment.comment!!,0 )
                         } else {
                             commentRowItemBinding.toggle.setBackgroundResource(R.drawable.ic_favorite_black_24dp)
                             viewModel.updateCommentLike(comment.id!!, 0)

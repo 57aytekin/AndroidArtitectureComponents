@@ -114,11 +114,13 @@ class ChatActivity : AppCompatActivity() {
                                 if (userId == mess.gonderen_user.user_id){
                                     viewModel.updateMessageList(mess.messageId!!, mess.alici_user.user_id!!, mess.gonderen_user.user_id!!, userMessage, mess.alici_new_message_count+1, mess.gonderen_new_message_count,0,0)
                                     viewModel.updateLocalMessageList(currentDate, userMessage, mess.messageId, mess.alici_new_message_count+1, mess.gonderen_new_message_count)
+                                    viewModel.pushNotification(mess.gonderen_user.user_name!!, mess.alici_user.user_name!!, userMessage, 2)
                                     flag = true
                                 }
                                 else if (userId == mess.alici_user.user_id){
                                     viewModel.updateMessageList(mess.messageId!!, mess.gonderen_user.user_id!!, mess.alici_user.user_id!!, userMessage, mess.alici_new_message_count, mess.gonderen_new_message_count+1,0,0)
                                     viewModel.updateLocalMessageList(currentDate, userMessage, mess.messageId, mess.alici_new_message_count, mess.gonderen_new_message_count+1)
+                                    viewModel.pushNotification(mess.alici_user.user_name!!, mess.gonderen_user.user_name!!, userMessage, 2)
                                     flag = true
                                 }
                             }

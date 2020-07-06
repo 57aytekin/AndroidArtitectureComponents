@@ -44,6 +44,20 @@ class CommentViewModel(
         }
     }
 
+    fun pushNotification(user_name: String, other_user_name: String, commentName: String, durum: Int){
+        Coroutines.main {
+            try {
+                repository.pushNotification(user_name, other_user_name, commentName, durum)
+            }catch (e : ApiException){
+                commentListener?.onFailure(e.message!!)
+            }catch (e : NoInternetException){
+                commentListener?.onFailure(e.message!!)
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
     suspend fun updateCommentLike(comment_id : Int, begeniDurum : Int) =
         repository.updateCommentLike(comment_id, begeniDurum)
 

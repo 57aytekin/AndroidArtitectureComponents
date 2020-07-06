@@ -177,6 +177,15 @@ interface MyApi {
         @Field("is_login") isLogin: Int
     ): Response<CommentResponse>
 
+    @FormUrlEncoded
+    @POST("push_notification.php")
+    suspend fun pushNotification(
+        @Field("user_name") user_name: String,
+        @Field("other_user_name") other_user_name: String,
+        @Field("content_text") content_text: String,
+        @Field("durum") durum: Int
+    ): Response<String>
+
     companion object {
         operator fun invoke(
             networkConnectionInterceptor: NetworkConnectionInterceptor

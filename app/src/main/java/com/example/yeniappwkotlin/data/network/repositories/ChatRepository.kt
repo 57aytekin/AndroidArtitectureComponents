@@ -69,6 +69,9 @@ class ChatRepository(
     suspend fun updateMessageList(id : Int, userId : Int, currentUserId : Int, message : String, aliciNewCount : Int, gonderenNewCount : Int, is_alici : Int, is_gonderen : Int) : CommentResponse{
         return apiRequest { api.updateMessageList(id, userId, currentUserId, message, aliciNewCount, gonderenNewCount, is_alici, is_gonderen) }
     }
+    suspend fun pushNotification(user_name: String, other_user_name: String, commentName: String, durum: Int) : String{
+        return apiRequest { api.pushNotification(user_name, other_user_name, commentName, durum) }
+    }
 
     suspend fun getMessageList(userId : Int) : List<MessageList>{
         return apiRequest { api.getMessageList(userId) }

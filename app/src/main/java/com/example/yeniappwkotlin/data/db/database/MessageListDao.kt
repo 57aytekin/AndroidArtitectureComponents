@@ -10,7 +10,7 @@ interface MessageListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveAllMessage(messageList : List<MessageList>)
 
-    @Query("SELECT * FROM MessageList ORDER BY messageId DESC")
+    @Query("SELECT * FROM MessageList ORDER BY tarih DESC")
     fun getMessageList() : LiveData<List<MessageList>>
 
     @Query(

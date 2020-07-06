@@ -14,6 +14,7 @@ import com.example.yeniappwkotlin.databinding.MessageRowItemBinding
 import com.example.yeniappwkotlin.ui.fragment.home.RecyclerViewClickListener
 import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.calculateDate
+import com.example.yeniappwkotlin.util.convertTimestamp
 import com.example.yeniappwkotlin.util.loadImage
 
 class MessageFragmentAdapter(
@@ -69,7 +70,7 @@ class MessageFragmentAdapter(
         //Glide.with(context).load(currentMessage.alici_photo).into(bindingView.messageItemUserPhoto)
 
         bindingView.messageItemMesaj.text = currentMessage.message
-        bindingView.messageItemDate.text = calculateDate(currentMessage.tarih)
+        bindingView.messageItemDate.text = convertTimestamp(currentMessage.tarih)
 
         bindingView.root.setOnClickListener {
             listener.onRecyclerViewItemClick(bindingView.root, currentMessage)

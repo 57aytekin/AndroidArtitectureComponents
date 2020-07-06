@@ -59,6 +59,20 @@ class ChatViewModel(
         }
     }
 
+    fun pushNotification(user_name: String, other_user_name: String, commentName: String, durum: Int){
+        Coroutines.main {
+            try {
+                repository.pushNotification(user_name, other_user_name,  commentName, durum)
+            }catch (e : ApiException){
+                commentListener?.onFailure(e.message!!)
+            }catch (e : NoInternetException){
+                commentListener?.onFailure(e.message!!)
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
     suspend fun getMessageList(userId : Int) : List<MessageList>{
         val response : List<MessageList>?
         response = repository.getMessageList(userId)
