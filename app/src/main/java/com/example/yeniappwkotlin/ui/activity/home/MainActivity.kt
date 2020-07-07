@@ -1,19 +1,20 @@
 package com.example.yeniappwkotlin.ui.activity.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.PrefUtils
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.example.yeniappwkotlin.util.checkItem
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,68 +40,51 @@ class MainActivity : AppCompatActivity() {
         }else if(pushNotification != null && pushNotification == "chat_fragment"){
             navController!!.navigate(R.id.messageFragment)
         }
-        tabLayout.addOnTabSelectedListener(object :
-            OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        navController!!.navigate(R.id.homeFragment)
-                        tab.setIcon(R.drawable.icon_new_home_filled)
-                    }
-                    1 -> {
-                        navController!!.navigate(R.id.likeFragment)
-                        tab.setIcon(R.drawable.icon_new_like_fill)
-                    }
-                    2 -> {
-                        navController!!.navigate(R.id.editFragment)
-                        tab.setIcon(R.drawable.icon_new_plus_fill)
-                    }
-                    3 -> {
-                        navController!!.navigate(R.id.messageFragment)
-                        tab.setIcon(R.drawable.icon_new_message_fill)
-                    }
-                    4 -> {
-                        navController!!.navigate(R.id.profileFragment)
-                        tab.setIcon(R.drawable.icon_new_profile_fill)
-                    }
-                }
-            }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        navController!!.navigate(R.id.homeFragment)
-                        tab.setIcon(R.drawable.icon_new_home_filled)
-                    }
-                    1 -> {
-                        navController!!.navigate(R.id.likeFragment)
-                        tab.setIcon(R.drawable.icon_new_like_fill)
-                    }
-                    2 -> {
-                        navController!!.navigate(R.id.editFragment)
-                        tab.setIcon(R.drawable.icon_new_plus_fill)
-                    }
-                    3 -> {
-                        navController!!.navigate(R.id.messageFragment)
-                        tab.setIcon(R.drawable.icon_new_message_fill)
-                    }
-                    4 -> {
-                        navController!!.navigate(R.id.profileFragment)
-                        tab.setIcon(R.drawable.icon_new_profile_fill)
-                    }
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            when (it.itemId){
+                R.id.nav_tab_home -> {
+                    navController!!.navigate(R.id.homeFragment)
+                }
+                R.id.nav_tab_likes -> {
+                    navController!!.navigate(R.id.likeFragment)
+                }
+                R.id.nav_tab_add -> {
+                    navController!!.navigate(R.id.editFragment)
+                }
+                R.id.nav_tab_message -> {
+                    navController!!.navigate(R.id.messageFragment)
+                }
+                R.id.nav_tab_profile -> {
+                    navController!!.navigate(R.id.profileFragment)
                 }
             }
+            true
+        }
+    }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> { tab.setIcon(R.drawable.icon_new_home) }
-                    1 -> { tab.setIcon(R.drawable.icon_new_like) }
-                    2 -> { tab.setIcon(R.drawable.icon_new_plus)}
-                    3 -> { tab.setIcon(R.drawable.icon_new_message) }
-                    4 -> { tab.setIcon(R.drawable.icon_new_profile) }
-                }
+    override fun onBackPressed() {
+        when(NavHostFragment.findNavController(nav_host_fragment).currentDestination!!.id) {
+            R.id.likeFragment-> {
+               navController!!.navigate(R.id.homeFragment)
+                bottomNavigation.checkItem(R.id.nav_tab_home)
             }
-        })
+            R.id.messageFragment -> {
+                navController!!.navigate(R.id.homeFragment)
+                bottomNavigation.checkItem(R.id.nav_tab_home)
+            }
+            R.id.profileFragment -> {
+                navController!!.navigate(R.id.homeFragment)
+                bottomNavigation.checkItem(R.id.nav_tab_home)
+            }
+            R.id.editFragment -> {
+                navController!!.navigate(R.id.homeFragment)
+                bottomNavigation.checkItem(R.id.nav_tab_home)
+            }
+            R.id.homeFragment -> {
+                finish()
+            }
+        }
     }
 
     override fun onPause() {

@@ -78,7 +78,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
                 finish()
             }
             R.id.ivEditAccept -> {
-                openCloseSoftKeyboard(this, editContainer, false)
+                val view = this.currentFocus
+                openCloseSoftKeyboard(applicationContext, view!!, false)
                 checkValidation()
                 Coroutines.main {
                     try {

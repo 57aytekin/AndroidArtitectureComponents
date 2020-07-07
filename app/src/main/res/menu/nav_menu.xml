@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_tab_home"
+        android:icon="@drawable/ic_tab_home"
+        android:menuCategory="secondary"
+        android:title="Anasayfa"/>
+    <item
+        android:id="@+id/nav_tab_likes"
+        android:icon="@drawable/ic_favori"
+        android:menuCategory="secondary"
+        android:title="Beğeniler"/>
+    <item
+        android:id="@+id/nav_tab_add"
+        android:icon="@drawable/ic_add"
+        android:menuCategory="secondary"
+        android:title="Paylaş"/>
+    <item
+        android:id="@+id/nav_tab_message"
+        android:icon="@drawable/ic_message"
+        android:menuCategory="secondary"
+        android:title="Mesajlar"/>
+    <item
+        android:id="@+id/nav_tab_profile"
+        android:icon="@drawable/ic_profile"
+        android:menuCategory="secondary"
+        android:title="Profil"/>
+</menu>

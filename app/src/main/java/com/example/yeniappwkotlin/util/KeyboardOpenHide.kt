@@ -13,6 +13,6 @@ fun openCloseSoftKeyboard(context: Context, view: View, open : Boolean) {
         // open the soft keyboard
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
     }else{
-        imm.hideSoftInputFromWindow(view.windowToken, InputMethodManager.SHOW_IMPLICIT)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

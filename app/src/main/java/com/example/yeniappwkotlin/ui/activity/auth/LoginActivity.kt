@@ -1,8 +1,10 @@
 package com.example.yeniappwkotlin.ui.activity.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -99,7 +101,8 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             val email = binding.etLoginEmail.text.toString().trim()
             val password = binding.etLoginPassword.text.toString().trim()
-            openCloseSoftKeyboard(this, root_layout, false )
+            val view = this.currentFocus
+            openCloseSoftKeyboard(applicationContext, view!!, false)
             progress_bar.show()
             loginUser(
                 "user_name",

@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.yeniappwkotlin.R
@@ -27,6 +30,7 @@ import kotlinx.android.synthetic.main.like_fragment.*
 import kotlinx.coroutines.launch
 
 class LikeFragment : Fragment(), ClickListener {
+    var navController: NavController? = null
 
     companion object {
         fun newInstance() = LikeFragment()

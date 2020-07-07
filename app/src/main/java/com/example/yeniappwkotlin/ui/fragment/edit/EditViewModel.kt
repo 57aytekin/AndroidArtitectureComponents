@@ -11,16 +11,15 @@ import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.db.entities.User
 import com.example.yeniappwkotlin.data.network.repositories.PostRepository
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
-import com.example.yeniappwkotlin.util.ApiException
-import com.example.yeniappwkotlin.util.Coroutines
-import com.example.yeniappwkotlin.util.NoInternetException
-import com.example.yeniappwkotlin.util.PrefUtils
+import com.example.yeniappwkotlin.util.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Job
 
 class EditViewModel(
     private val activity: Activity,
     private val repository: UserRepository,
-    val userId : Int
+    val userId : Int,
+    val bottomNavigation : BottomNavigationView
 ) : ViewModel() {
     var user_id: Int? = null
     var share_post : String? = null
@@ -44,6 +43,7 @@ class EditViewModel(
                     PrefUtils.with(activity.applicationContext).save("post_key_saved_at","")
                     navController.navigate(
                         R.id.action_editFragment_to_homeFragment )
+                    bottomNavigation.checkItem(R.id.nav_tab_home)
                     return@main
                 }
             }catch (e : ApiException){

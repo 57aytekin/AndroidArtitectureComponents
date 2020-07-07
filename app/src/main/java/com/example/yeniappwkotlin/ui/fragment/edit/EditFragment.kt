@@ -14,10 +14,9 @@ import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 import com.example.yeniappwkotlin.databinding.EditFragmentBinding
-import com.example.yeniappwkotlin.util.PrefUtils
-import com.example.yeniappwkotlin.util.loadImage
-import com.example.yeniappwkotlin.util.openCloseSoftKeyboard
-import com.example.yeniappwkotlin.util.snackbar
+import com.example.yeniappwkotlin.util.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.edit_fragment.*
 
 class EditFragment : Fragment(), EditListener {
@@ -49,7 +48,7 @@ class EditFragment : Fragment(), EditListener {
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
         val repository = UserRepository(api, db)
-        val factory = EditViewModelFactory(this.requireActivity(), repository, userId)
+        val factory = EditViewModelFactory(this.requireActivity(), repository, userId, bottomNavigation)
         viewModel = ViewModelProvider(this, factory).get(EditViewModel::class.java)
         binding?.edit = viewModel
 
@@ -58,6 +57,7 @@ class EditFragment : Fragment(), EditListener {
         binding!!.fragmentEditClose.setOnClickListener {
             navController.navigate(
                 R.id.action_editFragment_to_homeFragment )
+            bottomNavigation.checkItem(R.id.nav_tab_home)
         }
     }
 
