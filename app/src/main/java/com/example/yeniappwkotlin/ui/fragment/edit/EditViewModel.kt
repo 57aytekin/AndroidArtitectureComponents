@@ -18,8 +18,7 @@ import kotlinx.coroutines.Job
 class EditViewModel(
     private val activity: Activity,
     private val repository: UserRepository,
-    val userId : Int,
-    val bottomNavigation : BottomNavigationView
+    val userId : Int
 ) : ViewModel() {
     var user_id: Int? = null
     var share_post : String? = null
@@ -43,7 +42,6 @@ class EditViewModel(
                     PrefUtils.with(activity.applicationContext).save("post_key_saved_at","")
                     navController.navigate(
                         R.id.action_editFragment_to_homeFragment )
-                    bottomNavigation.checkItem(R.id.nav_tab_home)
                     return@main
                 }
             }catch (e : ApiException){

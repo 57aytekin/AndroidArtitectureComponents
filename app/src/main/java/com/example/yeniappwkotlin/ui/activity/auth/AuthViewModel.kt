@@ -1,8 +1,13 @@
 package com.example.yeniappwkotlin.ui.activity.auth
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.yeniappwkotlin.data.db.entities.User
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
+import com.example.yeniappwkotlin.util.ApiException
+import com.example.yeniappwkotlin.util.Coroutines
+import com.example.yeniappwkotlin.util.NoInternetException
+import java.lang.Exception
 
 class AuthViewModel(
     private val repository: UserRepository
@@ -18,9 +23,21 @@ class AuthViewModel(
         user_id : Int, is_login : Int
     ) = repository.updateUserLoginStatu(user_id, is_login)
 
-    suspend fun updateTokenIsLoginLastLogin(
+    fun updateTokenIsLoginLastLogin(
         user_id: Int, token: String, is_login: Int
-    ) = repository.updateTokenIsLoginLastLogin(user_id, token, is_login)
+    ) {
+        Coroutines.main {
+            try {
+                repository.updateTokenIsLoginLastLogin(user_id, token, is_login)
+            } catch (e: ApiException) {
+                Log.d("AUTH_API_ERROR: ",e.message!!)
+            } catch (e: NoInternetException) {
+                Log.d("AUTH_NET_ERROR: ",e.message!!)
+            } catch (e : Exception){
+                Log.d("AUTH_EXP: ",e.printStackTrace().toString())
+            }
+        }
+    }
 
     suspend fun userRegister(
         userName : String, firsName : String,lastName : String, email: String, phone: String, password: String, paths: String, is_social_account : Int

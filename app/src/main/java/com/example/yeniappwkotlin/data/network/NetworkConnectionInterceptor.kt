@@ -33,7 +33,7 @@ class NetworkConnectionInterceptor(
             //throw NoInternetException("Internet bağlantınızı açınız")
         }else if (!isInternetAvailable()){
             Coroutines.main { context.toast("Lütfen internet bağlantınızı kontrol edin") }
-            throw NoInternetException("Internet bağlantınız bulunmamakta")
+            //throw NoInternetException("Internet bağlantınız bulunmamakta")
         }
         return chain.proceed(chain.request())
     }

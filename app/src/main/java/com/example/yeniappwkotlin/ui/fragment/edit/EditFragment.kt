@@ -48,7 +48,7 @@ class EditFragment : Fragment(), EditListener {
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
         val repository = UserRepository(api, db)
-        val factory = EditViewModelFactory(this.requireActivity(), repository, userId, bottomNavigation)
+        val factory = EditViewModelFactory(this.requireActivity(), repository, userId)
         viewModel = ViewModelProvider(this, factory).get(EditViewModel::class.java)
         binding?.edit = viewModel
 

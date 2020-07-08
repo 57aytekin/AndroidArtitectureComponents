@@ -28,6 +28,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.*
 
 
@@ -61,17 +62,7 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.getLoggedInUser().observe(this, Observer { user ->
             if (user != null) {
-                Coroutines.main {
-                    try {
-                        viewModel.updateTokenIsLoginLastLogin(user.user_id!!,token!!,1)
-                    }catch (e: ApiException) {
-                        toast("Sunucudan yanıt alınamıyor")
-                    } catch (e: NoInternetException) {
-                        toast("İnternet bağlantınızı kontrol ediniz")
-                    } catch (e : java.lang.Exception){
-                        toast("Bir hata oluştu: "+ e.printStackTrace().toString())
-                    }
-                }
+                viewModel.updateTokenIsLoginLastLogin(user.user_id!!,token!!,1)
                 PrefUtils.with(this).save("user_id", user.user_id!!)
                 PrefUtils.with(this).save("user_name", user.user_name!!)
                 PrefUtils.with(this).save("user_first_name", user.first_name!!)
@@ -222,6 +213,8 @@ class LoginActivity : AppCompatActivity() {
             } catch (e: ApiException) {
                 e.printStackTrace()
             } catch (e: NoInternetException) {
+                e.printStackTrace()
+            } catch (e : Exception){
                 e.printStackTrace()
             }
         }

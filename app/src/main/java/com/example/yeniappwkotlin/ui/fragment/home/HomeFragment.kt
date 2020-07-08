@@ -25,6 +25,7 @@ import com.example.yeniappwkotlin.databinding.FragmentHomeRowItemBinding
 import com.example.yeniappwkotlin.ui.activity.comment.CommentActivity
 import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
 import com.example.yeniappwkotlin.util.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home_row_item.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
@@ -68,6 +69,9 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         super.onActivityCreated(savedInstanceState)
         openCloseSoftKeyboard(requireContext(),requireView(), false)
 
+        if (bottomNavigation != null){
+            bottomNavigation.checkItem(R.id.nav_tab_home)
+        }
         userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
         userName = PrefUtils.with(requireContext()).getString("user_name", "")
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
@@ -117,6 +121,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     }
 
     private fun refreshPosts() {
+        //PrefUtils.with(requireContext()).remove("post_key_saved_at")
         getPostItems()
     }
 
@@ -139,6 +144,10 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                         onRefresh.isRefreshing = false
                     }
                 })
+            } catch (e: ApiException) {
+                Toast.makeText(requireContext(), "Bağlantı ypl: "+e.message!!, Toast.LENGTH_SHORT).show()
+            } catch (e: NoInternetException) {
+                Toast.makeText(requireContext(), "No ınternet: "+e.message!!, Toast.LENGTH_SHORT).show()
             }catch (e : Exception){
                 Toast.makeText(requireContext(), "HATA: "+e.message!!, Toast.LENGTH_SHORT).show()
             }

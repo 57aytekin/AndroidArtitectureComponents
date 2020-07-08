@@ -27,6 +27,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity() {
@@ -153,6 +154,8 @@ class RegisterActivity : AppCompatActivity() {
             } catch (e: ApiException) {
                 e.printStackTrace()
             } catch (e: NoInternetException) {
+                e.printStackTrace()
+            } catch (e : Exception){
                 e.printStackTrace()
             }
         }

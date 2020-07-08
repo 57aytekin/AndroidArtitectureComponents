@@ -11,10 +11,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class EditViewModelFactory(
     private val activity :Activity,
     private val repository: UserRepository,
-    private val userId : Int,
-    private val bottomNavigation : BottomNavigationView
+    private val userId : Int
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return EditViewModel(activity,repository, userId, bottomNavigation) as T
+        return EditViewModel(activity,repository, userId) as T
     }
 }
