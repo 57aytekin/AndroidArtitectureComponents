@@ -54,10 +54,11 @@ class EditFragment : Fragment(), EditListener {
 
         openCloseSoftKeyboard(requireContext(), binding?.fragmentEditEtText!!, true)
         val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+        val asd = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         binding!!.fragmentEditClose.setOnClickListener {
             navController.navigate(
                 R.id.action_editFragment_to_homeFragment )
-            bottomNavigation.checkItem(R.id.nav_tab_home)
+            asd.checkItem(R.id.nav_tab_home)
         }
     }
 

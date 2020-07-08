@@ -26,6 +26,7 @@ import com.example.yeniappwkotlin.util.*
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
+import kotlinx.android.synthetic.main.activity_edit_profile.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
@@ -174,6 +175,10 @@ class RegisterActivity : AppCompatActivity() {
             toast(getString(R.string.fill_fields))
             return false
         }
+        if (checkTurkishCharacter(userName)) {
+            editContainer.snackbar("Kullanıcı adında türkçe karakter(ı,ş,ç,ö,ü) ve boşluk olamaz ")
+            return false
+        }
         if (userName.length < 5) {
             textInputSettings(binding.txtUserName, getString(R.string.valid_user_name))
             return false
@@ -225,6 +230,11 @@ class RegisterActivity : AppCompatActivity() {
         txtInput.setErrorTextColor(ColorStateList.valueOf(Color.RED))
         txtInput.requestFocus()
     }
-
+    private fun checkTurkishCharacter(deger: String): Boolean {
+        return (deger.contains(" ") || deger.contains("ş") || deger.contains("Ş") || deger.contains("Ç")
+                || deger.contains("ç") || deger.contains("Ğ") || deger.contains("ğ") || deger.contains("ş")
+                || deger.contains("ö") || deger.contains("Ö") || deger.contains("ü") || deger.contains("Ü")
+                || deger.contains("ı") || deger.contains("İ"))
+    }
 
 }

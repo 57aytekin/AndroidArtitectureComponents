@@ -86,6 +86,10 @@ class LoginActivity : AppCompatActivity() {
         //Firebase Auth instance
         mAuth = FirebaseAuth.getInstance()
         sign_button.setOnClickListener {
+            et_login_email.isClickable = false
+            et_login_password.isClickable = false
+            btn_login.isClickable = false
+            text_view_login_register.isClickable = false
             signIn()
         }
 
@@ -138,8 +142,11 @@ class LoginActivity : AppCompatActivity() {
                     progress_bar.hide()
                 }
             } else {
+                et_login_email.isClickable = true
+                et_login_password.isClickable = true
+                btn_login.isClickable = true
+                text_view_login_register.isClickable = true
                 Log.w("SignInActivity", exception.toString())
-                toast(exception.toString())
                 progress_bar.hide()
             }
         }
@@ -168,7 +175,7 @@ class LoginActivity : AppCompatActivity() {
                         true
                     )
                 } else {
-                    progress_bar.handler
+                    progress_bar.hide()
                     toast("signInWithCredential:failure${task.exception}")
                     Log.w("SignInActivity", "signInWithCredential:failure", task.exception)
                 }
@@ -207,8 +214,16 @@ class LoginActivity : AppCompatActivity() {
                     progress_bar.hide()
                     viewModel.saveLoggedInUser(authResponse.login)
                 } else {
+                    val message = authResponse.message
+                    if (message.equals("account_blocked")) {
+                        toast(getString(R.string.account_blocked))
+                    }
                     progress_bar.hide()
                     binding.rootLayout.snackbar(authResponse.message!!)
+                    et_login_email.isClickable = true
+                    et_login_password.isClickable = true
+                    btn_login.isClickable = true
+                    text_view_login_register.isClickable = true
                 }
             } catch (e: ApiException) {
                 e.printStackTrace()

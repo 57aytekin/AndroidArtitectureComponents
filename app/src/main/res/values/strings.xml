@@ -33,6 +33,7 @@
     <string name="username_taken">Kullanıcı adı kullanılmakta.</string>
     <string name="mail_taken">Mail adresi kullanılmakta</string>
     <string name="check_information">Lütfen bilgilerinizi kontrol edin.</string>
+    <string name="account_blocked">Kurallara uymadığından dolayı bu hesap kapatılmıştır.</string>
 
     <!--Phone Authentication Screen-->
     <string name="verification_code">Doğrulama Kodu!</string>

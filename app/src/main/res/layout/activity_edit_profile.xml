@@ -156,6 +156,7 @@
                 android:id="@+id/etEditName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
                 app:layout_constraintEnd_toEndOf="@id/etEditUserName"
                 app:layout_constraintStart_toStartOf="@id/etEditUserName"
                 app:layout_constraintTop_toBottomOf="@id/etEditUserName" />
@@ -174,6 +175,7 @@
                 android:id="@+id/etEditLastName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
                 app:layout_constraintEnd_toEndOf="@id/etEditName"
                 app:layout_constraintStart_toStartOf="@id/etEditName"
                 app:layout_constraintTop_toBottomOf="@id/etEditName" />

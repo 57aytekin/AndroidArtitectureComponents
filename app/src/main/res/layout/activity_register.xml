@@ -70,7 +70,7 @@
                         android:ems="10"
                         android:gravity="start"
                         android:hint="@string/first_name"
-                        android:inputType="text"
+                        android:inputType="textCapSentences"
                         android:textColorHint="#000"
                         tools:ignore="Autofill" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -91,7 +91,7 @@
                         android:ems="10"
                         android:gravity="start"
                         android:hint="@string/last_name"
-                        android:inputType="text"
+                        android:inputType="textCapSentences"
                         android:textColorHint="#000"
                         tools:ignore="Autofill" />
 
@@ -222,17 +222,6 @@
                 android:text="Devam Et"
                 android:textColor="#FFFFFF"
                 tools:ignore="Autofill" />
-
-            <!--<TextView
-                android:id="@+id/tv_register_login"
-                android:layout_width="270dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/btn_register"
-                app:layout_constraintTop_toBottomOf="@id/btn_register"
-                android:layout_margin="5dp"
-                android:text="@string/have_account"
-                android:textAlignment="center"
-                tools:ignore="Anthill" />-->
 
             <ProgressBar
                 android:id="@+id/register_progress_bar"

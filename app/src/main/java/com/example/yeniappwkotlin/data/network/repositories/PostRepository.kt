@@ -28,7 +28,7 @@ class PostRepository(
     private val context : Context
 ) : SafeApiRequest() {
     private val posts = MutableLiveData<List<Post>>()
-    private val MINUMUM_INTERVAL = -1
+    private val MINUMUM_INTERVAL = 1
     private val KEY_SAVED_AT = "post_key_saved_at"
     init {
         posts.observeForever {
@@ -56,6 +56,7 @@ class PostRepository(
         val lastSavedAt = PrefUtils.with(context).getLastSavedAt(KEY_SAVED_AT)
         if((lastSavedAt == null ||lastSavedAt.isEmpty()) || isFetchNeeded(context,KEY_SAVED_AT, MINUMUM_INTERVAL)){
             val response = apiRequest { api.getPost(user_id, page, row_per_page) }
+            db.getUserDao().deletePost()
             posts.postValue(response)
         }
     }
@@ -70,11 +71,9 @@ class PostRepository(
         return apiRequest { api.pushNotification(user_name, other_user_name, commentName, durum) }
     }
 
-    /*suspend fun getLocalPost(user_id: Int): LiveData<List<Post>>{
-        return withContext(Dispatchers.IO){
-            db.getPostDao().getPosts()
-        }
-    }*/
+    suspend fun getLocalPost(): List<Post>{
+        return db.getPostDao().getLocalPost()
+    }
 
     suspend fun updateLikeCounts(post_id : Int, user_id: Int , like_count : Int, begeniDurum: Int) = apiRequest { api.updateLikeCount(post_id, user_id, like_count, begeniDurum) }
 

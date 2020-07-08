@@ -20,7 +20,8 @@ data class User (
     val password : String? = null,
     val is_social_account : Int? = null,
     val who_is_talking : Int? = null,
-    val register_date : String? = null
+    val register_date : String? = null,
+    val is_deleted : Int? = null
 ){
     @PrimaryKey(autoGenerate = false)
     @NonNull

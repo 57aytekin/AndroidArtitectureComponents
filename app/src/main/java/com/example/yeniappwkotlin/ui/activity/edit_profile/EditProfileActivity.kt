@@ -62,7 +62,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         ivEditPhoto.setOnClickListener(this)
         tvEditText.setOnClickListener(this)
         ivEditAccept.setOnClickListener(this)
-        ivEditBackButton.setOnClickListener (this)
+        ivEditBackButton.setOnClickListener(this)
 
     }
 
@@ -126,7 +126,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         PrefUtils.with(this).save("user_name", etEditUserName.text.toString())
         PrefUtils.with(this).save("user_first_name", etEditName.text.toString())
         PrefUtils.with(this).save("user_last_name", etEditLastName.text.toString())
-        if (encode() != "null" ){
+        if (encode() != "null") {
             PrefUtils.with(this).save("user_image", paths)
         }
     }
@@ -141,7 +141,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
                     encode(),
                     userId!!
                 )
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -172,15 +172,9 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun checkTurkishCharacter(deger: String): Boolean {
-        return (deger.contains(" ") || deger.contains("ş") || deger.contains("Ş") || deger.contains(
-            "Ç"
-        )
-                || deger.contains("ç") || deger.contains("Ğ") || deger.contains("ğ") || deger.contains(
-            "ş"
-        )
-                || deger.contains("ö") || deger.contains("Ö") || deger.contains("ü") || deger.contains(
-            "Ü"
-        )
+        return (deger.contains(" ") || deger.contains("ş") || deger.contains("Ş") || deger.contains("Ç")
+                || deger.contains("ç") || deger.contains("Ğ") || deger.contains("ğ") || deger.contains("ş")
+                || deger.contains("ö") || deger.contains("Ö") || deger.contains("ü") || deger.contains("Ü")
                 || deger.contains("ı") || deger.contains("İ"))
     }
 

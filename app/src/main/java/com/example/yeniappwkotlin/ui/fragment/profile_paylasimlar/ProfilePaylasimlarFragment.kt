@@ -2,6 +2,7 @@ package com.example.yeniappwkotlin.ui.fragment.profile_paylasimlar
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import com.example.yeniappwkotlin.util.show
 import kotlinx.android.synthetic.main.profile_paylasimlar_fragment.*
 
 class ProfilePaylasimlarFragment : Fragment() {
+    val errorMessage = "PROFILE_PAYLASIMLAR_EXPCEPTION"
 
     companion object {
         fun newInstance() =
@@ -71,7 +73,7 @@ class ProfilePaylasimlarFragment : Fragment() {
                     tvEmptyUserPosts.text = getString(R.string.empty_user_posts)
                 }
             }catch (e : Exception){
-                Toast.makeText(requireContext(), "HATA: "+e.message!!, Toast.LENGTH_SHORT).show()
+                Log.d(errorMessage,e.printStackTrace().toString())
             }
         }
     }

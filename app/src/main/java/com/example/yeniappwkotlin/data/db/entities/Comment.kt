@@ -10,5 +10,6 @@ data class Comment (
     val paths : String? = null,
     val is_social_account : Int? = null,
     val begeniDurum : Int? = null,
-    val tarih : String? = null
+    val tarih : String? = null,
+    val is_deleted: Int? = null
 )

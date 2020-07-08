@@ -21,7 +21,7 @@ class LikesRepository(
     val context : Context
 ) : SafeApiRequest() {
     private val likes = MutableLiveData<List<Likes>>()
-    private val MINUMUM_INTERVAL = -1
+    private val MINUMUM_INTERVAL = 10
     private val KEY_SAVED_AT = "likes_key_saved_at"
 
     init {

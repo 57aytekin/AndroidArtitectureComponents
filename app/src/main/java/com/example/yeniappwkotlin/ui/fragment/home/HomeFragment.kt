@@ -89,7 +89,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
         loadImage(ivHomePhoto,userImage, isSocial)
         //
 
-        adapter = HomeFragmentAdapter(listOf(), this)
+        adapter = HomeFragmentAdapter(listOf(), this,requireContext())
         progress_bar.show()
 
         getPostItems()
@@ -121,8 +121,19 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     }
 
     private fun refreshPosts() {
-        //PrefUtils.with(requireContext()).remove("post_key_saved_at")
+        PrefUtils.with(requireContext()).remove("post_key_saved_at")
         getPostItems()
+       /* Coroutines.main {
+            try {
+                val data = viewModel.getLocalPost()
+                val deger = repository!!.getPostData(userId!!, pageNumber, itemCount)
+                repository!!.savePost(deger)
+                CustomDiffUtil(data, deger).calculateAndDispatch(HomeFragmentAdapter())
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
+        }
+        onRefresh.isRefreshing = false*/
     }
 
     private fun getPostItems(){
@@ -132,8 +143,8 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                 posts.observe(viewLifecycleOwner, Observer { post ->
                     progress_bar.hide()
                     recycler_home.also {
-                        if (!flag){
-                            adapter = HomeFragmentAdapter(post,this)
+                        if (!flag && post.isNotEmpty()){
+                            adapter = HomeFragmentAdapter(post,this, requireContext())
                             it.adapter = adapter
                             flag = true
                         }
@@ -144,12 +155,18 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                         onRefresh.isRefreshing = false
                     }
                 })
-            } catch (e: ApiException) {
-                Toast.makeText(requireContext(), "Bağlantı ypl: "+e.message!!, Toast.LENGTH_SHORT).show()
-            } catch (e: NoInternetException) {
-                Toast.makeText(requireContext(), "No ınternet: "+e.message!!, Toast.LENGTH_SHORT).show()
-            }catch (e : Exception){
-                Toast.makeText(requireContext(), "HATA: "+e.message!!, Toast.LENGTH_SHORT).show()
+            } catch (e : Exception){
+                e.printStackTrace()
+            } catch (e : NoInternetException){
+                val getLocalDate =  viewModel.getLocalPost()
+                adapter = HomeFragmentAdapter(getLocalDate, this,requireContext())
+                adapter.notifyDataSetChanged()
+                e.printStackTrace()
+            } catch (e : ApiException){
+                val getLocalDate =  viewModel.getLocalPost()
+                adapter = HomeFragmentAdapter(getLocalDate, this, requireContext())
+                adapter.notifyDataSetChanged()
+                e.printStackTrace()
             }
         }
     }
