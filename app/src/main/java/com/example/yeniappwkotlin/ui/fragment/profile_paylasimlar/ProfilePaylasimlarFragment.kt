@@ -7,18 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
-import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.PostRepository
-import com.example.yeniappwkotlin.ui.fragment.home.HomeViewModelFactory
 import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.hide
@@ -58,7 +53,7 @@ class ProfilePaylasimlarFragment : Fragment() {
         Coroutines.main {
             try {
                 paylasimlar_progress_bar.show()
-                val userPosts = viewModel.getPost.await()
+                val userPosts = viewModel.getLocalUserPost(userId)
                 if (userPosts.isNotEmpty()){
                     paylasimlar_progress_bar.hide()
                     tvEmptyUserPosts.visibility = View.INVISIBLE

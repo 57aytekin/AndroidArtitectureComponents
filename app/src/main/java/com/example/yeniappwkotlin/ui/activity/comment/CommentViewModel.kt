@@ -1,6 +1,8 @@
 package com.example.yeniappwkotlin.ui.activity.comment
 
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,10 +24,18 @@ class CommentViewModel(
     get() = _comment
 
     fun getComments(){
-        job = Coroutines.ioThenMain(
-            {repository.getComments()},
-            {_comment.value = it}
-        )
+        try {
+            job = Coroutines.ioThenMain(
+                {repository.getComments()},
+                {_comment.value = it}
+            )
+        }catch (e: ApiException){
+            commentListener?.onFailure(e.message!!)
+        }catch (e : NoInternetException){
+            commentListener?.onFailure("check_internet")
+        }catch (e : Exception){
+            commentListener?.onFailure(e.message!!)
+        }
     }
 
     fun saveLikes(post_sahibi_id : Int, comment_sahibi_id: Int, comment_id: Int, post_id: Int){
@@ -49,9 +59,9 @@ class CommentViewModel(
             try {
                 repository.pushNotification(user_name, other_user_name, commentName, durum)
             }catch (e : ApiException){
-                commentListener?.onFailure(e.message!!)
+                e.printStackTrace()
             }catch (e : NoInternetException){
-                commentListener?.onFailure(e.message!!)
+                e.printStackTrace()
             }catch (e : Exception){
                 e.printStackTrace()
             }

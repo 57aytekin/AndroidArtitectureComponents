@@ -79,7 +79,12 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.ivEditAccept -> {
                 val view = this.currentFocus
-                openCloseSoftKeyboard(applicationContext, view!!, false)
+                try {
+                    openCloseSoftKeyboard(this, view!!, false)
+                }catch (e: Exception){
+                    Log.d("EXP_",e.printStackTrace().toString())
+                }
+
                 checkValidation()
                 Coroutines.main {
                     try {
@@ -110,7 +115,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
                             etEditName.isFocusable = false
                             etEditUserName.isFocusable = false
                             etEditLastName.isFocusable = false
-                            editContainer.snackbar("Üzgünüz bir hata ile karşılaştık")
+                            editContainer.snackbar("Lütfen değişiklik yaptıktan sonra kaydedin")
                         }
                     } catch (e: Exception) {
                         edit_progress_bar.hide()

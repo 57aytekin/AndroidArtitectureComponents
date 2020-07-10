@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 
@@ -18,20 +16,18 @@ import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
-import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
 import com.example.yeniappwkotlin.ui.activity.auth.LoginActivity
 import com.example.yeniappwkotlin.ui.activity.edit_profile.EditProfileActivity
+import com.example.yeniappwkotlin.ui.fragment.profile_paylasimlar.ProfilePaylasimlarViewModel
 import com.example.yeniappwkotlin.util.*
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile_app_bar.*
-import kotlinx.android.synthetic.main.fragment_profile_app_bar.view.*
 import kotlinx.android.synthetic.main.profile_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.security.auth.callback.Callback
 
 class ProfileFragment : Fragment() {
     var navController: NavController? = null
@@ -76,6 +72,15 @@ class ProfileFragment : Fragment() {
 
         btnProfileDuzenle.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+        }
+
+        Coroutines.main {
+            try {
+                val userPosts = viewModel.getLocalUserPost(userId!!)
+                tvPaylasimCount.text = userPosts.size.toString()
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
         }
 
         navController = Navigation.findNavController(requireActivity(), R.id.profile_fragment)

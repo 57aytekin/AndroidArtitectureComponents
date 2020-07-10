@@ -3,6 +3,7 @@ package com.example.yeniappwkotlin.ui.fragment.edit
 import android.app.Activity
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.*
 import androidx.navigation.Navigation
 import com.example.yeniappwkotlin.R
@@ -21,16 +22,14 @@ class EditViewModel(
     private val repository: UserRepository,
     val userId : Int
 ) : ViewModel() {
-    var user_id: Int? = null
-    var share_post : String? = null
     var like_count : Int? = null
     var comment_count : Int? = null
     var editListener: EditListener? = null
     private val navController  = Navigation.findNavController(activity, R.id.nav_host_fragment)
-    fun onSavePostButtonClick(view : View){
+    fun onSavePostButtonClick(share_post : String){
         like_count = 0
         comment_count = 0
-        if (share_post.isNullOrEmpty()){
+        if (share_post.isEmpty()){
             editListener?.onFailure("Lütfen paylaşımınızı giriniz")
             return
         }
@@ -38,7 +37,7 @@ class EditViewModel(
         Coroutines.main {
             try {
                 val asd = activity.findViewById<BottomNavigationView>(R.id.bottomNavigation)
-                val editResponse = repository.savePost(userId,share_post!!, like_count!!, comment_count!!)
+                val editResponse = repository.savePost(userId,share_post, like_count!!, comment_count!!)
                 editResponse.message.let {
                     editListener?.onSuccess(it)
                     PrefUtils.with(activity.applicationContext).save("post_key_saved_at","")
@@ -50,9 +49,10 @@ class EditViewModel(
             }catch (e : ApiException){
                 editListener?.onFailure(e.message!!)
             }catch (e : NoInternetException){
-                editListener?.onFailure(e.message!!)
+                editListener?.onFailure("check_internet")
             }catch (e : Exception){
                 e.printStackTrace()
+                editListener?.onFailure(e.message!!)
             }
         }
     }

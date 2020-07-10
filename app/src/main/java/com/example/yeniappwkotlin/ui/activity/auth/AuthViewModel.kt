@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.yeniappwkotlin.data.db.entities.User
 import com.example.yeniappwkotlin.data.network.repositories.UserRepository
+import com.example.yeniappwkotlin.data.network.responses.AuthResponse
 import com.example.yeniappwkotlin.util.ApiException
 import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.NoInternetException

@@ -16,4 +16,7 @@ interface LikesDao {
     @Query("SELECT * FROM Likes ORDER BY tarih DESC")
     fun getLikes(): LiveData<List<Likes>>
 
+    @Query("SELECT * FROM Likes ORDER BY tarih DESC")
+    fun getLocalLikes(): List<Likes>
+
 }

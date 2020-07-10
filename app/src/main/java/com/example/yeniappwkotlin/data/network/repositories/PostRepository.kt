@@ -2,8 +2,10 @@ package com.example.yeniappwkotlin.data.network.repositories
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.db.entities.Post
 import com.example.yeniappwkotlin.data.network.MyApi
@@ -28,7 +30,7 @@ class PostRepository(
     private val context : Context
 ) : SafeApiRequest() {
     private val posts = MutableLiveData<List<Post>>()
-    private val MINUMUM_INTERVAL = 1
+    private val MINUMUM_INTERVAL = 5
     private val KEY_SAVED_AT = "post_key_saved_at"
     init {
         posts.observeForever {
@@ -55,9 +57,18 @@ class PostRepository(
     private suspend fun fetchPosts(user_id: Int, page : Int, row_per_page : Int){
         val lastSavedAt = PrefUtils.with(context).getLastSavedAt(KEY_SAVED_AT)
         if((lastSavedAt == null ||lastSavedAt.isEmpty()) || isFetchNeeded(context,KEY_SAVED_AT, MINUMUM_INTERVAL)){
-            val response = apiRequest { api.getPost(user_id, page, row_per_page) }
-            db.getUserDao().deletePost()
-            posts.postValue(response)
+            try {
+                val response = apiRequest { api.getPost(user_id, page, row_per_page) }
+                db.getUserDao().deletePost()
+                posts.postValue(response)
+            } catch (e: ApiException) {
+                Log.d("POST_1",e.message!!)
+            } catch (e: NoInternetException) {
+                Coroutines.main { context.toast(context.getString(R.string.check_internet)) }
+                posts.postValue(db.getPostDao().getLocalPost())
+            } catch (e : Exception){
+                Log.d("POST_3",e.message!!)
+            }
         }
     }
     suspend fun getPosts(user_id: Int, page : Int, row_per_page : Int) : LiveData<List<Post>>{
@@ -93,5 +104,8 @@ class PostRepository(
         }
     }
 
+    suspend fun getLocalUserPost(userId: Int) : List<Post>{
+        return db.getPostDao().getLocalUserPost(userId)
+    }
 
 }

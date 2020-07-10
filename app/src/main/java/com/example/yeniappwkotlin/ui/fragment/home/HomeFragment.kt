@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yeniappwkotlin.R
@@ -25,6 +26,7 @@ import com.example.yeniappwkotlin.databinding.FragmentHomeRowItemBinding
 import com.example.yeniappwkotlin.ui.activity.comment.CommentActivity
 import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
 import com.example.yeniappwkotlin.util.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home_row_item.*
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -91,6 +93,9 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
 
         adapter = HomeFragmentAdapter(listOf(), this,requireContext())
         progress_bar.show()
+        
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+        directsProfile(requireActivity(), navController!!, ivHomePhoto)
 
         getPostItems()
         recycler_home.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -123,17 +128,6 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
     private fun refreshPosts() {
         PrefUtils.with(requireContext()).remove("post_key_saved_at")
         getPostItems()
-       /* Coroutines.main {
-            try {
-                val data = viewModel.getLocalPost()
-                val deger = repository!!.getPostData(userId!!, pageNumber, itemCount)
-                repository!!.savePost(deger)
-                CustomDiffUtil(data, deger).calculateAndDispatch(HomeFragmentAdapter())
-            }catch (e : Exception){
-                e.printStackTrace()
-            }
-        }
-        onRefresh.isRefreshing = false*/
     }
 
     private fun getPostItems(){
@@ -158,14 +152,9 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
             } catch (e : Exception){
                 e.printStackTrace()
             } catch (e : NoInternetException){
-                val getLocalDate =  viewModel.getLocalPost()
-                adapter = HomeFragmentAdapter(getLocalDate, this,requireContext())
-                adapter.notifyDataSetChanged()
+                Toast.makeText(requireContext(), "HATAAAAAAA", Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             } catch (e : ApiException){
-                val getLocalDate =  viewModel.getLocalPost()
-                adapter = HomeFragmentAdapter(getLocalDate, this, requireContext())
-                adapter.notifyDataSetChanged()
                 e.printStackTrace()
             }
         }
@@ -235,9 +224,11 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                     }
                     //recyclerView.post { adapter.notifyItemRangeChanged(10*pageNumber -1, 10*pageNumber) }
                 }
-            }catch (e : Exception){
+            }catch (e : NoInternetException){
                 Log.d("HATAA", e.message!!)
-                Toast.makeText(requireContext(), "Bir hata oluştu", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            }catch (e : Exception){
+                Log.d("HATA",e.message!!)
             }
         }
     }

@@ -16,76 +16,149 @@ import com.google.firebase.database.DatabaseReference
 class ChatViewModel(
     private val repository: ChatRepository
 ) : ViewModel() {
-    var commentListener : CommentListener? = null
+    var commentListener: CommentListener? = null
 
-    fun saveChats(gonderen : String, alici : String, aliciName :String, message: String, photo : String, tarih : String){
-        repository.saveChatMessage(gonderen, alici, aliciName, message, photo, tarih)
+    fun saveChats(
+        gonderen: String,
+        alici: String,
+        aliciName: String,
+        message: String,
+        photo: String,
+        tarih: String
+    ) {
+        try {
+            repository.saveChatMessage(gonderen, alici, aliciName, message, photo, tarih)
+        } catch (e: ApiException) {
+            commentListener?.onFailure(e.message!!)
+        } catch (e: NoInternetException) {
+            commentListener?.onFailure(e.message!!)
+        } catch (e: Exception) {
+            Log.d("EXCEPTION", e.message!!)
+        }
     }
 
     suspend fun updateIsSeeMessage(
-        user_id : Int, whoIsTalking : Int
-    ) = repository.updateIsSeeMessage(user_id, whoIsTalking)
+        user_id: Int, whoIsTalking: Int
+    ) {
+        try {
+            repository.updateIsSeeMessage(user_id, whoIsTalking)
+        } catch (e: ApiException) {
+            commentListener?.onFailure(e.message!!)
+        } catch (e: NoInternetException) {
+            commentListener?.onFailure(e.message!!)
+        } catch (e: Exception) {
+            Log.d("EXCEPTION", e.message!!)
+        }
+    }
 
-    fun saveMessageList(gonderen_id: Int, alici_id: Int, message : String, aliciNewMessage : Int, gonderenNewMessage : Int){
+    fun saveMessageList(
+        gonderen_id: Int,
+        alici_id: Int,
+        message: String,
+        aliciNewMessage: Int,
+        gonderenNewMessage: Int
+    ) {
         Coroutines.main {
             try {
-                val saveList = repository.saveMessageList(gonderen_id, alici_id, message, aliciNewMessage, gonderenNewMessage)
+                val saveList = repository.saveMessageList(
+                    gonderen_id,
+                    alici_id,
+                    message,
+                    aliciNewMessage,
+                    gonderenNewMessage
+                )
                 saveList.message.let {
                     commentListener?.onSuccess(it!!)
                 }
-            }catch (e : ApiException){
+            } catch (e: ApiException) {
                 commentListener?.onFailure(e.message!!)
-            }catch (e : NoInternetException){
+            } catch (e: NoInternetException) {
                 commentListener?.onFailure(e.message!!)
-            }catch (e : Exception){
-                Log.d("EXCEPTION", e.message!!)
-            }
-        }
-    }
-    fun updateMessageList(id: Int, userId : Int, currentUserId : Int, message : String, aliciNewCount : Int, gonderenNewCount : Int, is_alici : Int, is_gonderen : Int){
-        Coroutines.main {
-            try {
-                val updateList = repository.updateMessageList(id, userId, currentUserId, message, aliciNewCount, gonderenNewCount, is_alici, is_gonderen)
-                updateList.message.let {
-                    commentListener?.onSuccess(it!!)
-                }
-            }catch (e : ApiException){
-                commentListener?.onFailure(e.message!!)
-            }catch (e : NoInternetException){
-                commentListener?.onFailure(e.message!!)
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 Log.d("EXCEPTION", e.message!!)
             }
         }
     }
 
-    fun pushNotification(user_name: String, other_user_name: String, commentName: String, durum: Int){
+    fun updateMessageList(
+        id: Int,
+        userId: Int,
+        currentUserId: Int,
+        message: String,
+        aliciNewCount: Int,
+        gonderenNewCount: Int,
+        is_alici: Int,
+        is_gonderen: Int
+    ) {
         Coroutines.main {
             try {
-                repository.pushNotification(user_name, other_user_name,  commentName, durum)
-            }catch (e : ApiException){
+                val updateList = repository.updateMessageList(
+                    id,
+                    userId,
+                    currentUserId,
+                    message,
+                    aliciNewCount,
+                    gonderenNewCount,
+                    is_alici,
+                    is_gonderen
+                )
+                updateList.message.let {
+                    commentListener?.onSuccess(it!!)
+                }
+            } catch (e: ApiException) {
                 commentListener?.onFailure(e.message!!)
-            }catch (e : NoInternetException){
+            } catch (e: NoInternetException) {
                 commentListener?.onFailure(e.message!!)
-            }catch (e : Exception){
+            } catch (e: Exception) {
+                Log.d("EXCEPTION", e.message!!)
+            }
+        }
+    }
+
+    fun pushNotification(
+        user_name: String,
+        other_user_name: String,
+        commentName: String,
+        durum: Int
+    ) {
+        Coroutines.main {
+            try {
+                repository.pushNotification(user_name, other_user_name, commentName, durum)
+            } catch (e: ApiException) {
+                commentListener?.onFailure(e.message!!)
+            } catch (e: NoInternetException) {
+                commentListener?.onFailure(e.message!!)
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    suspend fun getMessageList(userId : Int) : List<MessageList>{
-        val response : List<MessageList>?
+    suspend fun getMessageList(userId: Int): List<MessageList> {
+        val response: List<MessageList>?
         response = repository.getMessageList(userId)
         return response
     }
 
-    fun updateLocalMessageList(tarih : String, message : String, id : Int, alici_new : Int, gonderen_new: Int){
+    fun updateLocalMessageList(
+        tarih: String,
+        message: String,
+        id: Int,
+        alici_new: Int,
+        gonderen_new: Int
+    ) {
         repository.updateLocalMessageList(tarih, message, id, alici_new, gonderen_new)
     }
-    fun updateLocalMessageBadges(id : Int, alici_new : Int, gonderen_new: Int){
-        repository.updateLocalMessageBadges(id, alici_new, gonderen_new)
+
+    fun updateLocalMessageBadges(id: Int, alici_new: Int, gonderen_new: Int) {
+        try {
+            repository.updateLocalMessageBadges(id, alici_new, gonderen_new)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
-    fun saveLocalMessageList(messageList: MessageList){
+
+    fun saveLocalMessageList(messageList: MessageList) {
         repository.saveLocalMessageList(messageList)
     }
 }

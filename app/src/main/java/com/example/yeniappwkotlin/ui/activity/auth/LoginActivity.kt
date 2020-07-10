@@ -175,6 +175,10 @@ class LoginActivity : AppCompatActivity() {
                         true
                     )
                 } else {
+                    et_login_email.isClickable = true
+                    et_login_password.isClickable = true
+                    btn_login.isClickable = true
+                    text_view_login_register.isClickable = true
                     progress_bar.hide()
                     toast("signInWithCredential:failure${task.exception}")
                     Log.w("SignInActivity", "signInWithCredential:failure", task.exception)
@@ -228,6 +232,8 @@ class LoginActivity : AppCompatActivity() {
             } catch (e: ApiException) {
                 e.printStackTrace()
             } catch (e: NoInternetException) {
+                progress_bar.hide()
+                toast(getString(R.string.check_internet))
                 e.printStackTrace()
             } catch (e : Exception){
                 e.printStackTrace()

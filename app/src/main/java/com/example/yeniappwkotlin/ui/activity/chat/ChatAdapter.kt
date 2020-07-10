@@ -11,6 +11,7 @@ import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Chat
 import com.example.yeniappwkotlin.util.PrefUtils
 import com.example.yeniappwkotlin.util.calculateDate
+import com.example.yeniappwkotlin.util.convertTimestamp
 import kotlinx.android.synthetic.main.chat_item_right.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,14 +49,17 @@ class ChatAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val messageDate = calculateDate(chatList[position].tarih!!)
+        val messageDate = convertTimestamp(chatList[position].tarih!!)
         val dateFormat = SimpleDateFormat("dd.M.yyyy HH:mm:ss")
-        val date1 : Date = dateFormat.parse( chatList[position].tarih!!)!!
+        //val date1 : Date = dateFormat.parse( chatList[position].tarih!!)!!
+
+        val date0 : Date = Date(chatList[position].tarih!!.toLong() * 1000)
+        val date1 : Date = dateFormat.parse(dateFormat.format(date0))!!
 
         if (holder.itemViewType == MSG_TYPE_RIGHT){
             holder.chatItemBinding.root.show_message.text = chatList[position].message
             if (messageDate.contains("gun") || messageDate.contains("ay")){
-                val firebaseDate = dateFormat.parse(chatList[position].tarih!!)
+                val firebaseDate = date1
                 holder.chatItemBinding.root.show_date.text = firebaseDate!!.toLocaleString()
             }else{
                 holder.chatItemBinding.root.show_date.text = "${date1.hours}:${date1.minutes}"
@@ -63,7 +67,7 @@ class ChatAdapter(
         }else {
             holder.chatItemBinding.root.show_message.text = chatList[position].message
             if (messageDate.contains("gun") || messageDate.contains("ay")){
-                val firebaseDate = dateFormat.parse(chatList[position].tarih!!)
+                val firebaseDate = date1
                 holder.chatItemBinding.root.show_date.text = firebaseDate!!.toLocaleString()
             }else{
                 holder.chatItemBinding.root.show_date.text = "${date1.hours}:${date1.minutes}"

@@ -1,15 +1,15 @@
 package com.example.yeniappwkotlin.data.network.repositories
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.db.entities.Likes
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.SafeApiRequest
-import com.example.yeniappwkotlin.util.Coroutines
-import com.example.yeniappwkotlin.util.PrefUtils
-import com.example.yeniappwkotlin.util.isFetchNeeded
+import com.example.yeniappwkotlin.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -21,7 +21,7 @@ class LikesRepository(
     val context : Context
 ) : SafeApiRequest() {
     private val likes = MutableLiveData<List<Likes>>()
-    private val MINUMUM_INTERVAL = 10
+    private val MINUMUM_INTERVAL = 5
     private val KEY_SAVED_AT = "likes_key_saved_at"
 
     init {
@@ -51,8 +51,18 @@ class LikesRepository(
     private suspend fun fetchLikes(user_id: Int){
         val lastSavedDate = PrefUtils.with(context).getLastSavedAt(KEY_SAVED_AT)
         if (lastSavedDate == null || isFetchNeeded(context, KEY_SAVED_AT, MINUMUM_INTERVAL)){
-            val response = apiRequest { api.getLikes(user_id) }
-            likes.postValue(response)
+            try {
+                val response = apiRequest { api.getLikes(user_id) }
+                likes.postValue(response)
+            } catch (e: ApiException) {
+                Log.d("LIKES_1",e.message!!)
+            } catch (e: NoInternetException) {
+                likes.postValue(db.getLikesDao().getLocalLikes())
+                Coroutines.main { context.toast(context.getString(R.string.check_internet)) }
+            } catch (e : java.lang.Exception){
+                Log.d("LIKES_3",e.message!!)
+            }
+
         }
     }
 

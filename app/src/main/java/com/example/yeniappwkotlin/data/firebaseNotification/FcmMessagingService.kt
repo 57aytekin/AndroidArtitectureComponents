@@ -60,12 +60,6 @@ class FcmMessagingService : FirebaseMessagingService() {
             mChannel.setSound(soundUri, audioAttributes)
             notificationManager.createNotificationChannel(mChannel)
         }
-        /*val pendingIntent = NavDeepLinkBuilder(applicationContext)
-            .setComponentName(MainActivity::class.java)
-            .setGraph(R.navigation.nav_graph)
-            .setDestination(R.id.likeFragment)
-            .setArguments(intent.extras)
-            .createPendingIntent()*/
 
 
         val builder = NotificationCompat.Builder(this,MY_CHANNEL_ID)

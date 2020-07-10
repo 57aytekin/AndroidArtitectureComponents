@@ -9,6 +9,7 @@ import android.os.HandlerThread
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.util.Coroutines
 import com.example.yeniappwkotlin.util.NoInternetException
 import com.example.yeniappwkotlin.util.toast
@@ -29,11 +30,9 @@ class NetworkConnectionInterceptor(
     private val applicationContext = context.applicationContext
     override fun intercept(chain: Interceptor.Chain): Response {
         if(!isInternetConnection()){
-            Coroutines.main { context.toast("Lütfen internet bağlantınızı kontrol edin") }
-            //throw NoInternetException("Internet bağlantınızı açınız")
+            throw NoInternetException("Lütfen Internet bağlantınızı açınız")
         }else if (!isInternetAvailable()){
-            Coroutines.main { context.toast("Lütfen internet bağlantınızı kontrol edin") }
-            //throw NoInternetException("Internet bağlantınız bulunmamakta")
+            throw NoInternetException("Lütfen internet bağlantınızı kontrol edin")
         }
         return chain.proceed(chain.request())
     }

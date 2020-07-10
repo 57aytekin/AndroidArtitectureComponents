@@ -40,7 +40,7 @@ class CommentActivityAdapter(
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val comments = comment[position]
-        val commentUserName = comments.first_name
+        val commentUserName = comments.user_name
         val userComment = comments.comment
         val boldType = "$commentUserName $userComment"
 

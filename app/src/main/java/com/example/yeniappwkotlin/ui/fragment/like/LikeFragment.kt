@@ -8,9 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,14 +18,14 @@ import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.db.entities.Likes
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
-import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.LikesRepository
 import com.example.yeniappwkotlin.ui.activity.chat.ChatActivity
 import com.example.yeniappwkotlin.util.*
-import kotlinx.android.synthetic.main.activity_commentt.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar_likes.*
+import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.like_fragment.*
-import kotlinx.coroutines.launch
 
 class LikeFragment : Fragment(), ClickListener {
     var navController: NavController? = null
@@ -62,6 +60,9 @@ class LikeFragment : Fragment(), ClickListener {
         val userPhoto = PrefUtils.with(requireContext()).getString("user_image","")
         val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account",0)
         loadImage(ivLikePhoto, userPhoto, isSocial)
+
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+        directsProfile(requireActivity(), navController!!, ivLikePhoto)
 
         like_progress_bar.show()
         Coroutines.main {

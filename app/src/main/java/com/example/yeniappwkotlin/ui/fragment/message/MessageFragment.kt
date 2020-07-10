@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.yeniappwkotlin.R
@@ -19,13 +21,16 @@ import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.MessageListRepository
 import com.example.yeniappwkotlin.ui.activity.chat.ChatActivity
 import com.example.yeniappwkotlin.util.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar_likes.*
 import kotlinx.android.synthetic.main.appbar_message.*
+import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.like_fragment.*
 import kotlinx.android.synthetic.main.message_fragment.*
 
 class MessageFragment : Fragment(), MessageClickListener {
-
+    var navController: NavController? = null
     companion object {
         fun newInstance() = MessageFragment()
     }
@@ -55,6 +60,9 @@ class MessageFragment : Fragment(), MessageClickListener {
         val userPhoto = PrefUtils.with(requireContext()).getString("user_image","")
         val isSocial = PrefUtils.with(requireContext()).getInt("is_social_account",0)
         loadImage(ivMessagePhoto, userPhoto, isSocial)
+
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+        directsProfile(requireActivity(), navController!!, ivMessagePhoto)
 
         Coroutines.main {
             try {

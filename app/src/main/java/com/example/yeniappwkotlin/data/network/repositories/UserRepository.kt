@@ -53,6 +53,10 @@ class UserRepository(
         }
     }
 
+    suspend fun getLocalUserPost(userId: Int) : List<Post>{
+        return db.getPostDao().getLocalUserPost(userId)
+    }
+
     fun deleteUser() = db.getUserDao().deleteUser()
     fun deletePost() = db.getUserDao().deletePost()
     fun deleteLikes() = db.getUserDao().deleteLikes()

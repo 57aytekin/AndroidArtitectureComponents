@@ -48,5 +48,6 @@
     <string name="empty_message">Henüz mesajınız yok</string>
     <string name="logout">Çıkış Yap</string>
     <string name="empty_user_posts">Henüz bir paylaşımınız bulunmamakta.</string>
+    <string name="check_internet">Lütfen internet bağlantınızı kontrol ediniz</string>
 
 </resources>

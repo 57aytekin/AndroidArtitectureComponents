@@ -1,7 +1,9 @@
 package com.example.yeniappwkotlin.util
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent.getActivity
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 

@@ -1,9 +1,9 @@
 package com.example.yeniappwkotlin.ui.activity.comment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
@@ -12,9 +12,7 @@ import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.entities.Comment
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
-import com.example.yeniappwkotlin.data.network.NoConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.CommentRepository
-import com.example.yeniappwkotlin.databinding.ActivityCommenttBinding
 import com.example.yeniappwkotlin.databinding.CommentRowItem2Binding
 import com.example.yeniappwkotlin.util.*
 import kotlinx.android.synthetic.main.activity_commentt.*

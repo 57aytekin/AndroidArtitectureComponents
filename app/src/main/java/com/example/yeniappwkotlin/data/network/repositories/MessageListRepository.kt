@@ -1,17 +1,19 @@
 package com.example.yeniappwkotlin.data.network.repositories
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.yeniappwkotlin.R
 import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.db.entities.MessageList
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.SafeApiRequest
-import com.example.yeniappwkotlin.util.Coroutines
-import com.example.yeniappwkotlin.util.PrefUtils
-import com.example.yeniappwkotlin.util.isFetchNeeded
+import com.example.yeniappwkotlin.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,8 +49,17 @@ class MessageListRepository(
     private suspend fun fetchMessageList(userId : Int){
         val lastSavedAt = PrefUtils.with(context).getLastSavedAt(KEY_SAVED_AT)
         if (lastSavedAt == null || isFetchNeeded(context, KEY_SAVED_AT, MINUMUM_INTERVAL)){
-            val response = apiRequest { api.getMessageList(userId) }
-            messageList.postValue(response)
+            try {
+                val response = apiRequest { api.getMessageList(userId) }
+                messageList.postValue(response)
+            } catch (e: ApiException) {
+                Log.d("MESSAGE_1",e.message!!)
+            } catch (e: NoInternetException) {
+                Coroutines.main { context.toast(context.getString(R.string.check_internet)) }
+                messageList.postValue(db.getMessageListDao().getLocalMessageList())
+            } catch (e : Exception){
+                Log.d("MESSAGE_3",e.message!!)
+            }
         }
     }
 

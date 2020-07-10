@@ -2,6 +2,7 @@ package com.example.yeniappwkotlin.ui.activity.home
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -92,7 +93,16 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         Coroutines.main {
-            api.updateUserLoginStatu(userId!!,0)
+            try {
+                api.updateUserLoginStatu(userId!!,0)
+            } catch (e: ApiException) {
+                Log.d("MAIN_API_ERROR: ",e.message!!)
+            } catch (e: NoInternetException) {
+                Toast.makeText(this, "İnternet bağlantınızı kontrol ediniz", Toast.LENGTH_SHORT).show()
+                Log.d("MAIN_NET_ERROR: ",e.message!!)
+            } catch (e : Exception){
+                Log.d("MAIN_EXP: ",e.message!!)
+            }
         }
     }
 
@@ -106,7 +116,7 @@ class MainActivity : AppCompatActivity() {
             } catch (e: NoInternetException) {
                 Log.d("MAIN_NET_ERROR: ",e.message!!)
             } catch (e : Exception){
-                Log.d("MAIN_EXP: ",e.printStackTrace().toString())
+                Log.d("MAIN_EXP: ",e.message!!)
             }
         }
     }

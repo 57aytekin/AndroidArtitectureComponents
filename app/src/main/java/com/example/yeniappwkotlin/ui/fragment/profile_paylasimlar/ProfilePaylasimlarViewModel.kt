@@ -21,4 +21,8 @@ class ProfilePaylasimlarViewModel(
     val getPost by lazyDeffered {
         repository.getUserPosts(user_id)
     }
+
+    suspend fun getLocalUserPost(userId : Int) : List<Post>{
+        return repository.getLocalUserPost(userId)
+    }
 }

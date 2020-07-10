@@ -55,9 +55,6 @@ class HomeViewModel(
         }
     }
 
-    suspend fun getLocalPost() : List<Post>{
-        return repository.getLocalPost()
-    }
 
     fun btnPostLike(post_id: Int, user_id: Int, like_count: Int, begeniDurum: Int) {
         val newLikeCount: Int = if (begeniDurum == 1){

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-        <variable
-            name="edit"
-            type="com.example.yeniappwkotlin.ui.fragment.edit.EditViewModel" />
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -47,7 +42,6 @@
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="8dp"
                         android:textStyle="bold"
-                        android:onClick="@{edit::onSavePostButtonClick}"
                         android:text="@string/share"
                         android:textColor="@color/btnSignIn"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -60,6 +54,15 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <ProgressBar
+            android:id="@+id/edit_progress_bar"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/fragment_edit_photo"
@@ -73,7 +76,6 @@
 
 
         <EditText
-            android:text="@={edit.share_post}"
             android:id="@+id/fragment_edit_etText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
