@@ -44,8 +44,9 @@ class HomeFragmentAdapter(
                 posts[position].user_id,
                 posts[position].user_name,
                 posts[position].first_name,
+                posts[position].last_name,
                 posts[position].paths,
-                posts[position].share_post,
+                "${posts[position].share_post} ...",
                 posts[position].like_count,
                 posts[position].comment_count,
                 newDate,
@@ -73,6 +74,9 @@ class HomeFragmentAdapter(
         }
         holder.homeRowItemBinding.homeLikes.setOnClickListener {
             listener.onRecyclerViewItemClick(holder.homeRowItemBinding.homeLikes, posts[position],holder.homeRowItemBinding)
+        }
+        holder.homeRowItemBinding.postProfileResim.setOnClickListener {
+            listener.onRecyclerViewItemClick(holder.homeRowItemBinding.postProfileResim, posts[position], holder.homeRowItemBinding)
         }
     }
 

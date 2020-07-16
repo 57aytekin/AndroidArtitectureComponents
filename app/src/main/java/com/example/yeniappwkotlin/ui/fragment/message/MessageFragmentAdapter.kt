@@ -72,8 +72,11 @@ class MessageFragmentAdapter(
         bindingView.messageItemMesaj.text = currentMessage.message
         bindingView.messageItemDate.text = convertTimestamp(currentMessage.tarih)
 
-        bindingView.root.setOnClickListener {
-            listener.onRecyclerViewItemClick(bindingView.root, currentMessage)
+        bindingView.messageListContainer.setOnClickListener {
+            listener.onRecyclerViewItemClick(bindingView.messageListContainer, currentMessage)
+        }
+        bindingView.messageItemUserPhoto.setOnClickListener {
+            listener.onRecyclerViewItemClick(bindingView.messageItemUserPhoto, currentMessage)
         }
     }
 }

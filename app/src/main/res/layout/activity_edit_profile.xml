@@ -33,7 +33,8 @@
                         android:id="@+id/ivEditBackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_close"/>
+                        android:src="@drawable/ic_close"
+                        android:contentDescription="@string/voveyle" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                         android:gravity="center_vertical"
                         android:layout_marginStart="20dp"
                         android:layout_alignBottom="@id/ivEditBackButton"
-                        android:text="Profil Düzenle"
+                        android:text="@string/edit_profile"
                         android:textColor="#000"
                         android:textSize="20sp" />
 
@@ -53,7 +54,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="30dp"
-                        android:src="@drawable/ic_accept" />
+                        android:src="@drawable/ic_accept"
+                        android:contentDescription="@string/voveyle" />
                 </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
@@ -75,9 +77,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:text="Profil Fotogragını Degistir"
+            android:text="@string/change_profile_pic"
             android:textColor="#51C1FB"
-            android:textSize="17dp"
+            android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/ivEditPhoto"
             app:layout_constraintStart_toStartOf="@id/ivEditPhoto"
@@ -123,9 +125,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:text="Kullanıcı Adı"
+                android:text="@string/hint_user_name"
                 android:textColor="#000"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/etEditUserName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -139,16 +141,19 @@
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tvKullanıcı"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:inputType="textCapSentences"
+                android:autofillHints="@string/hint_user_name"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id="@+id/tvAd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Ad"
+                android:text="@string/first_name"
                 android:textColor="#000"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/etEditName"
                 app:layout_constraintStart_toStartOf="@id/tvKullanıcı" />
 
@@ -165,9 +170,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Soyad"
+                android:text="@string/last_name"
                 android:textColor="#000"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/etEditLastName"
                 app:layout_constraintStart_toStartOf="@id/tvAd" />
 

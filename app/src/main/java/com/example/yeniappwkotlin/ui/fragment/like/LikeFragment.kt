@@ -78,7 +78,7 @@ class LikeFragment : Fragment(), ClickListener {
                         likeFragmentRecycler.also {
                             it.layoutManager = LinearLayoutManager(requireContext())
                             it.setHasFixedSize(true)
-                            it.adapter = LikeFragmentAdapter(like,this)
+                            it.adapter = LikeFragmentAdapter(like,this,requireContext())
                         }
                     }
                 })
@@ -89,13 +89,28 @@ class LikeFragment : Fragment(), ClickListener {
     }
 
     override fun onRecyclerViewItemClick(view: View, likes: Likes) {
-        Intent(requireContext(), ChatActivity::class.java).also {
-            it.putExtra("photo",likes.paths)
-            it.putExtra("alici_name", likes.first_name)
-            it.putExtra("alici_username", likes.user_name)
-            it.putExtra("post_sahibi_id", likes.post_sahibi_id)
-            it.putExtra("is_social", likes.is_social_account)
-            startActivity(it)
+        when(view.id){
+            R.id.likeRowBtn -> {
+                Intent(requireContext(), ChatActivity::class.java).also {
+                    it.putExtra("photo",likes.paths)
+                    it.putExtra("alici_name", likes.first_name)
+                    it.putExtra("alici_username", likes.user_name)
+                    it.putExtra("post_sahibi_id", likes.post_sahibi_id)
+                    it.putExtra("is_social", likes.is_social_account)
+                    startActivity(it)
+                }
+            }
+            R.id.likeRowPhoto -> {
+                val bundle = Bundle()
+                bundle.putInt("different_user_id",likes.user_id)
+                bundle.putString("different_user_name",likes.user_name)
+                bundle.putString("different_first_name",likes.first_name)
+                bundle.putString("different_last_name",likes.last_name)
+                bundle.putString("different_user_photo",likes.paths)
+                bundle.putInt("different_user_isSocial",likes.is_social_account)
+                PrefUtils.with(requireContext()).save("different_user",likes.user_id)
+                navController!!.navigate(R.id.profileFragment, bundle)
+            }
         }
     }
 }

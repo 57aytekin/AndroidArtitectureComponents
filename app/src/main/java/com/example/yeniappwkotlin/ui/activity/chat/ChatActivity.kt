@@ -8,7 +8,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yeniappwkotlin.R
@@ -20,6 +23,8 @@ import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.ChatRepository
 import com.example.yeniappwkotlin.databinding.ActivityChatBinding
+import com.example.yeniappwkotlin.ui.activity.comment.CommentListener
+import com.example.yeniappwkotlin.ui.fragment.profile.ProfileFragment
 import com.example.yeniappwkotlin.util.*
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_chat.*
@@ -28,10 +33,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity(), CommentListener {
     private val chatExp = "CHAT"
     private lateinit var viewModel: ChatViewModel
     private var alici_name: String? = null
+    private var aliciUserName: String? = null
     private var photo: String? = null
     private var post_sahibi_id: Int? = null
     private var messageId: Int? = null
@@ -53,11 +59,12 @@ class ChatActivity : AppCompatActivity() {
         val factory = ChatViewModelFactory(repository)
 
         viewModel = ViewModelProvider(this, factory).get(ChatViewModel::class.java)
+        viewModel.commentListener = this
 
         messageId = intent.getIntExtra("message_id", -1)
         isSocial = intent.getIntExtra("is_social", -1)
         alici_name = intent.getStringExtra("alici_name")
-        val aliciUserName = intent.getStringExtra("alici_username")
+        aliciUserName = intent.getStringExtra("alici_username")
         photo = intent.getStringExtra("photo")
         post_sahibi_id = intent.getIntExtra("post_sahibi_id", -1)
         val prefUtil = PrefUtils.with(this)
@@ -116,6 +123,7 @@ class ChatActivity : AppCompatActivity() {
                     photo!!,
                     currentDate
                 )
+                PrefUtils.with(this).remove("message_list_key_saved_at")
                 //val message = db.getMessageListDao().getMessageList()
                 Coroutines.main {
                     try {
@@ -179,6 +187,7 @@ class ChatActivity : AppCompatActivity() {
                         }
                         if (!flag) {
                             viewModel.saveMessageList(userId!!, post_sahibi_id!!, userMessage, 1, 0)
+                            flag = true
                             viewModel.saveLocalMessageList(
                                 MessageList(
                                     message = userMessage,
@@ -190,6 +199,7 @@ class ChatActivity : AppCompatActivity() {
                                         user_id = post_sahibi_id,
                                         paths = photo,
                                         first_name = alici_name,
+                                        user_name = aliciUserName,
                                         is_social_account = isSocial
                                     )
                                 )
@@ -200,13 +210,30 @@ class ChatActivity : AppCompatActivity() {
                     } catch (e: NoInternetException) {
                         toast("İnternet bağlantınızı kontrol ediniz")
                     } catch (e: java.lang.Exception) {
-                        toast("Bir hata oluştu: " + e.printStackTrace().toString())
+                        toast("Bir hata oluştu: " + e.message!!)
                     }
                 }
             }
             etMesaj.setText("")
         }
         mesajlasmaBack.setOnClickListener { finish() }
+        /*ivMesajlasmaPhoto.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putInt("different_user_id",post_sahibi_id!!)
+            bundle.putString("different_user_name",aliciUserName)
+            bundle.putString("different_first_name",alici_name)
+            bundle.putString("different_last_name",alici_name)
+            bundle.putString("different_user_photo",currentUserPhoto)
+            bundle.putInt("different_user_isSocial",currentUserIsSocial)
+            PrefUtils.with(this).save("different_user",post_sahibi_id!!)
+
+            val fragment = ProfileFragment()
+            fragment.arguments = bundle
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.replace(R.id.nav_host_fragment, fragment)
+            fragmentTransaction.commit()
+        }*/
 
         //listen firebase database
         try {
@@ -216,6 +243,7 @@ class ChatActivity : AppCompatActivity() {
             references = FirebaseDatabase.getInstance().getReference("Chats")
             references!!.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(p0: DataSnapshot) {
+                    PrefUtils.with(this@ChatActivity).remove("message_list_key_saved_at")
                     when {
                         p0.hasChild("$userId-$post_sahibi_id") -> {
                             readChatList(p0.child("$userId-$post_sahibi_id"))
@@ -333,5 +361,17 @@ class ChatActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.d("ERRR: ", e.message!!)
         }
+    }
+
+    override fun onStarted() {
+        Log.d("STARTED","STARTED")
+    }
+
+    override fun onSuccess(message: String) {
+        Log.d("SUCCESS",message)
+    }
+
+    override fun onFailure(message: String) {
+        this.toast(message)
     }
 }

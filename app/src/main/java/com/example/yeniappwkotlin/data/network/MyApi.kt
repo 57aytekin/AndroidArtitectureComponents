@@ -126,6 +126,9 @@ interface MyApi {
     @GET("get_messagelist.php")
     suspend fun getMessageList(@Query("user_id") user_id: Int): Response<List<MessageList>>
 
+    @GET("get_notification_budget.php")
+    suspend fun getNotificationBudget(@Query("user_id") user_id: Int): List<MessageList>
+
     @FormUrlEncoded
     @POST("save_message_list.php")
     suspend fun saveMessageList(
@@ -196,7 +199,7 @@ interface MyApi {
                 .build()
             return Retrofit.Builder()
                 .client(okkHttpClient)
-                .baseUrl("https://aytekincomezz.000webhostapp.com/YeniApp/")
+                .baseUrl("https://vaveylasocial.online/vaveylaPhpFile/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(MyApi::class.java)

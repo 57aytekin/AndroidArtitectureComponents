@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -22,6 +23,7 @@ import com.example.yeniappwkotlin.data.network.repositories.MessageListRepositor
 import com.example.yeniappwkotlin.ui.activity.chat.ChatActivity
 import com.example.yeniappwkotlin.util.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar_likes.*
 import kotlinx.android.synthetic.main.appbar_message.*
@@ -84,30 +86,62 @@ class MessageFragment : Fragment(), MessageClickListener {
 
                 })
             }catch (e : Exception){
-                Log.d("MESSAGE_FRAGMENT",e.message!!)
+                e.printStackTrace()
+            } catch (e : NoInternetException){
+                requireActivity().toast(getString(R.string.check_internet))
+                e.printStackTrace()
+            } catch (e : ApiException){
+                e.printStackTrace()
             }
         }
     }
 
     override fun onRecyclerViewItemClick(view: View, message: MessageList) {
         val userId = PrefUtils.with(requireContext()).getInt("user_id",-1)
-        Intent(requireContext(), ChatActivity::class.java).also {
-            if (userId == message.gonderen_user.user_id){
-                it.putExtra("photo",message.alici_user.paths)
-                it.putExtra("alici_name",message.alici_user.first_name)
-                it.putExtra("alici_username",message.alici_user.user_name)
-                it.putExtra("post_sahibi_id",message.alici_user.user_id)
-                it.putExtra("is_social",message.alici_user.is_social_account)
-            }else{
-                it.putExtra("alici_name",message.gonderen_user.first_name)
-                it.putExtra("alici_username",message.gonderen_user.user_name)
-                it.putExtra("photo",message.gonderen_user.paths)
-                it.putExtra("post_sahibi_id",message.gonderen_user.user_id)
-                it.putExtra("is_social",message.gonderen_user.is_social_account)
+        when(view.id){
+            R.id.message_list_container -> {
+                Intent(requireContext(), ChatActivity::class.java).also {
+                    if (userId == message.gonderen_user.user_id){
+                        it.putExtra("photo",message.alici_user.paths)
+                        it.putExtra("alici_name",message.alici_user.first_name)
+                        it.putExtra("alici_username",message.alici_user.user_name)
+                        it.putExtra("post_sahibi_id",message.alici_user.user_id)
+                        it.putExtra("is_social",message.alici_user.is_social_account)
+                    }else{
+                        it.putExtra("alici_name",message.gonderen_user.first_name)
+                        it.putExtra("alici_username",message.gonderen_user.user_name)
+                        it.putExtra("photo",message.gonderen_user.paths)
+                        it.putExtra("post_sahibi_id",message.gonderen_user.user_id)
+                        it.putExtra("is_social",message.gonderen_user.is_social_account)
+                    }
+                    it.putExtra("message_id",message.messageId)
+                    startActivity(it)
+                }
             }
-            it.putExtra("message_id",message.messageId)
-            startActivity(it)
+            R.id.messageItemUserPhoto -> {
+                val bundle = Bundle().also {
+                    if (userId == message.gonderen_user.user_id){
+                        PrefUtils.with(requireContext()).save("different_user",message.alici_user.user_id!!)
+                        it.putInt("different_user_id",message.alici_user.user_id)
+                        it.putString("different_user_name",message.alici_user.user_name)
+                        it.putString("different_first_name",message.alici_user.first_name)
+                        it.putString("different_last_name",message.alici_user.last_name)
+                        it.putString("different_user_photo",message.alici_user.paths)
+                        it.putInt("different_user_isSocial",message.alici_user.is_social_account!!)
+                    }else{
+                        PrefUtils.with(requireContext()).save("different_user",message.gonderen_user.user_id!!)
+                        it.putInt("different_user_id",message.gonderen_user.user_id)
+                        it.putString("different_user_name",message.gonderen_user.user_name)
+                        it.putString("different_first_name",message.gonderen_user.first_name)
+                        it.putString("different_last_name",message.gonderen_user.last_name)
+                        it.putString("different_user_photo",message.gonderen_user.paths)
+                        it.putInt("different_user_isSocial",message.gonderen_user.is_social_account!!)
+                    }
+                }
+                navController!!.navigate(R.id.profileFragment, bundle)
+            }
         }
+
     }
 
 }

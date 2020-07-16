@@ -152,7 +152,7 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
             } catch (e : Exception){
                 e.printStackTrace()
             } catch (e : NoInternetException){
-                Toast.makeText(requireContext(), "HATAAAAAAA", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.check_internet), Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             } catch (e : ApiException){
                 e.printStackTrace()
@@ -207,6 +207,17 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                     homeRowItemBinding.homeLikes.setImageResource(R.drawable.icon_heart)
                     homeRowItemBinding.postLikeCount.text = likeCount.toString()
                 }
+            }
+            R.id.post_profile_resim -> {
+                val bundle = Bundle()
+                bundle.putInt("different_user_id",post.user_id!!)
+                bundle.putString("different_user_name",post.user_name)
+                bundle.putString("different_first_name",post.first_name)
+                bundle.putString("different_last_name",post.last_name)
+                bundle.putString("different_user_photo",post.paths)
+                bundle.putInt("different_user_isSocial",post.is_social_account!!)
+                PrefUtils.with(requireContext()).save("different_user",post.user_id)
+                navController!!.navigate(R.id.profileFragment, bundle)
             }
         }
     }

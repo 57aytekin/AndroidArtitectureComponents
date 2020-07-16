@@ -1,10 +1,8 @@
 package com.example.yeniappwkotlin.ui.activity.auth
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -22,14 +20,17 @@ import com.example.yeniappwkotlin.util.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.security.ProviderInstaller
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.launch
-import java.lang.Exception
-import java.util.*
+import java.security.KeyManagementException
+import java.security.NoSuchAlgorithmException
+import javax.net.ssl.SSLContext
 
 
 class LoginActivity : AppCompatActivity() {
@@ -230,12 +231,14 @@ class LoginActivity : AppCompatActivity() {
                     text_view_login_register.isClickable = true
                 }
             } catch (e: ApiException) {
+                progress_bar.hide()
                 e.printStackTrace()
             } catch (e: NoInternetException) {
                 progress_bar.hide()
                 toast(getString(R.string.check_internet))
                 e.printStackTrace()
             } catch (e : Exception){
+                progress_bar.hide()
                 e.printStackTrace()
             }
         }

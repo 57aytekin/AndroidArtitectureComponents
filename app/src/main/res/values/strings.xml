@@ -49,5 +49,10 @@
     <string name="logout">Çıkış Yap</string>
     <string name="empty_user_posts">Henüz bir paylaşımınız bulunmamakta.</string>
     <string name="check_internet">Lütfen internet bağlantınızı kontrol ediniz</string>
+    <string name="have_a_error">Bir hata ile karşılaştık, lütfen daha sonra tekrar deneyin</string>
+    <string name="level_low">Seviye: Başlangıç(Bu seviyede birisini takip edemezsiniz)</string>
+    <string name="empty_different_user_posts">Kullanıcının paylaşmı bulunmamakta</string>
+    <string name="change_profile_pic">Profil Fotoğrafını Değiştir</string>
+    <string name="edit_profile">Profil Düzenle</string>
 
 </resources>

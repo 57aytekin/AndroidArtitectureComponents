@@ -23,7 +23,7 @@ class MessageListRepository(
     private val context : Context
 ) : SafeApiRequest(){
     private val messageList = MutableLiveData<List<MessageList>>()
-    private val MINUMUM_INTERVAL = 5
+    private val MINUMUM_INTERVAL = -1
     private val KEY_SAVED_AT = "message_list_key_saved_at"
     private var lastDate = SimpleDateFormat("MM-dd-yyyy HH:mm:ss", Locale.ENGLISH).format(Date())
 
@@ -51,6 +51,7 @@ class MessageListRepository(
         if (lastSavedAt == null || isFetchNeeded(context, KEY_SAVED_AT, MINUMUM_INTERVAL)){
             try {
                 val response = apiRequest { api.getMessageList(userId) }
+                db.getUserDao().deleteMessageList()
                 messageList.postValue(response)
             } catch (e: ApiException) {
                 Log.d("MESSAGE_1",e.message!!)

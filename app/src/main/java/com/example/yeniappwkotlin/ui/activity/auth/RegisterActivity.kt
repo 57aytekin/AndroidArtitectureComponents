@@ -6,7 +6,9 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +24,7 @@ import com.example.yeniappwkotlin.ui.activity.home.MainActivity
 import com.example.yeniappwkotlin.util.*
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_edit_profile.*
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -93,6 +96,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PHONE_AUTH && resultCode == Activity.RESULT_OK) {
+            btn_register.visibility = View.INVISIBLE
             userRegister(
                 userName!!,
                 firstName!!,
@@ -102,6 +106,8 @@ class RegisterActivity : AppCompatActivity() {
                 password!!,
                 password2!!
             )
+        }else{
+            editContainer.snackbar(getString(R.string.have_a_error))
         }
     }
 
@@ -129,6 +135,12 @@ class RegisterActivity : AppCompatActivity() {
                 )
                 if (authResponse.login != null) {
                     viewModel.saveLoggedInUser(authResponse.login)
+                    PrefUtils.with(this@RegisterActivity).save("user_id", authResponse.login.user_id!!)
+                    PrefUtils.with(this@RegisterActivity).save("user_name", authResponse.login.user_name!!)
+                    PrefUtils.with(this@RegisterActivity).save("user_first_name", authResponse.login.first_name!!)
+                    PrefUtils.with(this@RegisterActivity).save("user_last_name", authResponse.login.last_name!!)
+                    PrefUtils.with(this@RegisterActivity).save("user_image", authResponse.login.paths!!)
+                    PrefUtils.with(this@RegisterActivity).save("is_social_account", authResponse.login.is_social_account!!)
                 } else {
                     val message = authResponse.message
                     when {

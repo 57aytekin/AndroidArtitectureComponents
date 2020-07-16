@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.yeniappwkotlin.R
@@ -14,11 +15,10 @@ import com.example.yeniappwkotlin.data.db.database.AppDatabase
 import com.example.yeniappwkotlin.data.network.MyApi
 import com.example.yeniappwkotlin.data.network.NetworkConnectionInterceptor
 import com.example.yeniappwkotlin.data.network.repositories.PostRepository
-import com.example.yeniappwkotlin.util.Coroutines
-import com.example.yeniappwkotlin.util.PrefUtils
-import com.example.yeniappwkotlin.util.hide
-import com.example.yeniappwkotlin.util.show
+import com.example.yeniappwkotlin.util.*
+import kotlinx.android.synthetic.main.profile_fragment.*
 import kotlinx.android.synthetic.main.profile_paylasimlar_fragment.*
+import java.lang.Exception
 
 class ProfilePaylasimlarFragment : Fragment() {
     val errorMessage = "PROFILE_PAYLASIMLAR_EXPCEPTION"
@@ -40,7 +40,8 @@ class ProfilePaylasimlarFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val userId = PrefUtils.with(requireContext()).getInt("user_id", 0)
+        val userId = PrefUtils.with(requireContext()).getInt("different_user", 0)
+        val currentUserId = PrefUtils.with(requireContext()).getInt("user_id", 0)
         val networkConnectionInterceptor = NetworkConnectionInterceptor(requireContext())
         val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(requireContext())
@@ -53,8 +54,10 @@ class ProfilePaylasimlarFragment : Fragment() {
         Coroutines.main {
             try {
                 paylasimlar_progress_bar.show()
-                val userPosts = viewModel.getLocalUserPost(userId)
+                val userPosts = viewModel.getPost.await()
                 if (userPosts.isNotEmpty()){
+                    val tvPaylasimCount = requireActivity().findViewById<TextView>(R.id.tvPaylasimCount)
+                    tvPaylasimCount.text = userPosts.size.toString()
                     paylasimlar_progress_bar.hide()
                     tvEmptyUserPosts.visibility = View.INVISIBLE
                     recycler_profile_paylasimlar.also {
@@ -63,13 +66,32 @@ class ProfilePaylasimlarFragment : Fragment() {
                         it.adapter = ProfilePaylasimlarAdapter(userPosts)
                     }
                 }else{
-                    paylasimlar_progress_bar.hide()
-                    tvEmptyUserPosts.visibility = View.VISIBLE
-                    tvEmptyUserPosts.text = getString(R.string.empty_user_posts)
+                    if (currentUserId != userId){
+                        stopProgressShowMessage( getString(R.string.empty_different_user_posts))
+                    }else{
+                        stopProgressShowMessage(getString(R.string.empty_user_posts))
+                    }
                 }
-            }catch (e : Exception){
-                Log.d(errorMessage,e.printStackTrace().toString())
+            }catch (e: ApiException) {
+                Log.d("PAYLASIM_1",e.message!!)
+                stopProgressShowMessage(getString(R.string.have_a_error))
+            } catch (e: NoInternetException) {
+                Log.d("PAYLASIM_2",e.message!!)
+                stopProgressShowMessage(e.message)
+            } catch (e : Exception){
+                Log.d("PAYLASIM_3",e.message!!)
+                //stopProgressShowMessage(getString(R.string.have_a_error))
             }
+        }
+    }
+
+    private fun stopProgressShowMessage(e : String){
+        try {
+            paylasimlar_progress_bar.hide()
+            tvEmptyUserPosts.visibility = View.VISIBLE
+            tvEmptyUserPosts.text = e
+        }catch (e : Exception){
+            e.printStackTrace()
         }
     }
 

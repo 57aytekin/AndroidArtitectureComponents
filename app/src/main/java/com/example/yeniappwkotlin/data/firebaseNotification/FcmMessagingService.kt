@@ -19,7 +19,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 class FcmMessagingService : FirebaseMessagingService() {
     private val MY_CHANNEL_ID = "19465"
-    val notifyID = 1
+    private val notifyId = 1
     override fun onMessageReceived(p0: RemoteMessage) {
         showNotification(p0.data["message"])
     }
@@ -76,6 +76,6 @@ class FcmMessagingService : FirebaseMessagingService() {
             it.setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
             it.setChannelId(MY_CHANNEL_ID)
         }
-        notificationManager.notify(notifyID,builder.build())
+        notificationManager.notify(notifyId,builder.build())
     }
 }

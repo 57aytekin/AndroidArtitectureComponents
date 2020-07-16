@@ -6,7 +6,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 
-const val URL : String = "http://aytekincomezz.000webhostapp.com/YeniApp/"
+const val URL : String = "https://vaveylasocial.online/vaveylaPhpFile/"
 
 fun loadImage(view : CircleImageView, url : String?, is_social_account: Int?){
     try {

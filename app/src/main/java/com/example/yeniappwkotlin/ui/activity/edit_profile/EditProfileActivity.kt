@@ -34,6 +34,10 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     private var IMG_RESULT = 777
     private var bitmap: Bitmap? = null
     private var userId: Int? = null
+    private var userName: String? = null
+    private var userFirstName: String? = null
+    private var userLastName: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +51,10 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         viewModel = ViewModelProviders.of(this, factory).get(EditProfileViewModel::class.java)
 
-        val userName = PrefUtils.with(this).getString("user_name", "")
+        userName = PrefUtils.with(this).getString("user_name", "")
         userId = PrefUtils.with(this).getInt("user_id", -1)
-        val userFirstName = PrefUtils.with(this).getString("user_first_name", "")
-        val userLastName = PrefUtils.with(this).getString("user_last_name", "")
+        userFirstName = PrefUtils.with(this).getString("user_first_name", "")
+        userLastName = PrefUtils.with(this).getString("user_last_name", "")
         val userImage = PrefUtils.with(this).getString("user_image", "")
         val isSocial = PrefUtils.with(this).getInt("is_social_account", 0)
 
@@ -84,8 +88,14 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
                 }catch (e: Exception){
                     Log.d("EXP_",e.printStackTrace().toString())
                 }
+                if (!isChanged(userName!!, userFirstName!!, userLastName!!)){
+                    editContainer.snackbar("Lütfen değişiklik yaptıktan sonra kaydedin")
+                    return
+                }
 
-                checkValidation()
+                if (!checkValidation()){
+                    return
+                }
                 Coroutines.main {
                     try {
                         edit_progress_bar.show()
@@ -117,13 +127,23 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
                             etEditLastName.isFocusable = false
                             editContainer.snackbar("Lütfen değişiklik yaptıktan sonra kaydedin")
                         }
-                    } catch (e: Exception) {
+                    }  catch (e: ApiException) {
+                        editContainer.snackbar("Sunucu da bir sorun oluştu: ${e.printStackTrace()}")
+                    } catch (e: NoInternetException) {
+                        editContainer.snackbar(getString(R.string.check_internet))
+                    }catch (e: Exception) {
                         edit_progress_bar.hide()
                         editContainer.snackbar("Bir hata ile karşılaştık: ${e.printStackTrace()}")
                     }
                 }
             }
         }
+    }
+
+    private fun isChanged( username : String, name : String, surname : String) : Boolean{
+        return !(encode() == "null" && etEditUserName.text.toString() == username
+                && etEditName.text.toString() == name
+                && etEditLastName.text.toString() == surname)
     }
 
     private fun updateSharedPreferenceValue() {
@@ -152,27 +172,29 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun checkValidation() {
+    private fun checkValidation() : Boolean {
         val userName = etEditUserName.text.trim()
         if (etEditUserName.text.isEmpty() || etEditName.text.isEmpty() || etEditLastName.text.isEmpty()) {
             editContainer.snackbar(getString(R.string.fill_fields))
-            return
+            return false
         }
-        if (etEditUserName.text.length < 5 || etEditUserName.text.length > 20) {
+        else if (etEditUserName.text.length < 5 || etEditUserName.text.length > 20) {
             editContainer.snackbar(getString(R.string.valid_user_name))
-            return
+            return false
         }
-        if (etEditName.text.length < 3 || etEditName.text.length > 15) {
+        else if (etEditName.text.length < 3 || etEditName.text.length > 15) {
             editContainer.snackbar(getString(R.string.valid_first_name))
-            return
+            return false
         }
-        if (etEditLastName.text.length < 2 || etEditLastName.text.length > 15) {
+        else if (etEditLastName.text.length < 2 || etEditLastName.text.length > 15) {
             editContainer.snackbar(getString(R.string.valid_last_name))
-            return
+            return false
         }
-        if (checkTurkishCharacter(etEditUserName.text.toString().trim())) {
+        else if (checkTurkishCharacter(etEditUserName.text.toString().trim())) {
             editContainer.snackbar("Kullanıcı adında türkçe karakter(ı,ş,ç,ö,ü) ve boşluk olamaz ")
-            return
+            return false
+        }else{
+            return  true
         }
     }
 

@@ -95,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:hint="Yorum ekle..."
+            android:inputType="textCapSentences"
             app:layout_constraintBottom_toBottomOf="@id/iv_comment_photo"
             app:layout_constraintStart_toEndOf="@id/iv_comment_photo"
             app:layout_constraintEnd_toStartOf="@id/btnSend" />
