@@ -4,7 +4,7 @@
     <data>
         <variable
             name="comment"
-            type="com.example.yeniappwkotlin.ui.activity.comment.CommentViewModel" />
+            type="com.vaveylax.yeniappwkotlin.ui.activity.comment.CommentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -11,9 +11,10 @@
             android:id="@+id/messageItemUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="UserName"
+            android:text="@string/user_name"
             android:layout_marginStart="10dp"
-            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="@id/messageItemUserPhoto"
             app:layout_constraintStart_toEndOf="@id/messageItemUserPhoto"/>
