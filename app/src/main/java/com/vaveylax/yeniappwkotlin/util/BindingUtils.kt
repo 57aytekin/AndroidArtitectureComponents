@@ -4,8 +4,8 @@ import android.util.Log
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 
-//const val URL : String = "https://vaveylasocial.online/vaveylaPhpFile/prod/"
-const val URL : String = "https://vaveylasocial.online/vaveylaPhpFile/dev/"
+const val URL : String = "http://vaveylasocial.online/vaveyla/prod/"
+//const val URL : String = "http://vaveylasocial.online/vaveyla/dev/"
 
 fun loadImage(view : CircleImageView, url : String?, is_social_account: Int?){
     try {
@@ -17,5 +17,4 @@ fun loadImage(view : CircleImageView, url : String?, is_social_account: Int?){
     }catch (e : Exception){
         Log.d("PHOTO URL ERROR ",e.message!!)
     }
-
 }

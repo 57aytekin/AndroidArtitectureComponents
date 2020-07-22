@@ -141,6 +141,7 @@ class LoginActivity : AppCompatActivity() {
                 et_login_password.isClickable = true
                 btn_login.isClickable = true
                 text_view_login_register.isClickable = true
+                toast("Upps. Birşeyler yanlış gitti. Lütfen bir süre sonra tekrar deneyin")
                 Log.w("SignInActivity", exception.toString())
                 progress_bar.hide()
             }

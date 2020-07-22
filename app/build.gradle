@@ -13,8 +13,8 @@ android {
         applicationId "com.vaveylax.yeniappwkotlin"
         minSdkVersion 25
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -111,14 +111,14 @@ dependencies {
     }
 
     //Firebase FCM
-    implementation 'com.google.firebase:firebase-core:17.4.3'
-    implementation 'com.google.firebase:firebase-messaging:20.2.0'
-    implementation 'com.google.firebase:firebase-database:19.3.0'
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-core:17.4.4'
+    implementation 'com.google.firebase:firebase-messaging:20.2.3'
+    implementation 'com.google.firebase:firebase-database:19.3.1'
+    implementation 'com.google.firebase:firebase-analytics:17.4.4'
 
     //google
-    implementation 'com.google.android.gms:play-services-auth:18.0.0'
-    implementation 'com.google.firebase:firebase-auth:19.3.1'
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.2'
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
 
     //Phone Edittext
@@ -126,6 +126,9 @@ dependencies {
 
     //CheckView
     implementation 'com.github.cdflynn:checkview:v1.1'
+
+    //DotsIndicator
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:2.1.2'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'

@@ -1,62 +1,59 @@
 package com.vaveylax.yeniappwkotlin.ui.activity.splashScreen
 
-import android.content.Context
-import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.vaveylax.yeniappwkotlin.R
-import com.vaveylax.yeniappwkotlin.ui.activity.auth.LoginActivity
-import com.vaveylax.yeniappwkotlin.util.PrefUtils
-import kotlinx.android.synthetic.main.slide_layout.view.*
-import kotlinx.android.synthetic.main.slide_layout.view.btn_login
 
 class IntroSliderAdapter(
-    private val context :Context,
-    private val introSlides: List<IntroSlide> ) :
-    RecyclerView.Adapter<IntroSliderAdapter.IntroSliderViewHolder>() {
-
-    inner class IntroSliderViewHolder(val view : View) : RecyclerView.ViewHolder(view){
-        fun bind(introSlide: IntroSlide){
-            view.tv_title.text = introSlide.title
-            view.tv_description.text = introSlide.description
-            view.iv_slide.setImageResource(introSlide.icon)
-            view.iv_title.setImageResource(introSlide.titleIcon)
-        }
+    fm: FragmentManager
+) : FragmentPagerAdapter(fm) {
+    override fun getCount(): Int {
+        return 4
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IntroSliderViewHolder {
-        return IntroSliderViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.slide_layout,
-                parent,
-                false
-            )
-        )
-    }
-
-    override fun getItemCount(): Int {
-        return introSlides.size
-    }
-
-    override fun onBindViewHolder(holder: IntroSliderViewHolder, position: Int) {
-        holder.bind(introSlides[position])
-        if (introSlides.size-1 == position){
-            holder.itemView.btn_login.visibility = View.VISIBLE
-        }else{
-            holder.itemView.btn_login.visibility = View.INVISIBLE
-        }
-        holder.itemView.btn_login.setOnClickListener {
-            //Add shared preferences for dont show again
-            PrefUtils.with(context).save("is_first",false)
-            Intent(context, LoginActivity::class.java).let {
-                it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                context.startActivity(it)
-                (context as SplashScreenActivity).finish()
+    override fun getItem(i: Int): Fragment {
+        when (i) {
+            0 -> {
+                return WalkThroughOne()
+            }
+            1 -> {
+                return WalkThroughTwo()
+            }
+            2 -> {
+                return WalkThroughThree()
+            }
+            else -> {
+                return WalkThroughFour()
             }
         }
     }
+    class WalkThroughOne : Fragment() {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            return inflater.inflate(R.layout.walk_through_one, container, false)
+        }
+    }
 
+    class WalkThroughTwo : Fragment() {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            return inflater.inflate(R.layout.walk_through_two, container, false)
+        }
+    }
 
+    class WalkThroughThree : Fragment() {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            return inflater.inflate(R.layout.walk_through_three, container, false)
+        }
+    }
+
+    class WalkThroughFour : Fragment() {
+
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            return inflater.inflate(R.layout.walk_through_four, container, false)
+        }
+    }
 }

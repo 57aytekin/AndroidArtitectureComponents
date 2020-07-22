@@ -24,6 +24,7 @@ import com.vaveylax.yeniappwkotlin.util.openCloseSoftKeyboard
 import com.vaveylax.yeniappwkotlin.util.snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.vaveylax.yeniappwkotlin.ui.fragment.profile_paylasimlar.ProfilePaylasimlarFactory
 import kotlinx.android.synthetic.main.fragment_profile_app_bar.*
 import kotlinx.android.synthetic.main.profile_fragment.*
 import kotlinx.coroutines.CoroutineScope

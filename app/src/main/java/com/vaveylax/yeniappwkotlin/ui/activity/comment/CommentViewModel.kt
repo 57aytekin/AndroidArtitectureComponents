@@ -81,6 +81,8 @@ class CommentViewModel(
                 commentListener?.onFailure(e.message!!)
             }catch (e : NoInternetException){
                 commentListener?.onFailure(e.message!!)
+            }catch (e : Exception){
+                e.printStackTrace()
             }
         }
     }
