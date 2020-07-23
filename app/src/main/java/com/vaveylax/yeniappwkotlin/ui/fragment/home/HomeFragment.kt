@@ -170,11 +170,18 @@ class HomeFragment : Fragment(), RecyclerViewClickListener, CommentListener {
                 intent.putExtra("post_name", post.user_name)
                 intent.putExtra("post_user_id", post.user_id)
                 intent.putExtra("path", post.paths)
+                intent.putExtra("date", calculateDate(post.tarih!!))
+                intent.putExtra("share_post", post.share_post )
                 startActivity(intent)
             }
             R.id.post_comment_count -> {
                 val intent = Intent(requireContext(), CommentActivity::class.java)
                 intent.putExtra("post_id", post.post_id)
+                intent.putExtra("post_name", post.user_name)
+                intent.putExtra("post_user_id", post.user_id)
+                intent.putExtra("path", post.paths)
+                intent.putExtra("date", calculateDate(post.tarih!!))
+                intent.putExtra("share_post", post.share_post )
                 startActivity(intent)
             }
             R.id.home_likes -> {

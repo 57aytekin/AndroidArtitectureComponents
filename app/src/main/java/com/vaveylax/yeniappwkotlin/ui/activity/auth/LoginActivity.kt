@@ -227,6 +227,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             } catch (e: ApiException) {
                 progress_bar.hide()
+                toast("Sunucu tarafında bir hata oluştu.")
                 e.printStackTrace()
             } catch (e: NoInternetException) {
                 progress_bar.hide()
@@ -234,6 +235,7 @@ class LoginActivity : AppCompatActivity() {
                 e.printStackTrace()
             } catch (e : Exception){
                 progress_bar.hide()
+                toast("Bir hata ile karşılaştık, lütfen bir süre sonra tekrar deneyin.")
                 e.printStackTrace()
             }
         }

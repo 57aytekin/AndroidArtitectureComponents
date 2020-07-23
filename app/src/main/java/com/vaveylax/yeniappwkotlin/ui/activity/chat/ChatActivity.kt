@@ -232,6 +232,7 @@ class ChatActivity : AppCompatActivity(), CommentListener {
 
         //listen firebase database
         try {
+            chat_progress_bar.visibility = View.VISIBLE
             adapter = ChatAdapter(this, chatList)
             recyclerView = recyclerMesajlasma
 
@@ -345,8 +346,10 @@ class ChatActivity : AppCompatActivity(), CommentListener {
     fun readChatList(snapshot: DataSnapshot) {
         if (!chatList.isNullOrEmpty()) {
             chatList.clear()
+            chat_progress_bar.visibility = View.INVISIBLE
         }
         try {
+            chat_progress_bar.visibility = View.INVISIBLE
             for (data in snapshot.children) {
                 val chat: Chat = data.getValue(Chat::class.java)!!
                 chatList.add(chat)

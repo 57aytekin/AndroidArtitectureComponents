@@ -1,6 +1,10 @@
 package com.vaveylax.yeniappwkotlin.ui.activity.comment
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -34,8 +38,22 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
         val userPhoto = PrefUtils.with(this).getString("user_image","")
         val isSocial = PrefUtils.with(this).getInt("is_social_account",0)
         userName = PrefUtils.with(this).getString("user_name","")
+        //Post information
+        val postUserPath = intent.getStringExtra("path")
+        val postDate = intent.getStringExtra("date")
+        val sharePost = intent.getStringExtra("share_post")
+
+        val boldType = "$postUserName $sharePost"
+        val sb: SpannableStringBuilder? = SpannableStringBuilder(boldType)
+        val bss = StyleSpan(Typeface.BOLD)
+        sb!!.setSpan(bss, 0, postUserName!!.length, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
 
         loadImage(iv_comment_photo, userPhoto, isSocial)
+        /*Load Clicked Post*/
+        loadImage(iv_comment_current_user_photo,postUserPath,0)
+        tv_comment_current_user_name.text = sb
+        tv_comment_current_user_date.text = postDate
+        //
         val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
         val api = MyApi(networkConnectionInterceptor)
         val repository = CommentRepository(api, postId!!)
