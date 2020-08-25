@@ -62,6 +62,15 @@ class WelcomeActivity : AppCompatActivity() {
                             }else{
                                 Log.d("HATA_2","Hataaa")
                             }
+                            //User table get likes_budget_count
+                            val likesBudgets = api.getUserLikesBudgetCount(userId)
+                            if (likesBudgets.isSuccessful){
+                                val budgetCount = likesBudgets.body()!!.likes_budget_count
+                                PrefUtils.with(this@WelcomeActivity).save("likes_budget_count",budgetCount)
+                            }else{
+                                Log.d("GET_LIKES_BUDGET","ERROR")
+                            }
+
                         }catch (e : NoInternetException){
                             Coroutines.main { toast(e.message!!) }
                             //Thread.sleep(2000)

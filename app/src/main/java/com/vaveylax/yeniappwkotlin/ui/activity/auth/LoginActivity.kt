@@ -57,7 +57,9 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.getLoggedInUser().observe(this, Observer { user ->
             if (user != null) {
-                viewModel.updateTokenIsLoginLastLogin(user.user_id!!,token!!,1)
+                if (token != null){
+                    viewModel.updateTokenIsLoginLastLogin(user.user_id!!,token!!,1)
+                }
                 PrefUtils.with(this).save("user_id", user.user_id!!)
                 PrefUtils.with(this).save("user_name", user.user_name!!)
                 PrefUtils.with(this).save("user_first_name", user.first_name!!)
@@ -92,7 +94,11 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.etLoginEmail.text.toString().trim()
             val password = binding.etLoginPassword.text.toString().trim()
             val view = this.currentFocus
-            openCloseSoftKeyboard(applicationContext, view!!, false)
+            try{
+                openCloseSoftKeyboard(applicationContext, view!!, false)
+            }catch (e : Exception){
+                e.printStackTrace()
+            }
             progress_bar.show()
             loginUser(
                 "user_name",

@@ -26,6 +26,8 @@ class LikeViewModel(
         repository.getLikes(userId)
     }
 
+    suspend fun updateLikesBudgetCount(userId: Int) = repository.updateLikesBudgetCount(userId)
+
     override fun onCleared() {
         super.onCleared()
         if (::job.isInitialized) job.cancel()

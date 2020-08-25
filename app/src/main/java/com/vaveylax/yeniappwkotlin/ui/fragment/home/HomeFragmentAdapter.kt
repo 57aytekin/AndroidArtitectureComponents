@@ -69,6 +69,7 @@ class HomeFragmentAdapter(
             intent.putExtra("post_name", posts[position].user_name)
             intent.putExtra("post_user_id", posts[position].user_id)
             intent.putExtra("path", posts[position].paths)
+            intent.putExtra("social_account", posts[position].is_social_account)
             intent.putExtra("date", calculateDate(posts[position].tarih!!))
             intent.putExtra("share_post", posts[position].share_post )
             context.startActivity(intent)

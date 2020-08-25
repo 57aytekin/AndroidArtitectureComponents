@@ -4,10 +4,7 @@ import com.vaveylax.yeniappwkotlin.data.db.entities.Comment
 import com.vaveylax.yeniappwkotlin.data.db.entities.Likes
 import com.vaveylax.yeniappwkotlin.data.db.entities.MessageList
 import com.vaveylax.yeniappwkotlin.data.db.entities.Post
-import com.vaveylax.yeniappwkotlin.data.network.responses.AuthResponse
-import com.vaveylax.yeniappwkotlin.data.network.responses.CommentResponse
-import com.vaveylax.yeniappwkotlin.data.network.responses.EditResponse
-import com.vaveylax.yeniappwkotlin.data.network.responses.PostLikesResponse
+import com.vaveylax.yeniappwkotlin.data.network.responses.*
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -123,6 +120,15 @@ interface MyApi {
 
     @GET("get_messagelist.php")
     suspend fun getMessageList(@Query("user_id") user_id: Int): Response<List<MessageList>>
+
+    @GET("get_user_likes_budget_count.php")
+    suspend fun getUserLikesBudgetCount(@Query("user_id") user_id: Int): Response<BudgetResponse>
+
+    @FormUrlEncoded
+    @POST("update_likes_budget_count.php")
+    suspend fun updateLikesBudgetCount(
+        @Field("user_id") user_id: Int
+    ): Response<CommentResponse>
 
     @GET("get_notification_budget.php")
     suspend fun getNotificationBudget(@Query("user_id") user_id: Int): List<MessageList>

@@ -13,14 +13,15 @@
     <string name="is_have_account">Henüz bir hesabın yok mu?</string>
     <string name="register_now">Şimdi Kayıt Ol</string>
     <string name="signin_with_google">Google ile giriş yap</string>
-    <string name="voveyle">Vaveylax</string>
+    <string name="voveyle">Luna Lu</string>
+    <string name="appName">Luna Lu - Cümleleri Tamamla</string>
     <string name="first_name">Ad</string>
     <string name="last_name">Soyad</string>
     <string name="hint_phone_number">Telefon Numarası</string>
     <string name="hint_user_name">Kullanıcı Adı</string>
 
     <!--Splash Screen-->
-    <string name="walkthrough_text_one_one">Vaveylax e Hoşgeldin</string>
+    <string name="walkthrough_text_one_one">Luna Lu\'ya Hoşgeldin</string>
     <string name="walkthrough_text_two_two">Yarım Cümleni Paylaş</string>
     <string name="walkthrough_text_three_three">Tamamlamaları Beğen</string>
     <string name="walkthrough_text_four_four">Unutma</string>

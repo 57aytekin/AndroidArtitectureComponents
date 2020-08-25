@@ -61,6 +61,19 @@ class LikeFragment : Fragment(), ClickListener {
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
         directsProfile(requireActivity(), navController!!, ivLikePhoto)
 
+        //MessageList Budget remov
+        PrefUtils.with(requireContext()).remove("likes_budget_count")
+        Coroutines.main {
+            try {
+                val likesBudgetCount = viewModel.updateLikesBudgetCount(userId)
+                if (likesBudgetCount.success == 1){
+                    Log.d("likesBudgetCount","likesBudgetCount sifirlandı")
+                }
+            }catch (e : Exception){
+                Log.d("likesBudgetCount",e.printStackTrace().toString())
+            }
+        }
+
         like_progress_bar.show()
         Coroutines.main {
             try {

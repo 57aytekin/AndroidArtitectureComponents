@@ -40,6 +40,7 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
         userName = PrefUtils.with(this).getString("user_name","")
         //Post information
         val postUserPath = intent.getStringExtra("path")
+        val postUserIsSocial = intent.getIntExtra("social_account",0)
         val postDate = intent.getStringExtra("date")
         val sharePost = intent.getStringExtra("share_post")
 
@@ -50,7 +51,7 @@ class CommentActivity : AppCompatActivity(), CommentListener, CommentRecyclerVie
 
         loadImage(iv_comment_photo, userPhoto, isSocial)
         /*Load Clicked Post*/
-        loadImage(iv_comment_current_user_photo,postUserPath,0)
+        loadImage(iv_comment_current_user_photo,postUserPath,postUserIsSocial)
         tv_comment_current_user_name.text = sb
         tv_comment_current_user_date.text = postDate
         //

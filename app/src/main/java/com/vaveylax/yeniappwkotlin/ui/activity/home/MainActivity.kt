@@ -32,18 +32,18 @@ class MainActivity : AppCompatActivity() {
 
         val pushNotification = intent.getStringExtra("push_fragment")
         val messageBudget = PrefUtils.with(this).getInt("message_budget_count", -1)
+        val likesBudget = PrefUtils.with(this).getInt("likes_budget_count", -1)
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         val budgetMessage = bottomNavigation.getOrCreateBadge(R.id.nav_tab_message)
+        val budgetLikes = bottomNavigation.getOrCreateBadge(R.id.nav_tab_likes)
         if (messageBudget > 0){
             budgetMessage.isVisible = true
             budgetMessage.number = messageBudget
         }else{
             budgetMessage.isVisible = false
         }
-
-        val budgetLikes = bottomNavigation.getOrCreateBadge(R.id.nav_tab_likes)
-        budgetLikes.isVisible = false
+        budgetLikes.isVisible = likesBudget > 0
 
         if (pushNotification != null && pushNotification == "like_fragment"){
             PrefUtils.with(this).remove("likes_key_saved_at")

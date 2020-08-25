@@ -67,5 +67,5 @@ class LikesRepository(
     }
 
 
-    //suspend fun getLikes(comment_sahibi_id: Int) =  apiRequest { api.getLikes(comment_sahibi_id) }
+    suspend fun updateLikesBudgetCount(userId: Int) =  apiRequest { api.updateLikesBudgetCount(userId) }
 }
